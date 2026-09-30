@@ -490,9 +490,77 @@ function renderHistoricalCharts(
     responseB?.metadata?.fecha || "Fecha B";
 
 
-  // ----------------------------------------------------------
-  // VALOR DE MERCADO
-  // ----------------------------------------------------------
+  // ==========================================================
+  // DATOS
+  // ==========================================================
+
+  const vmA = Number(a.valormercadomdp);
+  const vmB = Number(b.valormercadomdp);
+
+  const invA =
+    a.montoinvertido != null
+      ? Number(a.montoinvertido) / 1000000
+      : null;
+
+  const invB =
+    b.montoinvertido != null
+      ? Number(b.montoinvertido) / 1000000
+      : null;
+
+  const varA =
+    a.monto?.porcentaje != null
+      ? Number(a.monto.porcentaje) * 100
+      : null;
+
+  const varB =
+    b.monto?.porcentaje != null
+      ? Number(b.monto.porcentaje) * 100
+      : null;
+
+
+  // ==========================================================
+  // VARIACIONES
+  // ==========================================================
+
+  const variacionVM =
+    vmA !== 0
+      ? ((vmB - vmA) / Math.abs(vmA)) * 100
+      : null;
+
+  const variacionInv =
+    invA !== null && invA !== 0 && invB !== null
+      ? ((invB - invA) / Math.abs(invA)) * 100
+      : null;
+
+  const variacionVar =
+    varA !== null && varB !== null
+      ? varB - varA
+      : null;
+
+
+  // ==========================================================
+  // COLORES SEGÚN VARIACIÓN
+  // ==========================================================
+
+  const COLOR_POSITIVO = "#4da3ff";
+  const COLOR_NEGATIVO = "#ef6b73";
+  const COLOR_NEUTRO = "#84909c";
+
+  const colorVariacion = value => {
+
+    if (value == null || value === 0) {
+      return COLOR_NEUTRO;
+    }
+
+    return value > 0
+      ? COLOR_POSITIVO
+      : COLOR_NEGATIVO;
+  };
+
+
+  // ==========================================================
+  // 1. VALOR DE MERCADO + MONTO INVERTIDO
+  // ==========================================================
 
   if (historyCharts.vm) {
     historyCharts.vm.destroy();
@@ -515,135 +583,27 @@ function renderHistoricalCharts(
           ],
 
           datasets: [
+
             {
               label: "Valor de mercado",
-              data: [
-                a.valormercadomdp ?? null,
-                b.valormercadomdp ?? null
-              ],
-
-              borderWidth: 1
-            }
-          ]
-
-        },
-
-        options: {
-
-          responsive: true,
-          maintainAspectRatio: false,
-
-          plugins: {
-
-            legend: {
-              labels: {
-                boxWidth: 10,
-                usePointStyle: true,
-                color: "#84909c",
-                font: {
-                  size: 10
-                }
-              }
-            },
-
-            tooltip: {
-              backgroundColor: "#0b0f14",
-              borderColor: "#202a33",
-              borderWidth: 1,
-              titleColor: "#e6edf3",
-              bodyColor: "#e6edf3"
-            }
-
-          },
-
-          scales: {
-
-            x: {
-              grid: {
-                display: false
-              },
-
-              ticks: {
-                color: "#65727f"
-              }
-            },
-
-            y: {
-              grid: {
-                color: "#18212a"
-              },
-
-              ticks: {
-                color: "#65727f",
-                callback: value =>
-                  Number(value).toLocaleString("es-MX")
-              }
-            }
-
-          }
-
-        }
-
-      }
-    );
-
-  }
-
-
-  // ----------------------------------------------------------
-  // VaR
-  // ----------------------------------------------------------
-
-  if (historyCharts.var) {
-    historyCharts.var.destroy();
-  }
-
-  const canvasVAR = $("history-chart-var");
-
-  if (canvasVAR) {
-
-    historyCharts.var = new Chart(
-      canvasVAR,
-      {
-        type: "bar",
-
-        data: {
-
-          labels: [
-            fechaA,
-            fechaB
-          ],
-
-          datasets: [
-
-            {
-              label: "VaR portafolio",
 
               data: [
-                a.monto?.porcentaje != null
-                  ? Number(a.monto.porcentaje) * 100
-                  : null,
-
-                b.monto?.porcentaje != null
-                  ? Number(b.monto.porcentaje) * 100
-                  : null
+                vmA,
+                vmB
               ],
 
               borderWidth: 1
             },
 
             {
-              label: "Límite de política",
+              label: "Monto invertido",
 
               data: [
-                POLICY_LIMIT_PCT,
-                POLICY_LIMIT_PCT
+                invA,
+                invB
               ],
 
-              type: "line",
-              borderWidth: 1.5,
-              borderDash: [6, 5],
-              pointRadius: 0
+              borderWidth: 1
             }
 
           ]
@@ -674,11 +634,29 @@ function renderHistoricalCharts(
             },
 
             tooltip: {
+
               backgroundColor: "#0b0f14",
               borderColor: "#202a33",
               borderWidth: 1,
+
               titleColor: "#e6edf3",
-              bodyColor: "#e6edf3"
+              bodyColor: "#e6edf3",
+
+              callbacks: {
+
+                label: function(context) {
+
+                  const value =
+                    Number(context.raw);
+
+                  return context.datasetIndex === 1
+                    ? `${context.dataset.label}: ${fmtNumber(value, 2)} mdp`
+                    : `${context.dataset.label}: ${fmtNumber(value, 2)} mdp`;
+
+                }
+
+              }
+
             }
 
           },
@@ -686,6 +664,7 @@ function renderHistoricalCharts(
           scales: {
 
             x: {
+
               grid: {
                 display: false
               },
@@ -693,6 +672,7 @@ function renderHistoricalCharts(
               ticks: {
                 color: "#65727f"
               }
+
             },
 
             y: {
@@ -702,10 +682,11 @@ function renderHistoricalCharts(
               },
 
               ticks: {
+
                 color: "#65727f",
 
                 callback: value =>
-                  `${Number(value).toFixed(2)}%`
+                  Number(value).toLocaleString("es-MX")
 
               }
 
@@ -714,6 +695,231 @@ function renderHistoricalCharts(
           }
 
         }
+
+      }
+    );
+
+  }
+
+
+  // ==========================================================
+  // 2. VAR — BARRA DE UTILIZACIÓN DEL LÍMITE
+  // ==========================================================
+
+  if (historyCharts.var) {
+    historyCharts.var.destroy();
+  }
+
+  const canvasVAR = $("history-chart-var");
+
+  if (canvasVAR) {
+
+    historyCharts.var = new Chart(
+      canvasVAR,
+      {
+        type: "bar",
+
+        data: {
+
+          labels: [
+            fechaA,
+            fechaB
+          ],
+
+          datasets: [
+
+            {
+              label: "Utilización del límite",
+
+              data: [
+                varA !== null
+                  ? (varA / POLICY_LIMIT_PCT) * 100
+                  : null,
+
+                varB !== null
+                  ? (varB / POLICY_LIMIT_PCT) * 100
+                  : null
+              ],
+
+              backgroundColor: [
+                varA !== null
+                  ? colorVariacion(variacionVar)
+                  : COLOR_NEUTRO,
+
+                varB !== null
+                  ? colorVariacion(variacionVar)
+                  : COLOR_NEUTRO
+              ],
+
+              borderWidth: 0,
+
+              borderRadius: 5,
+
+              barPercentage: 0.55,
+
+              categoryPercentage: 0.65
+            }
+
+          ]
+
+        },
+
+        options: {
+
+          responsive: true,
+          maintainAspectRatio: false,
+
+          plugins: {
+
+            legend: {
+              display: false
+            },
+
+            tooltip: {
+
+              backgroundColor: "#0b0f14",
+              borderColor: "#202a33",
+              borderWidth: 1,
+
+              titleColor: "#e6edf3",
+              bodyColor: "#e6edf3",
+
+              callbacks: {
+
+                label: function(context) {
+
+                  const porcentaje =
+                    Number(context.raw);
+
+                  const varReal =
+                    (porcentaje / 100) *
+                    POLICY_LIMIT_PCT;
+
+                  return [
+                    `VaR: ${fmtNumber(varReal, 4)}%`,
+                    `Uso del límite: ${fmtNumber(porcentaje, 1)}%`
+                  ];
+
+                }
+
+              }
+
+            }
+
+          },
+
+          scales: {
+
+            x: {
+
+              grid: {
+                display: false
+              },
+
+              ticks: {
+                color: "#65727f"
+              }
+
+            },
+
+            y: {
+
+              min: 0,
+              max: 100,
+
+              grid: {
+                color: "#18212a"
+              },
+
+              ticks: {
+
+                color: "#65727f",
+
+                callback: value =>
+                  `${Number(value).toFixed(0)}%`
+
+              }
+
+            }
+
+          }
+
+        },
+
+        plugins: [
+
+          {
+
+            id: "historyVarLabels",
+
+            afterDatasetsDraw(chart) {
+
+              const {
+                ctx
+              } = chart;
+
+              const meta =
+                chart.getDatasetMeta(0);
+
+              ctx.save();
+
+              meta.data.forEach(
+                (bar, index) => {
+
+                  const value =
+                    chart.data.datasets[0]
+                      .data[index];
+
+                  if (value == null) return;
+
+                  const varReal =
+                    (Number(value) / 100) *
+                    POLICY_LIMIT_PCT;
+
+                  let texto =
+                    `VaR ${fmtNumber(varReal, 4)}%`;
+
+                  if (variacionVar !== null) {
+
+                    const signo =
+                      variacionVar > 0
+                        ? "+"
+                        : "";
+
+                    texto +=
+                      ` (${signo}${fmtNumber(
+                        variacionVar,
+                        4
+                      )} pp)`;
+                  }
+
+                  ctx.font =
+                    '500 10px "IBM Plex Mono", monospace';
+
+                  ctx.textAlign = "center";
+                  ctx.textBaseline = "bottom";
+
+                  ctx.fillStyle =
+                    colorVariacion(
+                      variacionVar
+                    );
+
+                  ctx.fillText(
+                    texto,
+                    bar.x,
+                    bar.y - 8
+                  );
+
+                }
+              );
+
+              ctx.restore();
+
+            }
+
+          }
+
+        ]
 
       }
     );
