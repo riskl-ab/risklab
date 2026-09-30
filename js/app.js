@@ -6,6 +6,20 @@ let latestData = null;
 let historyData = [];
 let charts = { vm: null, var: null };
 
+// ============================================================
+// GRÁFICOS DEL MÓDULO HISTÓRICO
+// Independientes de los gráficos del VISOR
+// ============================================================
+
+let historyCharts = {
+  vm: null,
+  var: null
+};
+
+let historicalSnapshotA = null;
+let historicalSnapshotB = null;
+
+
 const $ = (id) => document.getElementById(id);
 
 function fmtNumber(value, decimals = 2) {
@@ -159,6 +173,613 @@ function renderCharts() {
   });
 }
 
+// ============================================================
+// HISTÓRICO — CONSULTA DE FECHAS
+// ============================================================
+
+async function loadHistoricalDate(fecha) {
+
+  if (!fecha) {
+    throw new Error("No se seleccionó una fecha.");
+  }
+
+  // El input date entrega YYYY-MM-DD.
+  // La API de RiskLab recibe DD/MM/YYYY.
+
+  const partes = fecha.split("-");
+
+  if (partes.length !== 3) {
+    throw new Error("Formato de fecha inválido.");
+  }
+
+  const fechaApi = `${partes[2]}/${partes[1]}/${partes[0]}`;
+
+  const response = await api("date", {
+    fecha: fechaApi
+  });
+
+  return response;
+}
+
+
+// ============================================================
+// CONVERSIÓN DE FECHA DEL INPUT
+// ============================================================
+
+function fechaInputDesdeISO(value) {
+
+  if (!value) return "";
+
+  const d = new Date(value);
+
+  if (Number.isNaN(d.getTime())) {
+    return "";
+  }
+
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+
+// ============================================================
+// COMPARATIVO DE DOS FECHAS
+// ============================================================
+
+async function compareHistoricalDates() {
+
+  const inputA = $("history-date-a");
+  const inputB = $("history-date-b");
+  const status = $("history-status");
+  const button = $("history-compare-btn");
+
+  if (!inputA || !inputB) return;
+
+  const fechaA = inputA.value;
+  const fechaB = inputB.value;
+
+  if (!fechaA || !fechaB) {
+
+    status.textContent =
+      "Selecciona las dos fechas antes de comparar.";
+
+    return;
+  }
+
+  button.disabled = true;
+
+  status.textContent = "Consultando G00…";
+
+  try {
+
+    const [responseA, responseB] = await Promise.all([
+      loadHistoricalDate(fechaA),
+      loadHistoricalDate(fechaB)
+    ]);
+
+    historicalSnapshotA = responseA;
+    historicalSnapshotB = responseB;
+
+    renderHistoricalComparison(
+      responseA,
+      responseB
+    );
+
+    renderHistoricalCharts(
+      responseA,
+      responseB
+    );
+
+    status.textContent = "Comparativo actualizado.";
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.textContent =
+      `Error: ${error.message}`;
+
+  } finally {
+
+    button.disabled = false;
+  }
+}
+
+
+// ============================================================
+// EXTRACCIÓN DE DATOS
+// ============================================================
+
+function getHistoricalPortfolio(response) {
+
+  return response?.data?.portafolio?.completo || {};
+}
+
+
+// ============================================================
+// TABLA COMPARATIVA
+// ============================================================
+
+function renderHistoricalComparison(
+  responseA,
+  responseB
+) {
+
+  const table = $("history-comparison-table");
+
+  if (!table) return;
+
+  const a = getHistoricalPortfolio(responseA);
+  const b = getHistoricalPortfolio(responseB);
+
+  const fechaA =
+    responseA?.metadata?.fecha ||
+    responseA?.data?.fecha ||
+    "Fecha A";
+
+  const fechaB =
+    responseB?.metadata?.fecha ||
+    responseB?.data?.fecha ||
+    "Fecha B";
+
+  $("history-comparison-date").textContent =
+    `${fechaA} ↔ ${fechaB}`;
+
+  const rows = [
+
+    [
+      "Valor de mercado",
+      a.valormercadomdp,
+      b.valormercadomdp,
+      value => `${fmtNumber(value)} mdp`
+    ],
+
+    [
+      "Volatilidad",
+      a.volatilidad,
+      b.volatilidad,
+      value => fmtPct(value, 4)
+    ],
+
+    [
+      "Duración",
+      a.duracion,
+      b.duracion,
+      value => `${fmtNumber(value, 4)} años`
+    ],
+
+    [
+      "Convexidad",
+      a.convexidad,
+      b.convexidad,
+      value => fmtNumber(value, 4)
+    ],
+
+    [
+      "Plazo",
+      a.plazo,
+      b.plazo,
+      value => fmtNumber(value, 0)
+    ],
+
+    [
+      "VaR",
+      a.monto?.porcentaje,
+      b.monto?.porcentaje,
+      value => fmtPct(value)
+    ],
+
+    [
+      "VaR individual",
+      a.individual?.porcentaje,
+      b.individual?.porcentaje,
+      value => fmtPct(value)
+    ],
+
+    [
+      "VaR condicional",
+      a.condicional?.porcentaje,
+      b.condicional?.porcentaje,
+      value => fmtPct(value)
+    ],
+
+    [
+      "Límite de política",
+      a.limitePolitica,
+      b.limitePolitica,
+      value => `${fmtNumber(value)} mdp`
+    ]
+
+  ];
+
+  table.innerHTML = `
+
+    <div class="history-table-header">
+      <span>Indicador</span>
+      <span>${fechaA}</span>
+      <span>${fechaB}</span>
+      <span>Variación</span>
+    </div>
+
+    ${rows.map(row => {
+
+      const [
+        label,
+        valueA,
+        valueB,
+        formatter
+      ] = row;
+
+      let variation = null;
+
+      if (
+        valueA !== null &&
+        valueA !== undefined &&
+        valueB !== null &&
+        valueB !== undefined &&
+        Number(valueA) !== 0
+      ) {
+
+        variation =
+          ((Number(valueB) - Number(valueA)) /
+            Math.abs(Number(valueA))) * 100;
+      }
+
+      return `
+
+        <div class="history-table-row">
+
+          <span class="metric-label">
+            ${label}
+          </span>
+
+          <span class="metric-value">
+            ${
+              valueA == null
+                ? "—"
+                : formatter(valueA)
+            }
+          </span>
+
+          <span class="metric-value">
+            ${
+              valueB == null
+                ? "—"
+                : formatter(valueB)
+            }
+          </span>
+
+          <span class="metric-value history-variation">
+            ${
+              variation == null
+                ? "—"
+                : `${fmtNumber(variation, 2)}%`
+            }
+          </span>
+
+        </div>
+
+      `;
+
+    }).join("")}
+
+  `;
+}
+
+
+// ============================================================
+// GRÁFICOS DEL HISTÓRICO
+// ============================================================
+
+function renderHistoricalCharts(
+  responseA,
+  responseB
+) {
+
+  if (!window.Chart) return;
+
+  const a = getHistoricalPortfolio(responseA);
+  const b = getHistoricalPortfolio(responseB);
+
+  const fechaA =
+    responseA?.metadata?.fecha || "Fecha A";
+
+  const fechaB =
+    responseB?.metadata?.fecha || "Fecha B";
+
+
+  // ----------------------------------------------------------
+  // VALOR DE MERCADO
+  // ----------------------------------------------------------
+
+  if (historyCharts.vm) {
+    historyCharts.vm.destroy();
+  }
+
+  const canvasVM = $("history-chart-vm");
+
+  if (canvasVM) {
+
+    historyCharts.vm = new Chart(
+      canvasVM,
+      {
+        type: "bar",
+
+        data: {
+
+          labels: [
+            fechaA,
+            fechaB
+          ],
+
+          datasets: [
+            {
+              label: "Valor de mercado",
+              data: [
+                a.valormercadomdp ?? null,
+                b.valormercadomdp ?? null
+              ],
+
+              borderWidth: 1
+            }
+          ]
+
+        },
+
+        options: {
+
+          responsive: true,
+          maintainAspectRatio: false,
+
+          plugins: {
+
+            legend: {
+              labels: {
+                boxWidth: 10,
+                usePointStyle: true,
+                color: "#84909c",
+                font: {
+                  size: 10
+                }
+              }
+            },
+
+            tooltip: {
+              backgroundColor: "#0b0f14",
+              borderColor: "#202a33",
+              borderWidth: 1,
+              titleColor: "#e6edf3",
+              bodyColor: "#e6edf3"
+            }
+
+          },
+
+          scales: {
+
+            x: {
+              grid: {
+                display: false
+              },
+
+              ticks: {
+                color: "#65727f"
+              }
+            },
+
+            y: {
+              grid: {
+                color: "#18212a"
+              },
+
+              ticks: {
+                color: "#65727f",
+                callback: value =>
+                  Number(value).toLocaleString("es-MX")
+              }
+            }
+
+          }
+
+        }
+
+      }
+    );
+
+  }
+
+
+  // ----------------------------------------------------------
+  // VaR
+  // ----------------------------------------------------------
+
+  if (historyCharts.var) {
+    historyCharts.var.destroy();
+  }
+
+  const canvasVAR = $("history-chart-var");
+
+  if (canvasVAR) {
+
+    historyCharts.var = new Chart(
+      canvasVAR,
+      {
+        type: "bar",
+
+        data: {
+
+          labels: [
+            fechaA,
+            fechaB
+          ],
+
+          datasets: [
+
+            {
+              label: "VaR portafolio",
+
+              data: [
+                a.monto?.porcentaje != null
+                  ? Number(a.monto.porcentaje) * 100
+                  : null,
+
+                b.monto?.porcentaje != null
+                  ? Number(b.monto.porcentaje) * 100
+                  : null
+              ],
+
+              borderWidth: 1
+            },
+
+            {
+              label: "Límite de política",
+
+              data: [
+                POLICY_LIMIT_PCT,
+                POLICY_LIMIT_PCT
+              ],
+
+              type: "line",
+              borderWidth: 1.5,
+              borderDash: [6, 5],
+              pointRadius: 0
+            }
+
+          ]
+
+        },
+
+        options: {
+
+          responsive: true,
+          maintainAspectRatio: false,
+
+          interaction: {
+            intersect: false,
+            mode: "index"
+          },
+
+          plugins: {
+
+            legend: {
+              labels: {
+                boxWidth: 10,
+                usePointStyle: true,
+                color: "#84909c",
+                font: {
+                  size: 10
+                }
+              }
+            },
+
+            tooltip: {
+              backgroundColor: "#0b0f14",
+              borderColor: "#202a33",
+              borderWidth: 1,
+              titleColor: "#e6edf3",
+              bodyColor: "#e6edf3"
+            }
+
+          },
+
+          scales: {
+
+            x: {
+              grid: {
+                display: false
+              },
+
+              ticks: {
+                color: "#65727f"
+              }
+            },
+
+            y: {
+
+              grid: {
+                color: "#18212a"
+              },
+
+              ticks: {
+                color: "#65727f",
+
+                callback: value =>
+                  `${Number(value).toFixed(2)}%`
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+    );
+
+  }
+
+}
+
+
+// ============================================================
+// INICIALIZACIÓN DEL MÓDULO HISTÓRICO
+// ============================================================
+
+function initHistoricalModule() {
+
+  const button = $("history-compare-btn");
+
+  if (!button) return;
+
+  button.addEventListener(
+    "click",
+    compareHistoricalDates
+  );
+
+}
+
+
+
+// ============================================================
+// FECHAS POR DEFECTO DEL HISTÓRICO
+// ============================================================
+
+function initHistoricalDates() {
+
+  const inputA = $("history-date-a");
+  const inputB = $("history-date-b");
+
+  if (!inputA || !inputB) return;
+
+  // Si ya fueron seleccionadas, no las modificamos.
+  if (inputA.value && inputB.value) return;
+
+  if (!historyData.length) return;
+
+  const first = historyData[0];
+  const last = historyData[historyData.length - 1];
+
+  const fechaFirst =
+    fechaInputDesdeISO(first.fechaISO);
+
+  const fechaLast =
+    fechaInputDesdeISO(last.fechaISO);
+
+  if (!inputA.value) {
+    inputA.value = fechaFirst;
+  }
+
+  if (!inputB.value) {
+    inputB.value = fechaLast;
+  }
+
+}
+
+
+
+
 function initNavigation() {
   document.querySelectorAll(".nav-item").forEach(item => {
     item.addEventListener("click", () => {
@@ -168,20 +789,26 @@ function initNavigation() {
       const view = $("view-" + item.dataset.view);
       if (view) view.hidden = false;
       $("view-title").textContent = item.textContent.trim().replace(/^\d+\s*/, "");
+      if (item.dataset.view === "historico") {initHistoricalDates();}
     });
   });
 }
 
 async function init() {
   initNavigation();
+  initHistoricalModule();
   try {
     await loadLatest();
     await loadHistory();
+    // Preparar fechas del módulo Histórico
+    initHistoricalDates();
   } catch (error) {
     console.error(error);
-    $("api-status").textContent = "API OFFLINE";
+    $("api-status").textContent =
+      "API OFFLINE";
     $("error-box").hidden = false;
-    $("error-box").textContent = `RiskLab: ${error.message}`;
+    $("error-box").textContent =
+      `RiskLab: ${error.message}`;
   }
 }
 
