@@ -250,7 +250,7 @@ async function compareHistoricalDates() {
 
   button.disabled = true;
 
-  status.textContent = "Consultando G00…";
+  status.textContent = "Obteniendo información histórica…";
 
   try {
 
