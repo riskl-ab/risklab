@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RiskLab · Visor V2</title>
+  <link rel="icon" type="image/png" href="./assets/favicon.png">
+  <link rel="stylesheet" href="./css/main.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+  <script src="./js/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark"><img src="./assets/favicon.png" alt="RiskLab"></div>
+        <div>
+          <div class="brand-name">RiskLab</div>
+          <div class="brand-sub">RISK ANALYTICS</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Navegación principal">
+        <div class="nav-group-title">Monitor</div>
+        <button class="nav-item active" data-view="visor"><span>01</span> Visor</button>
+        <button class="nav-item" data-view="historico"><span>02</span> Histórico</button>
+
+        <div class="nav-group-title">Análisis</div>
+        <button class="nav-item" data-view="portafolios"><span>03</span> Portafolios</button>
+        <button class="nav-item" data-view="riesgo"><span>04</span> Riesgo</button>
+        <button class="nav-item" data-view="mandatarios"><span>05</span> Mandatarios</button>
+        <button class="nav-item" data-view="administradores"><span>06</span> Administradores</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="status-dot"></span>
+        <span>API RiskLab 1.0.0</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">MONITOR DE RIESGOS</div>
+          <h1 id="view-title">Visor</h1>
+        </div>
+        <div class="topbar-right">
+          <div class="data-status" id="api-status">Conectando…</div>
+          <div class="date-chip" id="current-date">—</div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div id="view-visor" class="view">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">01 / VISOR</div>
+              <h2>Situación de riesgo</h2>
+              <p>Lectura ejecutiva del último cierre disponible en G00.</p>
+            </div>
+            <div class="source-badge">G00 · fuente de verdad</div>
+          </div>
+
+          <div class="kpi-grid">
+            <article class="kpi-card">
+              <span>Valor de mercado</span>
+              <strong id="kpi-vm">—</strong>
+              <small>mdp</small>
+            </article>
+            <article class="kpi-card">
+              <span>Monto invertido</span>
+              <strong id="kpi-inversion">—</strong>
+              <small>mdp</small>
+            </article>
+            <article class="kpi-card">
+              <span>VaR portafolio</span>
+              <strong id="kpi-var">—</strong>
+              <small>del valor de mercado</small>
+            </article>
+            <article class="kpi-card">
+              <span>Límite de política</span>
+              <strong id="kpi-limite">—</strong>
+              <small>VaR</small>
+            </article>
+          </div>
+
+          <section class="risk-control panel">
+            <div class="panel-head">
+              <div>
+                <span class="panel-index">R01</span>
+                <h3>Control VaR</h3>
+              </div>
+              <span id="var-status" class="status-pill">—</span>
+            </div>
+            <div class="risk-bar">
+              <div class="risk-fill" id="risk-fill"></div>
+              <div class="risk-limit" style="left: 100%"></div>
+            </div>
+            <div class="risk-scale">
+              <span>0%</span>
+              <span id="risk-utilization">—</span>
+              <span>1.20%</span>
+            </div>
+          </section>
+
+          <div class="section-head compact">
+            <div>
+              <div class="section-kicker">PORTAFOLIOS</div>
+              <h2>Comparativo de exposición</h2>
+            </div>
+          </div>
+
+          <div class="portfolio-grid">
+            <article class="portfolio-card panel">
+              <div class="portfolio-title">
+                <div><span class="portfolio-tag">P01</span><h3>Portafolio completo</h3></div>
+                <span class="live-dot">ACTUAL</span>
+              </div>
+              <div class="metric-table" id="complete-table"></div>
+            </article>
+
+            <article class="portfolio-card panel">
+              <div class="portfolio-title">
+                <div><span class="portfolio-tag">P02</span><h3>Portafolio restringido</h3></div>
+                <span class="live-dot">ACTUAL</span>
+              </div>
+              <div class="metric-table" id="restricted-table"></div>
+            </article>
+          </div>
+
+          <div class="chart-grid">
+            <article class="chart-card panel">
+              <div class="panel-head">
+                <div><span class="panel-index">H01</span><h3>Valor de mercado vs. monto invertido</h3></div>
+                <span class="unit-label">mdp</span>
+              </div>
+              <div class="chart-wrap"><canvas id="chart-vm"></canvas></div>
+            </article>
+
+            <article class="chart-card panel">
+              <div class="panel-head">
+                <div><span class="panel-index">H02</span><h3>VaR portafolio vs. límite de política</h3></div>
+                <span class="unit-label">%</span>
+              </div>
+              <div class="chart-wrap"><canvas id="chart-var"></canvas></div>
+            </article>
+          </div>
+        </div>
+
+        <div id="view-historico" class="view" hidden>
+          <div class="empty-view"><span>02</span><h2>Histórico</h2><p>La base gráfica ya está preparada. V2 conserva los dos históricos en el Visor y esta vista queda lista para filtros de periodo.</p></div>
+        </div>
+        <div id="view-portafolios" class="view" hidden>
+          <div class="empty-view"><span>03</span><h2>Portafolios</h2><p>Módulo reservado para análisis detallado de portafolios.</p></div>
+        </div>
+        <div id="view-riesgo" class="view" hidden>
+          <div class="empty-view"><span>04</span><h2>Riesgo</h2><p>Módulo reservado para descomposición y controles de riesgo.</p></div>
+        </div>
+        <div id="view-mandatarios" class="view" hidden>
+          <div class="empty-view"><span>05</span><h2>Mandatarios</h2><p>Módulo reservado para administradores y mandatarios.</p></div>
+        </div>
+        <div id="view-administradores" class="view" hidden>
+          <div class="empty-view"><span>06</span><h2>Administradores</h2><p>Módulo reservado para seguimiento de administradores.</p></div>
+        </div>
+
+        <div id="error-box" class="error-box" hidden></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
