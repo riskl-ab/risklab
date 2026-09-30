@@ -16,7 +16,7 @@
         <div class="brand-mark"><img src="./assets/favicon.png" alt="RiskLab"></div>
         <div>
           <div class="brand-name">RiskLab</div>
-          <div class="brand-sub">RISK ANALYTICS</div>
+          <div class="brand-sub">RIESGOS FINANCIEROS</div>
         </div>
       </div>
 
@@ -41,7 +41,7 @@
     <main class="main">
       <header class="topbar">
         <div>
-          <div class="eyebrow">MONITOR DE RIESGOS</div>
+          <div class="eyebrow">INSTITUTO DE SEGURIDAD SOCIAL DEL ESTADO DE GUANAJUATO</div>
           <h1 id="view-title">Visor</h1>
         </div>
         <div class="topbar-right">
@@ -51,8 +51,6 @@
       </header>
 
       <section class="content">
-
-        <!-- 01 / VISOR -->
         <div id="view-visor" class="view">
           <div class="section-head">
             <div>
@@ -149,127 +147,9 @@
           </div>
         </div>
 
-        <!-- 02 / HISTÓRICO -->
         <div id="view-historico" class="view" hidden>
-          <div class="section-head">
-            <div>
-              <div class="section-kicker">02 / HISTÓRICO</div>
-              <h2>Consulta y comparativo</h2>
-              <p>Consulta dos cierres de G00 y compara sus principales métricas de riesgo.</p>
-            </div>
-            <div class="source-badge">G00 · consulta por fecha</div>
-          </div>
-
-          <section class="query-panel panel">
-            <div class="panel-head">
-              <div>
-                <span class="panel-index">Q01</span>
-                <h3>Seleccionar fechas</h3>
-              </div>
-              <span id="history-query-status" class="unit-label">—</span>
-            </div>
-
-            <div class="date-selector-grid">
-              <label class="date-field">
-                <span>Fecha A</span>
-                <input id="history-date-a" type="date">
-                <small id="history-date-a-label">—</small>
-              </label>
-
-              <label class="date-field">
-                <span>Fecha B</span>
-                <input id="history-date-b" type="date">
-                <small id="history-date-b-label">—</small>
-              </label>
-
-              <div class="query-actions">
-                <button id="history-load-a" class="btn btn-secondary">Consultar A</button>
-                <button id="history-load-b" class="btn btn-secondary">Consultar B</button>
-                <button id="history-compare" class="btn btn-primary">Comparar fechas</button>
-              </div>
-            </div>
-
-            <div class="history-shortcuts">
-              <span>Atajos:</span>
-              <button data-range="30">30 días</button>
-              <button data-range="90">90 días</button>
-              <button data-range="180">180 días</button>
-              <button data-range="251">251 días</button>
-            </div>
-          </section>
-
-          <div class="comparison-header">
-            <div>
-              <span class="section-kicker">COMPARATIVO</span>
-              <h2 id="comparison-title">Selecciona dos fechas</h2>
-            </div>
-            <span id="comparison-status" class="status-pill">ESPERANDO</span>
-          </div>
-
-          <section class="comparison-grid">
-            <article class="snapshot-card panel">
-              <div class="snapshot-head">
-                <div><span class="panel-index">A</span><h3 id="snapshot-a-title">Fecha A</h3></div>
-                <span id="snapshot-a-status" class="unit-label">Sin consulta</span>
-              </div>
-              <div id="snapshot-a" class="snapshot-metrics empty-metric">Consulta una fecha para cargar datos.</div>
-            </article>
-
-            <article class="snapshot-card panel">
-              <div class="snapshot-head">
-                <div><span class="panel-index">B</span><h3 id="snapshot-b-title">Fecha B</h3></div>
-                <span id="snapshot-b-status" class="unit-label">Sin consulta</span>
-              </div>
-              <div id="snapshot-b" class="snapshot-metrics empty-metric">Consulta una fecha para cargar datos.</div>
-            </article>
-          </section>
-
-          <section class="panel comparison-table-panel">
-            <div class="panel-head">
-              <div>
-                <span class="panel-index">C01</span>
-                <h3>Cambio entre fechas</h3>
-              </div>
-              <span class="unit-label">A → B</span>
-            </div>
-            <div class="comparison-table-wrap">
-              <table class="comparison-table">
-                <thead>
-                  <tr>
-                    <th>Métrica</th>
-                    <th>Fecha A</th>
-                    <th>Fecha B</th>
-                    <th>Δ absoluto</th>
-                    <th>Δ %</th>
-                  </tr>
-                </thead>
-                <tbody id="comparison-body">
-                  <tr><td colspan="5" class="empty-cell">Consulta y compara dos fechas para mostrar resultados.</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <div class="chart-grid history-chart-grid">
-            <article class="chart-card panel">
-              <div class="panel-head">
-                <div><span class="panel-index">H03</span><h3>Valor de mercado vs. inversión</h3></div>
-                <span class="unit-label">mdp</span>
-              </div>
-              <div class="chart-wrap"><canvas id="chart-history-vm"></canvas></div>
-            </article>
-
-            <article class="chart-card panel">
-              <div class="panel-head">
-                <div><span class="panel-index">H04</span><h3>VaR vs. límite de política</h3></div>
-                <span class="unit-label">%</span>
-              </div>
-              <div class="chart-wrap"><canvas id="chart-history-var"></canvas></div>
-            </article>
-          </div>
+          <div class="empty-view"><span>02</span><h2>Histórico</h2><p>La base gráfica ya está preparada. V2 conserva los dos históricos en el Visor y esta vista queda lista para filtros de periodo.</p></div>
         </div>
-
-        <!-- Reservas -->
         <div id="view-portafolios" class="view" hidden>
           <div class="empty-view"><span>03</span><h2>Portafolios</h2><p>Módulo reservado para análisis detallado de portafolios.</p></div>
         </div>
@@ -277,7 +157,7 @@
           <div class="empty-view"><span>04</span><h2>Riesgo</h2><p>Módulo reservado para descomposición y controles de riesgo.</p></div>
         </div>
         <div id="view-mandatarios" class="view" hidden>
-          <div class="empty-view"><span>05</span><h2>Mandatarios</h2><p>Módulo reservado para seguimiento de mandatarios.</p></div>
+          <div class="empty-view"><span>05</span><h2>Mandatarios</h2><p>Módulo reservado para administradores y mandatarios.</p></div>
         </div>
         <div id="view-administradores" class="view" hidden>
           <div class="empty-view"><span>06</span><h2>Administradores</h2><p>Módulo reservado para seguimiento de administradores.</p></div>
