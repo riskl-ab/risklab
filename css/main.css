@@ -241,3 +241,14 @@ h3{font-size:14px;font-weight:600}
 
 }
 
+.history-variation.positive{
+  color:var(--accent);
+}
+
+.history-variation.negative{
+  color:var(--red);
+}
+
+.history-variation.neutral{
+  color:var(--muted);
+}
