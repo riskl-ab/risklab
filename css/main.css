@@ -1,1 +1,76 @@
-
+:root{
+  --bg:#0b0f14; --panel:#111820; --panel-2:#0e151c; --border:#202a33;
+  --border-soft:#18212a; --text:#e6edf3; --muted:#84909c; --dim:#5e6974;
+  --accent:#4da3ff; --green:#4fd18b; --yellow:#e8bd5c; --red:#ef6b73;
+  --sidebar:235px; --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{font-size:13px;line-height:1.45}
+button{font:inherit;color:inherit}
+.app-shell{min-height:100vh}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar);background:#090e14;border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10}
+.brand{height:76px;padding:0 22px;border-bottom:1px solid var(--border-soft);display:flex;align-items:center;gap:12px}
+.brand-mark{width:38px;height:38px;display:grid;place-items:center;overflow:hidden}
+.brand-mark img{width:38px;height:38px;object-fit:contain;display:block}
+.brand-name{font-size:16px;font-weight:700;letter-spacing:.02em}
+.brand-sub{font:500 9px/1.2 "IBM Plex Mono",monospace;color:var(--muted);letter-spacing:.16em;margin-top:3px}
+.nav{padding:22px 12px}
+.nav-group-title{font:600 9px "IBM Plex Mono",monospace;color:var(--dim);letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px}
+.nav-group-title:not(:first-child){margin-top:22px}
+.nav-item{width:100%;border:0;background:transparent;text-align:left;display:flex;align-items:center;gap:11px;padding:10px 10px;border-radius:7px;color:var(--muted);cursor:pointer;margin-bottom:2px;transition:.15s}
+.nav-item span{font:500 10px "IBM Plex Mono",monospace;color:#4c5864;width:20px}
+.nav-item:hover{background:#0f171f;color:var(--text)}
+.nav-item.active{background:#121c25;color:var(--text);box-shadow:inset 2px 0 0 var(--accent)}
+.nav-item.active span{color:var(--accent)}
+.sidebar-footer{margin-top:auto;padding:16px 18px;border-top:1px solid var(--border-soft);font:500 9px "IBM Plex Mono",monospace;color:var(--dim);display:flex;align-items:center;gap:7px}
+.status-dot,.live-dot:before{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block}
+.main{margin-left:var(--sidebar);min-height:100vh}
+.topbar{height:76px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 34px;background:rgba(11,15,20,.94);position:sticky;top:0;z-index:5}
+.eyebrow,.section-kicker{font:600 9px "IBM Plex Mono",monospace;letter-spacing:.16em;color:var(--dim);text-transform:uppercase}
+h1{font-size:18px;font-weight:600;margin-top:3px}
+h2{font-size:20px;font-weight:600;letter-spacing:-.01em}
+h3{font-size:14px;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.data-status,.date-chip,.source-badge,.unit-label,.status-pill{font:500 10px "IBM Plex Mono",monospace;border:1px solid var(--border);padding:6px 9px;border-radius:5px;color:var(--muted)}
+.data-status.online{color:var(--green);border-color:#254a3a}
+.content{padding:30px 34px 48px;max-width:1500px}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px}
+.section-head.compact{margin-top:30px}
+.section-head p{color:var(--muted);margin-top:5px}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi-card,.panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius)}
+.kpi-card{padding:18px 18px 15px;min-height:112px}
+.kpi-card span{display:block;color:var(--muted);font-size:11px}
+.kpi-card strong{display:block;font:600 25px/1.1 "IBM Plex Mono",monospace;margin:13px 0 4px;letter-spacing:-.03em}
+.kpi-card small{color:var(--dim);font-size:10px}
+.panel{padding:18px}
+.risk-control{margin-top:10px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:16px}
+.panel-head>div{display:flex;align-items:center;gap:9px}
+.panel-index,.portfolio-tag{font:500 9px "IBM Plex Mono",monospace;color:var(--accent)}
+.risk-bar{height:8px;background:#202a33;border-radius:99px;position:relative;overflow:visible}
+.risk-fill{height:100%;width:0;background:var(--green);border-radius:99px;transition:width .4s}
+.risk-limit{position:absolute;top:-4px;height:16px;width:1px;background:var(--text)}
+.risk-scale{display:flex;justify-content:space-between;color:var(--dim);font:500 9px "IBM Plex Mono",monospace;margin-top:8px}
+.portfolio-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.portfolio-card{padding:0;overflow:hidden}
+.portfolio-title{padding:17px 18px;border-bottom:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between}
+.portfolio-title>div{display:flex;align-items:center;gap:9px}
+.live-dot{font:500 8px "IBM Plex Mono",monospace;color:var(--green);display:flex;align-items:center;gap:6px}
+.metric-table{padding:4px 18px 8px}
+.metric-row{display:grid;grid-template-columns:1fr auto;gap:20px;padding:10px 0;border-bottom:1px solid var(--border-soft)}
+.metric-row:last-child{border-bottom:0}
+.metric-label{color:var(--muted)}
+.metric-value{font:500 11px "IBM Plex Mono",monospace;color:var(--text)}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.chart-card{min-height:350px}
+.chart-wrap{height:275px;position:relative}
+.empty-view{min-height:55vh;border:1px dashed var(--border);border-radius:var(--radius);display:grid;place-items:center;text-align:center;padding:40px}
+.empty-view span{font:600 12px "IBM Plex Mono",monospace;color:var(--accent)}
+.empty-view h2{margin-top:8px}
+.empty-view p{max-width:500px;color:var(--muted);margin-top:8px}
+.error-box{margin-top:15px;padding:12px 14px;border:1px solid #5b2b31;background:#1a1013;color:#ef9aa0;border-radius:7px;font:500 11px "IBM Plex Mono",monospace}
+@media(max-width:1050px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.portfolio-grid,.chart-grid{grid-template-columns:1fr}}
+@media(max-width:760px){:root{--sidebar:0px}.sidebar{display:none}.main{margin-left:0}.topbar{padding:0 18px}.content{padding:22px 18px}.topbar-right .date-chip{display:none}}
+@media(max-width:520px){.kpi-grid{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}.content{padding:18px 12px}}
