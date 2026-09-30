@@ -147,9 +147,94 @@
           </div>
         </div>
 
-        <div id="view-historico" class="view" hidden>
-          <div class="empty-view"><span>02</span><h2>Histórico</h2><p>La base gráfica ya está preparada. V2 conserva los dos históricos en el Visor y esta vista queda lista para filtros de periodo.</p></div>
+<div id="view-historico" class="view" hidden>
+
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">HISTÓRICO</div>
+      <h2>Comparativo histórico</h2>
+      <p>Consulta y comparación de dos fechas de la serie histórica de RiskLab.</p>
+    </div>
+    <div class="source-badge">Fuente: G00</div>
+  </div>
+
+  <!-- SELECTORES DE FECHA -->
+  <section class="history-controls panel">
+
+    <div class="history-date-control">
+      <label for="history-date-a">Fecha A</label>
+      <input type="date" id="history-date-a">
+    </div>
+
+    <div class="history-date-control">
+      <label for="history-date-b">Fecha B</label>
+      <input type="date" id="history-date-b">
+    </div>
+
+    <button id="history-compare-btn" class="history-button">
+      Comparar fechas
+    </button>
+
+    <div id="history-status" class="history-status">
+      Selecciona dos fechas.
+    </div>
+
+  </section>
+
+  <!-- RESUMEN COMPARATIVO -->
+  <section class="panel history-summary">
+
+    <div class="panel-head">
+      <div>
+        <span class="panel-index">C01</span>
+        <h3>Comparativo A ↔ B</h3>
+      </div>
+
+      <span id="history-comparison-date" class="unit-label">—</span>
+    </div>
+
+    <div id="history-comparison-table" class="metric-table">
+      <div class="history-empty">
+        Selecciona dos fechas para generar el comparativo.
+      </div>
+    </div>
+
+  </section>
+
+  <!-- GRÁFICOS EXCLUSIVOS DE HISTÓRICO -->
+  <div class="chart-grid history-chart-grid">
+
+    <article class="chart-card panel">
+      <div class="panel-head">
+        <div>
+          <span class="panel-index">C02</span>
+          <h3>Valor de mercado</h3>
         </div>
+        <span class="unit-label">mdp</span>
+      </div>
+
+      <div class="chart-wrap">
+        <canvas id="history-chart-vm"></canvas>
+      </div>
+    </article>
+
+    <article class="chart-card panel">
+      <div class="panel-head">
+        <div>
+          <span class="panel-index">C03</span>
+          <h3>VaR portafolio vs. límite</h3>
+        </div>
+        <span class="unit-label">%</span>
+      </div>
+
+      <div class="chart-wrap">
+        <canvas id="history-chart-var"></canvas>
+      </div>
+    </article>
+
+  </div>
+
+</div>
         <div id="view-portafolios" class="view" hidden>
           <div class="empty-view"><span>03</span><h2>Portafolios</h2><p>Módulo reservado para análisis detallado de portafolios.</p></div>
         </div>
