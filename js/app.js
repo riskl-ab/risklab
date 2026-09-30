@@ -1,5 +1,5 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbyWUQawZZ5XkBCw_PDr0hZsuXBDVl5bm8YZRkRwv2qbDXxoiXuhBMuTI3_8XEJqIuBL/exec";
-const HISTORY_DAYS = 180;
+const HISTORY_DAYS = 251;
 const POLICY_LIMIT_PCT = 1.2;
 
 let latestData = null;
