@@ -5,7 +5,7 @@ const POLICY_LIMIT_PCT = 1.2;
 let latestData = null;
 let historyData = [];
 let charts = { vm: null, var: null };
-
+let portfolioCharts = { var: null };
 // ============================================================
 // GRÁFICOS DEL MÓDULO HISTÓRICO
 // Independientes de los gráficos del VISOR
@@ -993,7 +993,68 @@ function initHistoricalDates() {
 
 }
 
+function renderPortfolios() {
 
+  const d = latestData;
+
+  const administradores =
+    d?.administradores ||
+    d?.administrador ||
+    {};
+
+  const portfolios = {
+    alfa: administradores.alfa || {},
+    calce: administradores.calce || {},
+    liquidez: administradores.liquidez || {},
+    operativo: administradores.operativo || {}
+  };
+
+  const nombres = [
+    "alfa",
+    "calce",
+    "liquidez",
+    "operativo"
+  ];
+
+  nombres.forEach(nombre => {
+
+    const p = portfolios[nombre];
+
+    const vm =
+      p.valorMercado ??
+      p.valormercado ??
+      p.valorMercadoMdp;
+
+    const varValue =
+      p.var ??
+      p.valorEnRiesgo ??
+      p.valorenriesgo;
+
+    const vol =
+      p.volatilidad;
+
+    const vmEl = $(`portfolio-${nombre}-vm`);
+    const varEl = $(`portfolio-${nombre}-var`);
+    const volEl = $(`portfolio-${nombre}-vol`);
+
+    if (vmEl) {
+      vmEl.textContent =
+        vm == null ? "—" : fmtNumber(vm, 2);
+    }
+
+    if (varEl) {
+      varEl.textContent =
+        varValue == null ? "—" : fmtPct(varValue, 4);
+    }
+
+    if (volEl) {
+      volEl.textContent =
+        vol == null ? "—" : fmtPct(vol, 2);
+    }
+  });
+
+  renderPortfolioAdministrationTable(portfolios);
+}
 
 
 function initNavigation() {
@@ -1029,3 +1090,7 @@ async function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
+
+
+
