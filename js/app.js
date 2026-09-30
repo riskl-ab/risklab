@@ -451,13 +451,23 @@ function renderHistoricalComparison(
             }
           </span>
 
-          <span class="metric-value history-variation">
-            ${
-              variation == null
-                ? "—"
-                : `${fmtNumber(variation, 2)}%`
-            }
-          </span>
+          <span
+  class="metric-value history-variation ${
+    variation == null
+      ? ""
+      : variation > 0
+        ? "positive"
+        : variation < 0
+          ? "negative"
+          : "neutral"
+  }"
+>
+  ${
+    variation == null
+      ? "—"
+      : `${variation > 0 ? "+" : ""}${fmtNumber(variation, 2)}%`
+  }
+</span>
 
         </div>
 
