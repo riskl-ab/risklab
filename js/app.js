@@ -1416,18 +1416,53 @@ function initHistoricalDates() {
 
 function renderPortfolios() {
 
-  const d = latestData;
-
-  const administradores =
-    d?.administradores ||
-    d?.administrador ||
-    {};
+  const administrador =
+    latestData?.administrador || {};
 
   const portfolios = {
-    alfa: administradores.alfa || {},
-    calce: administradores.calce || {},
-    liquidez: administradores.liquidez || {},
-    operativo: administradores.operativo || {}
+    alfa: {
+      valorMercado:
+        administrador?.valormercado?.alfa ?? null,
+
+      var:
+        administrador?.valorenriesgo?.alfa ?? null,
+
+      volatilidad:
+        administrador?.volatilidad?.alfa ?? null
+    },
+
+    calce: {
+      valorMercado:
+        administrador?.valormercado?.calce ?? null,
+
+      var:
+        administrador?.valorenriesgo?.calce ?? null,
+
+      volatilidad:
+        administrador?.volatilidad?.calce ?? null
+    },
+
+    liquidez: {
+      valorMercado:
+        administrador?.valormercado?.liquidez ?? null,
+
+      var:
+        administrador?.valorenriesgo?.liquidez ?? null,
+
+      volatilidad:
+        administrador?.volatilidad?.liquidez ?? null
+    },
+
+    operativo: {
+      valorMercado:
+        administrador?.valormercado?.operativo ?? null,
+
+      var:
+        administrador?.valorenriesgo?.operativo ?? null,
+
+      volatilidad:
+        administrador?.volatilidad?.operativo ?? null
+    }
   };
 
   const nombres = [
@@ -1441,42 +1476,41 @@ function renderPortfolios() {
 
     const p = portfolios[nombre];
 
-    const vm =
-      p.valorMercado ??
-      p.valormercado ??
-      p.valorMercadoMdp;
+    const vmEl =
+      $(`portfolio-${nombre}-vm`);
 
-    const varValue =
-      p.var ??
-      p.valorEnRiesgo ??
-      p.valorenriesgo;
+    const varEl =
+      $(`portfolio-${nombre}-var`);
 
-    const vol =
-      p.volatilidad;
-
-    const vmEl = $(`portfolio-${nombre}-vm`);
-    const varEl = $(`portfolio-${nombre}-var`);
-    const volEl = $(`portfolio-${nombre}-vol`);
+    const volEl =
+      $(`portfolio-${nombre}-vol`);
 
     if (vmEl) {
       vmEl.textContent =
-        vm == null ? "—" : fmtNumber(vm, 2);
+        p.valorMercado == null
+          ? "—"
+          : `${fmtNumber(p.valorMercado, 2)} mdp`;
     }
 
     if (varEl) {
       varEl.textContent =
-        varValue == null ? "—" : fmtPct(varValue, 4);
+        p.var == null
+          ? "—"
+          : fmtPct(p.var, 4);
     }
 
     if (volEl) {
       volEl.textContent =
-        vol == null ? "—" : fmtPct(vol, 2);
+        p.volatilidad == null
+          ? "—"
+          : `${fmtNumber(p.volatilidad, 2)}%`;
     }
   });
 
   renderPortfolioAdministrationTable(portfolios);
-}
 
+  renderPortfolioVarChart(portfolios);
+}
 
 function initNavigation() {
   document.querySelectorAll(".nav-item").forEach(item => {
