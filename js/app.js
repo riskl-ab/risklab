@@ -184,54 +184,33 @@ function pickPortfolio(obj, paths) {
  */
 function getAdministrativePortfolios() {
 
-  const d = latestData || {};
+  const administrador =
+    latestData?.administrador || {};
 
-  const root =
-    d.administrador ||
-    d.administradores ||
-    d.portafolios ||
-    {};
+  const nombres = [
+    "alfa",
+    "calce",
+    "liquidez",
+    "operativo"
+  ];
 
-  const result = {};
+  return nombres.reduce((resultado, nombre) => {
 
-  PORTFOLIO_NAMES.forEach(nombre => {
-
-    const direct =
-      root[nombre] ||
-      d[nombre] ||
-      {};
-
-    result[nombre] = {
-
+    resultado[nombre] = {
       valorMercado:
-        pickPortfolio(direct, [
-          "valorMercado",
-          "valormercado",
-          "valorMercadoMdp",
-          "valormercadomdp"
-        ]),
+        administrador?.valormercado?.[nombre] ?? null,
 
       var:
-        pickPortfolio(direct, [
-          "valorenriesgo",
-          "valorEnRiesgo",
-          "var",
-          "var.porcentaje",
-          "valorEnRiesgo.porcentaje"
-        ]),
+        administrador?.valorenriesgo?.[nombre] ?? null,
 
       volatilidad:
-        pickPortfolio(direct, [
-          "volatilidad"
-        ])
-
+        administrador?.volatilidad?.[nombre] ?? null
     };
 
-  });
+    return resultado;
 
-  return result;
+  }, {});
 }
-
 
 /*
  * Renderiza las cuatro tarjetas.
