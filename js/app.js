@@ -528,6 +528,245 @@ function renderPortfolioVarChart(
 
 }
 
+function renderPortfolioHistoryChart(history) {
+
+  const canvas =
+    $("portfolio-var-chart");
+
+  if (
+    !canvas ||
+    !window.Chart
+  ) {
+    return;
+  }
+
+  /*
+   * Portafolios utiliza una ventana móvil
+   * de 90 días.
+   *
+   * historyData conserva los 251 días
+   * utilizados por el módulo Histórico.
+   */
+  const registros =
+    Array.isArray(history)
+      ? history.slice(-90)
+      : [];
+
+  if (!registros.length) {
+    return;
+  }
+
+  const labels =
+    registros.map(registro =>
+      fechaCorta(
+        registro.fechaISO ||
+        registro.fecha
+      )
+    );
+
+  const alfa =
+    registros.map(registro =>
+      Number(
+        registro.administrador
+          ?.valorenriesgo
+          ?.alfa ?? 0
+      ) * 100
+    );
+
+  const calce =
+    registros.map(registro =>
+      Number(
+        registro.administrador
+          ?.valorenriesgo
+          ?.calce ?? 0
+      ) * 100
+    );
+
+  const liquidez =
+    registros.map(registro =>
+      Number(
+        registro.administrador
+          ?.valorenriesgo
+          ?.liquidez ?? 0
+      ) * 100
+    );
+
+  const operativo =
+    registros.map(registro =>
+      Number(
+        registro.administrador
+          ?.valorenriesgo
+          ?.operativo ?? 0
+      ) * 100
+    );
+
+  if (portfolioCharts.var) {
+    portfolioCharts.var.destroy();
+  }
+
+  portfolioCharts.var =
+    new Chart(canvas, {
+
+      type: "line",
+
+      data: {
+
+        labels,
+
+        datasets: [
+
+          {
+            label: "Alfa",
+            data: alfa,
+            borderColor: "#4da3ff",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
+          },
+
+          {
+            label: "Calce",
+            data: calce,
+            borderColor: "#4fd18b",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
+          },
+
+          {
+            label: "Liquidez",
+            data: liquidez,
+            borderColor: "#e8bd5c",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
+          },
+
+          {
+            label: "Operativo",
+            data: operativo,
+            borderColor: "#ef6b73",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
+          }
+
+        ]
+
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        interaction: {
+          intersect: false,
+          mode: "index"
+        },
+
+        plugins: {
+
+          legend: {
+            display: true,
+
+            labels: {
+              boxWidth: 10,
+              usePointStyle: true,
+              color: "#84909c",
+              font: {
+                family: "IBM Plex Mono",
+                size: 10
+              }
+            }
+          },
+
+          tooltip: {
+
+            backgroundColor: "#0b0f14",
+
+            borderColor: "#202a33",
+
+            borderWidth: 1,
+
+            titleColor: "#e6edf3",
+
+            bodyColor: "#e6edf3",
+
+            callbacks: {
+
+              label: context => {
+
+                const value =
+                  context.raw;
+
+                return value == null
+                  ? `${context.dataset.label}: —`
+                  : `${context.dataset.label}: ${Number(value).toFixed(4)}%`;
+
+              }
+
+            }
+
+          }
+
+        },
+
+        scales: {
+
+          x: {
+
+            grid: {
+              display: false
+            },
+
+            ticks: {
+
+              color: "#65727f",
+
+              maxTicksLimit: 10,
+
+              font: {
+                family: "IBM Plex Mono",
+                size: 9
+              }
+
+            }
+
+          },
+
+          y: {
+
+            beginAtZero: true,
+
+            grid: {
+              color: "#18212a"
+            },
+
+            ticks: {
+
+              color: "#65727f",
+
+              callback: value =>
+                `${Number(value).toFixed(2)}%`
+
+            }
+
+          }
+
+        }
+
+      }
+
+    });
+}
+
+
 
 /*
  * Render principal del módulo.
@@ -1509,7 +1748,7 @@ function renderPortfolios() {
 
   renderPortfolioAdministrationTable(portfolios);
 
-  renderPortfolioVarChart(portfolios);
+  renderPortfolioHistoryChart(historyData);
 }
 
 function initNavigation() {
