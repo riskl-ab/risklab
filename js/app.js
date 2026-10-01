@@ -1007,17 +1007,7 @@ function renderMandatarioBnpChart() {
         datasets: [
 
           {
-            label: "BNP SH USD",
-            data: bnpShUsd,
-            borderColor: "#4da3ff",
-            backgroundColor: "transparent",
-            borderWidth: 2,
-            pointRadius: 1,
-            tension: 0.25
-          },
-
-          {
-            label: "BNP SH MXN",
+            label: "BNP (MXN)", //216267899
             data: bnpShMxn,
             borderColor: "#4fd18b",
             backgroundColor: "transparent",
@@ -1027,7 +1017,7 @@ function renderMandatarioBnpChart() {
           },
 
           {
-            label: "BNP BMK MXN",
+            label: "Benchmark BNP (MXN)", //216267899
             data: bnpBmkMxn,
             borderColor: "#e8bd5c",
             backgroundColor: "transparent",
@@ -1037,9 +1027,19 @@ function renderMandatarioBnpChart() {
           },
 
           {
-            label: "BNP BMK USD",
+            label: "Benchmark BNP (USD)",
             data: bnpBmkUsd,
             borderColor: "#ef6b73",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
+          },
+
+          {
+            label: "BNP (USD)", //216267899
+            data: bnpShUsd,
+            borderColor: "#4da3ff",
             backgroundColor: "transparent",
             borderWidth: 2,
             pointRadius: 1,
