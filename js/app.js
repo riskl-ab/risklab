@@ -1534,5 +1534,27 @@ async function init() {
 document.addEventListener("DOMContentLoaded", init);
 
 
+async function loadLatest() {
+  const response = await api("latest");
 
+  console.log("RISKLAB latest completo:", response);
+  console.log("RISKLAB latest.data:", response.data);
+  console.log(
+    "RISKLAB claves raíz:",
+    Object.keys(response.data || {})
+  );
+
+  latestData = response.data;
+
+  $("api-status").textContent = "API ONLINE";
+  $("api-status").classList.add("online");
+
+  $("current-date").textContent =
+    fechaLarga(
+      response.metadata?.fechaISO ||
+      latestData?.fecha
+    );
+
+  renderLatest();
+}
 
