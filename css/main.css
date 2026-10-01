@@ -888,3 +888,33 @@ h3{font-size:14px;font-weight:600}
   }
 
 }
+
+.mandatarios-display-control{
+  display:flex;
+  justify-content:flex-end;
+  margin:0 0 10px 0;
+}
+
+.mandatarios-display-button{
+  appearance:none;
+  border:1px solid var(--border);
+  background:var(--panel-2);
+  color:var(--muted);
+  padding:7px 12px;
+  border-radius:7px;
+  font:inherit;
+  font-size:12px;
+  cursor:pointer;
+  transition:all .15s ease;
+}
+
+.mandatarios-display-button:hover{
+  color:var(--text);
+  border-color:var(--accent);
+}
+
+.mandatarios-display-button:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+
