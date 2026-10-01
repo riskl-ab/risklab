@@ -1027,16 +1027,6 @@ function renderMandatarioBnpChart() {
           },
 
           {
-            label: "Benchmark BNP (USD)",
-            data: bnpBmkUsd,
-            borderColor: "#ef6b73",
-            backgroundColor: "transparent",
-            borderWidth: 2,
-            pointRadius: 1,
-            tension: 0.25
-          },
-
-          {
             label: "BNP (USD)", //216267899
             data: bnpShUsd,
             borderColor: "#4da3ff",
@@ -1044,8 +1034,19 @@ function renderMandatarioBnpChart() {
             borderWidth: 2,
             pointRadius: 1,
             tension: 0.25
+          },
+
+          {
+            label: "Benchmark BNP (USD)",
+            data: bnpBmkUsd,
+            borderColor: "#ef6b73",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
           }
 
+          
         ]
 
       },
