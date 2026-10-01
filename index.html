@@ -24,7 +24,7 @@
         <div class="nav-group-title">Monitor</div>
         <button class="nav-item active" data-view="visor"><span>01</span> Visor</button>
         <button class="nav-item" data-view="historico"><span>02</span> Histórico</button>
-
+        <button class="nav-item" data-view="portafolios"><span>03</span> Portafolios</button>
         <div class="nav-group-title">Análisis</div>
         <button class="nav-item" data-view="portafolios"><span>03</span> Portafolios</button>
         <button class="nav-item" data-view="riesgo"><span>04</span> Riesgo</button>
@@ -235,6 +235,307 @@
   </div>
 
 </div>
+
+<!-- =========================================================
+     03 PORTAFOLIOS
+     ========================================================= -->
+
+<div id="view-portafolios" class="view" hidden>
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-kicker">
+        PORTAFOLIOS
+      </div>
+
+      <h2>
+        Administración de portafolios
+      </h2>
+
+      <p>
+        Valor de mercado, valor en riesgo y volatilidad
+        de los portafolios administrados.
+      </p>
+
+    </div>
+
+    <div class="source-badge">
+      Fuente: G00
+    </div>
+
+  </div>
+
+
+  <!-- =======================================================
+       RESUMEN DE LOS CUATRO PORTAFOLIOS
+       ======================================================= -->
+
+  <section class="portfolio-summary-grid">
+
+
+    <!-- ALFA -->
+
+    <article class="panel portfolio-card">
+
+      <div class="portfolio-card-head">
+
+        <div>
+          <span class="panel-index">P01</span>
+          <span class="portfolio-name">ALFA</span>
+        </div>
+
+        <span class="portfolio-code">
+          ALFA
+        </span>
+
+      </div>
+
+      <div
+        class="portfolio-main-value"
+        id="portfolio-alfa-vm"
+      >
+        —
+      </div>
+
+      <div class="portfolio-unit">
+        VALOR DE MERCADO · MDP
+      </div>
+
+      <div class="portfolio-metrics">
+
+        <div>
+          <span>VALOR EN RIESGO</span>
+          <strong id="portfolio-alfa-var">—</strong>
+        </div>
+
+        <div>
+          <span>VOLATILIDAD</span>
+          <strong id="portfolio-alfa-vol">—</strong>
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <!-- CALCE -->
+
+    <article class="panel portfolio-card">
+
+      <div class="portfolio-card-head">
+
+        <div>
+          <span class="panel-index">P02</span>
+          <span class="portfolio-name">CALCE</span>
+        </div>
+
+        <span class="portfolio-code">
+          CALCE
+        </span>
+
+      </div>
+
+      <div
+        class="portfolio-main-value"
+        id="portfolio-calce-vm"
+      >
+        —
+      </div>
+
+      <div class="portfolio-unit">
+        VALOR DE MERCADO · MDP
+      </div>
+
+      <div class="portfolio-metrics">
+
+        <div>
+          <span>VALOR EN RIESGO</span>
+          <strong id="portfolio-calce-var">—</strong>
+        </div>
+
+        <div>
+          <span>VOLATILIDAD</span>
+          <strong id="portfolio-calce-vol">—</strong>
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <!-- LIQUIDEZ -->
+
+    <article class="panel portfolio-card">
+
+      <div class="portfolio-card-head">
+
+        <div>
+          <span class="panel-index">P03</span>
+          <span class="portfolio-name">LIQUIDEZ</span>
+        </div>
+
+        <span class="portfolio-code">
+          LIQUIDEZ
+        </span>
+
+      </div>
+
+      <div
+        class="portfolio-main-value"
+        id="portfolio-liquidez-vm"
+      >
+        —
+      </div>
+
+      <div class="portfolio-unit">
+        VALOR DE MERCADO · MDP
+      </div>
+
+      <div class="portfolio-metrics">
+
+        <div>
+          <span>VALOR EN RIESGO</span>
+          <strong id="portfolio-liquidez-var">—</strong>
+        </div>
+
+        <div>
+          <span>VOLATILIDAD</span>
+          <strong id="portfolio-liquidez-vol">—</strong>
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <!-- OPERATIVO -->
+
+    <article class="panel portfolio-card">
+
+      <div class="portfolio-card-head">
+
+        <div>
+          <span class="panel-index">P04</span>
+          <span class="portfolio-name">OPERATIVO</span>
+        </div>
+
+        <span class="portfolio-code">
+          OPERATIVO
+        </span>
+
+      </div>
+
+      <div
+        class="portfolio-main-value"
+        id="portfolio-operativo-vm"
+      >
+        —
+      </div>
+
+      <div class="portfolio-unit">
+        VALOR DE MERCADO · MDP
+      </div>
+
+      <div class="portfolio-metrics">
+
+        <div>
+          <span>VALOR EN RIESGO</span>
+          <strong id="portfolio-operativo-var">—</strong>
+        </div>
+
+        <div>
+          <span>VOLATILIDAD</span>
+          <strong id="portfolio-operativo-vol">—</strong>
+        </div>
+
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <!-- =======================================================
+       TABLA
+       ======================================================= -->
+
+  <section class="panel portfolio-table-panel">
+
+    <div class="panel-head">
+
+      <div>
+
+        <span class="panel-index">
+          P05
+        </span>
+
+        <h3>
+          Administración de portafolios
+        </h3>
+
+      </div>
+
+      <span
+        id="portfolio-date"
+        class="unit-label"
+      >
+        —
+      </span>
+
+    </div>
+
+    <div
+      id="portfolio-table"
+      class="portfolio-table"
+    >
+
+      <div class="portfolio-empty">
+        Cargando información de G00...
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       GRÁFICO COMPARATIVO
+       ======================================================= -->
+
+  <section class="panel portfolio-chart-panel">
+
+    <div class="panel-head">
+
+      <div>
+
+        <span class="panel-index">
+          P06
+        </span>
+
+        <h3>
+          VaR comparativo
+        </h3>
+
+      </div>
+
+      <span class="unit-label">
+        %
+      </span>
+
+    </div>
+
+    <div class="chart-wrap portfolio-chart-wrap">
+
+      <canvas id="portfolio-var-chart"></canvas>
+
+    </div>
+
+  </section>
+
+</div>
+
         
         <div id="view-riesgo" class="view" hidden>
           <div class="empty-view"><span>04</span><h2>Riesgo</h2><p>Módulo reservado para descomposición y controles de riesgo.</p></div>
