@@ -120,77 +120,317 @@ function renderLatest() {
   renderPortfolios();
 }
 
+
+function obtenerUltimoMandatario(nombre, fechaLimite) {
+
+  if (!Array.isArray(historyData) || !historyData.length) {
+    return null;
+  }
+
+  const fechaObjetivo = new Date(
+    `${fechaLimite}T23:59:59`
+  );
+
+  const registros = historyData
+    .filter(registro => {
+
+      const fecha = new Date(
+        registro.fechaISO || registro.fecha
+      );
+
+      return (
+        !isNaN(fecha.getTime()) &&
+        fecha <= fechaObjetivo
+      );
+    })
+    .sort((a, b) => {
+
+      const fechaA = new Date(
+        a.fechaISO || a.fecha
+      );
+
+      const fechaB = new Date(
+        b.fechaISO || b.fecha
+      );
+
+      return fechaB - fechaA;
+    });
+
+  if (!registros.length) {
+    return null;
+  }
+
+  const registro = registros[0];
+
+  return {
+    fecha: registro.fechaISO || registro.fecha,
+
+    valorMercado:
+      registro.mandatario?.valordemercado?.[nombre] ?? null,
+
+    montoInvertido:
+      registro.mandatario?.montoinvertido?.[nombre] ?? null,
+
+    var:
+      registro.mandatario?.valorenriesgo?.[nombre] ?? null,
+
+    volatilidad:
+      registro.mandatario?.volatilidad?.[nombre] ?? null
+  };
+}
+
+
+
 function renderMandatarios() {
+
   const mandatario = latestData?.mandatario || {};
 
-  const datos = {
-    bnp: {
-      valorMercado: mandatario?.valordemercado?.bnp ?? null,
-      montoInvertido: mandatario?.montoinvertido?.bnp ?? null,
-      var: mandatario?.valorenriesgo?.bnp ?? null,
-      volatilidad: mandatario?.volatilidad?.bnp ?? null
-    },
+  /*
+   * MANDATARIOS VIGENTES
+   * Estos sí toman el dato de latest.
+   */
 
-    banorte: {
-      valorMercado: mandatario?.valordemercado?.banorte ?? null,
-      montoInvertido: mandatario?.montoinvertido?.banorte ?? null,
-      var: mandatario?.valorenriesgo?.banorte ?? null,
-      volatilidad: mandatario?.volatilidad?.banorte ?? null
-    },
+  const bnp = {
+    valorMercado:
+      mandatario?.valordemercado?.bnp ?? null,
 
-    gbm: {
-      valorMercado: mandatario?.valordemercado?.gbm ?? null,
-      montoInvertido: mandatario?.montoinvertido?.gbm ?? null,
-      var: mandatario?.valorenriesgo?.gbm ?? null,
-      volatilidad: mandatario?.volatilidad?.gbm ?? null
-    },
+    montoInvertido:
+      mandatario?.montoinvertido?.bnp ?? null,
 
-    escala: {
-      valorMercado: mandatario?.valordemercado?.escala ?? null,
-      montoInvertido: mandatario?.montoinvertido?.escala ?? null,
-      var: mandatario?.valorenriesgo?.escala ?? null,
-      volatilidad: mandatario?.volatilidad?.escala ?? null
-    }
+    var:
+      mandatario?.valorenriesgo?.bnp ?? null,
+
+    volatilidad:
+      mandatario?.volatilidad?.bnp ?? null,
+
+    fecha: latestData?.fecha
   };
 
-  Object.entries(datos).forEach(([nombre, data]) => {
 
-    const vmEl = $(`mandatario-${nombre}-vm`);
-    const inversionEl = $(`mandatario-${nombre}-inversion`);
-    const varEl = $(`mandatario-${nombre}-var`);
-    const volEl = $(`mandatario-${nombre}-vol`);
+  const escala = {
+    valorMercado:
+      mandatario?.valordemercado?.escala ?? null,
 
-    if (vmEl) {
-      vmEl.textContent =
-        data.valorMercado == null
-          ? "—"
-          : `${fmtNumber(data.valorMercado, 2)} mdp`;
+    montoInvertido:
+      mandatario?.montoinvertido?.escala ?? null,
+
+    var:
+      mandatario?.valorenriesgo?.escala ?? null,
+
+    volatilidad:
+      mandatario?.volatilidad?.escala ?? null,
+
+    fecha: latestData?.fecha
+  };
+
+
+  /*
+   * MANDATARIOS LIQUIDADOS
+   *
+   * NO utilizan latest.
+   *
+   * GBM: último registro hasta 15/09/2026
+   * BANORTE: último registro hasta 09/06/2026
+   */
+
+  const gbm =
+    obtenerUltimoMandatario(
+      "gbm",
+      "2026-09-15"
+    );
+
+  const banorte =
+    obtenerUltimoMandatario(
+      "banorte",
+      "2026-06-09"
+    );
+
+
+  const datos = {
+
+    bnp,
+
+    banorte,
+
+    gbm,
+
+    escala
+
+  };
+
+
+  /*
+   * Pintar tarjetas
+   */
+
+  Object.entries(datos).forEach(
+    ([nombre, data]) => {
+
+      const vmEl =
+        $(`mandatario-${nombre}-vm`);
+
+      const inversionEl =
+        $(`mandatario-${nombre}-inversion`);
+
+      const varEl =
+        $(`mandatario-${nombre}-var`);
+
+      const volEl =
+        $(`mandatario-${nombre}-vol`);
+
+
+      /*
+       * Valor de mercado
+       */
+
+      if (vmEl) {
+
+        vmEl.textContent =
+          data?.valorMercado == null
+            ? "—"
+            : `${fmtNumber(
+                data.valorMercado,
+                2
+              )} mdp`;
+
+      }
+
+
+      /*
+       * Monto invertido
+       */
+
+      if (inversionEl) {
+
+        inversionEl.textContent =
+          data?.montoInvertido == null
+            ? "—"
+            : `${fmtNumber(
+                data.montoInvertido,
+                2
+              )} mdp`;
+
+      }
+
+
+      /*
+       * VaR
+       */
+
+      if (varEl) {
+
+        varEl.textContent =
+          data?.var == null
+            ? "—"
+            : fmtPct(
+                data.var,
+                4
+              );
+
+      }
+
+
+      /*
+       * Volatilidad
+       */
+
+      if (volEl) {
+
+        volEl.textContent =
+          data?.volatilidad == null
+            ? "—"
+            : fmtPct(
+                data.volatilidad,
+                2
+              );
+
+      }
+
     }
+  );
 
-    if (inversionEl) {
-      inversionEl.textContent =
-        data.montoInvertido == null
-          ? "—"
-          : `${fmtNumber(data.montoInvertido, 2)} mdp`;
-    }
 
-    if (varEl) {
-      varEl.textContent =
-        data.var == null
-          ? "—"
-          : fmtPct(data.var, 4);
-    }
+  /*
+   * Fecha del último registro
+   *
+   * Para BNP y ESCALA = latest
+   * Para GBM y BANORTE = fecha histórica
+   */
 
-    if (volEl) {
-      volEl.textContent =
-        data.volatilidad == null
-          ? "—"
-          : fmtPct(data.volatilidad, 2);
-    }
-  });
+  const fechas = {
 
-  console.log("RISKLAB mandatarios:", datos);
+    bnp:
+      bnp?.fecha ?? null,
+
+    escala:
+      escala?.fecha ?? null,
+
+    gbm:
+      gbm?.fecha ?? null,
+
+    banorte:
+      banorte?.fecha ?? null
+
+  };
+
+
+  /*
+   * Mostrar la fecha en las tarjetas liquidadas.
+   *
+   * Buscamos un elemento:
+   *
+   * mandatario-ban-fecha
+   * mandatario-gbm-fecha
+   *
+   * Si todavía no existen en HTML,
+   * simplemente no hace nada.
+   */
+
+  const fechaBanorte =
+    $("mandatario-ban-fecha");
+
+  const fechaGbm =
+    $("mandatario-gbm-fecha");
+
+
+  if (fechaBanorte) {
+
+    fechaBanorte.textContent =
+      banorte?.fecha
+        ? `Último registro: ${fechaLarga(
+            banorte.fecha
+          )}`
+        : "Sin registro";
+
+  }
+
+
+  if (fechaGbm) {
+
+    fechaGbm.textContent =
+      gbm?.fecha
+        ? `Último registro: ${fechaLarga(
+            gbm.fecha
+          )}`
+        : "Sin registro";
+
+  }
+
+
+  console.log(
+    "RISKLAB mandatarios:",
+    datos
+  );
+
+  console.log(
+    "RISKLAB fechas mandatarios:",
+    fechas
+  );
 }
+
+
+
+
 
 function initMandatariosCardToggle() {
 
@@ -1045,7 +1285,6 @@ function renderMandatarioBnpChart() {
             pointRadius: 1,
             tension: 0.25
           }
-
           
         ]
 
