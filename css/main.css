@@ -252,3 +252,368 @@ h3{font-size:14px;font-weight:600}
 .history-variation.neutral{
   color:var(--muted);
 }
+
+/* =========================================================
+   03 PORTAFOLIOS
+   ========================================================= */
+
+.portfolio-summary-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+
+  gap:10px;
+
+  margin-bottom:10px;
+
+}
+
+
+.portfolio-card{
+
+  min-height:190px;
+
+  padding:16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.012),
+      transparent 60%
+    ),
+    var(--panel);
+
+}
+
+
+.portfolio-card-head{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  padding-bottom:12px;
+
+  margin-bottom:14px;
+
+  border-bottom:
+    1px solid var(--border-soft);
+
+}
+
+
+.portfolio-card-head > div{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+}
+
+
+.portfolio-name{
+
+  color:var(--text);
+
+  font:
+    600 11px
+    "IBM Plex Mono",
+    monospace;
+
+  letter-spacing:.08em;
+
+}
+
+
+.portfolio-code{
+
+  color:var(--dim);
+
+  font:
+    500 9px
+    "IBM Plex Mono",
+    monospace;
+
+  letter-spacing:.08em;
+
+}
+
+
+.portfolio-main-value{
+
+  color:var(--text);
+
+  font:
+    500 26px
+    "IBM Plex Mono",
+    monospace;
+
+  letter-spacing:-.035em;
+
+  line-height:1.1;
+
+}
+
+
+.portfolio-unit{
+
+  margin-top:5px;
+
+  color:var(--dim);
+
+  font:
+    500 8px
+    "IBM Plex Mono",
+    monospace;
+
+  letter-spacing:.10em;
+
+}
+
+
+.portfolio-metrics{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:12px;
+
+  margin-top:18px;
+
+  padding-top:11px;
+
+  border-top:
+    1px solid var(--border-soft);
+
+}
+
+
+.portfolio-metrics div{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:5px;
+
+}
+
+
+.portfolio-metrics span{
+
+  color:var(--dim);
+
+  font:
+    500 8px
+    "IBM Plex Mono",
+    monospace;
+
+  letter-spacing:.07em;
+
+}
+
+
+.portfolio-metrics strong{
+
+  color:var(--text);
+
+  font:
+    500 12px
+    "IBM Plex Mono",
+    monospace;
+
+}
+
+
+.portfolio-table-panel{
+
+  margin-bottom:10px;
+
+}
+
+
+.portfolio-table{
+
+  width:100%;
+
+}
+
+
+.portfolio-table-header,
+.portfolio-table-row{
+
+  display:grid;
+
+  grid-template-columns:
+    minmax(150px,1fr)
+    minmax(150px,1fr)
+    minmax(130px,1fr)
+    minmax(130px,1fr);
+
+  gap:15px;
+
+  align-items:center;
+
+}
+
+
+.portfolio-table-header{
+
+  padding:
+    8px 0;
+
+  border-bottom:
+    1px solid var(--border);
+
+  color:var(--dim);
+
+  font:
+    600 9px
+    "IBM Plex Mono",
+    monospace;
+
+  text-transform:uppercase;
+
+  letter-spacing:.08em;
+
+}
+
+
+.portfolio-table-row{
+
+  padding:
+    12px 0;
+
+  border-bottom:
+    1px solid var(--border-soft);
+
+  color:var(--text);
+
+  font:
+    500 11px
+    "IBM Plex Mono",
+    monospace;
+
+}
+
+
+.portfolio-table-row:last-child{
+
+  border-bottom:0;
+
+}
+
+
+.portfolio-table-name{
+
+  color:var(--accent);
+
+  font-weight:600;
+
+  letter-spacing:.08em;
+
+}
+
+
+.portfolio-empty{
+
+  padding:
+    25px 0;
+
+  text-align:center;
+
+  color:var(--muted);
+
+  font:
+    500 10px
+    "IBM Plex Mono",
+    monospace;
+
+}
+
+
+.portfolio-chart-panel{
+
+  margin-bottom:10px;
+
+}
+
+
+.portfolio-chart-wrap{
+
+  height:320px;
+
+  position:relative;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(max-width:1100px){
+
+  .portfolio-summary-grid{
+
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+
+  }
+
+}
+
+
+@media(max-width:700px){
+
+  .portfolio-summary-grid{
+
+    grid-template-columns:1fr;
+
+  }
+
+
+  .portfolio-table-header{
+
+    display:none;
+
+  }
+
+
+  .portfolio-table-row{
+
+    grid-template-columns:
+      1fr 1fr;
+
+    gap:8px 15px;
+
+    padding:13px 0;
+
+  }
+
+
+  .portfolio-table-row
+  .portfolio-table-name{
+
+    grid-column:
+      1 / -1;
+
+  }
+
+
+  .portfolio-chart-wrap{
+
+    height:270px;
+
+  }
+
+}
+
