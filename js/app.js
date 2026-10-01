@@ -1758,7 +1758,7 @@ function renderPortfolios() {
       volEl.textContent =
         p.volatilidad == null
           ? "—"
-          : `${fmtNumber(p.volatilidad, 2)}%`;
+          : fmtPct(p.volatilidad, 2);
     }
   });
 
