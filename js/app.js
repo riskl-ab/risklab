@@ -878,8 +878,18 @@ function renderPortfolioHistoryChart(history) {
 
 function renderMandatarioBnpChart() {
 
-  const canvas = $("mandatario-bnp-chart");
+  console.log(
+    "RISKLAB M05: renderMandatarioBnpChart()",
+    {
+      canvas: $("mandatario-bnp-chart"),
+      historyLength: historyData.length,
+      firstRecord: historyData[0],
+      lastRecord: historyData[historyData.length - 1]
+    }
+  );
 
+  const canvas = $("mandatario-bnp-chart");
+  
   if (
     !canvas ||
     !window.Chart ||
@@ -2135,17 +2145,70 @@ function renderPortfolios() {
 }
 
 function initNavigation() {
+
   document.querySelectorAll(".nav-item").forEach(item => {
+
     item.addEventListener("click", () => {
-      document.querySelectorAll(".nav-item").forEach(x => x.classList.remove("active"));
+
+      document
+        .querySelectorAll(".nav-item")
+        .forEach(x => x.classList.remove("active"));
+
       item.classList.add("active");
-      document.querySelectorAll(".view").forEach(v => v.hidden = true);
+
+      document
+        .querySelectorAll(".view")
+        .forEach(v => v.hidden = true);
+
       const view = $("view-" + item.dataset.view);
-      if (view) view.hidden = false;
-      $("view-title").textContent = item.textContent.trim().replace(/^\d+\s*/, "");
-      if (item.dataset.view === "historico") {initHistoricalDates();}
+
+      if (view) {
+        view.hidden = false;
+      }
+
+      $("view-title").textContent =
+        item.textContent
+          .trim()
+          .replace(/^\d+\s*/, "");
+
+
+      // ------------------------------
+      // Histórico
+      // ------------------------------
+
+      if (
+        item.dataset.view === "historico"
+      ) {
+
+        initHistoricalDates();
+
+      }
+
+
+      // ------------------------------
+      // Mandatarios
+      // ------------------------------
+
+      if (
+        item.dataset.view === "mandatarios"
+      ) {
+
+        requestAnimationFrame(() => {
+
+          console.log(
+            "RISKLAB M05: abriendo Mandatarios"
+          );
+
+          renderMandatarioBnpChart();
+
+        });
+
+      }
+
     });
+
   });
+
 }
 
 async function init() {
