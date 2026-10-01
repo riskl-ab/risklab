@@ -93,8 +93,6 @@ async function loadHistory() {
   if (latestData) {
     renderPortfolios();
   }
-
-  renderMandatarioBnpChart();
 }
 
 function renderLatest() {
