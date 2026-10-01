@@ -90,14 +90,11 @@ async function loadHistory() {
 
   renderCharts();
 
-  /*
-   * El histórico de Portafolios
-   * utiliza los mismos 251 registros
-   * y posteriormente toma los últimos 90.
-   */
   if (latestData) {
     renderPortfolios();
   }
+
+  renderMandatarioBnpChart();
 }
 
 function renderLatest() {
@@ -879,6 +876,280 @@ function renderPortfolioHistoryChart(history) {
 
     });
 }
+
+
+function renderMandatarioBnpChart() {
+
+  const canvas = $("mandatario-bnp-chart");
+
+  if (
+    !canvas ||
+    !window.Chart ||
+    !historyData.length
+  ) {
+    return;
+  }
+
+  const labels = historyData.map(registro =>
+    fechaCorta(
+      registro.fechaISO ||
+      registro.fecha
+    )
+  );
+
+  /*
+   * BNP SH USD
+   * Benchmark USD utilizado para el mandato BNP.
+   */
+  const bnpShUsd =
+    historyData.map(registro => {
+
+      const value =
+        registro.benchmark
+          ?.GBM
+          ?.usd ?? null;
+
+      return value == null
+        ? null
+        : Number(value) * 100;
+
+    });
+
+
+  /*
+   * BNP SH MXN
+   * VaR del mandato BNP.
+   */
+  const bnpShMxn =
+    historyData.map(registro => {
+
+      const value =
+        registro.mandatario
+          ?.valorenriesgo
+          ?.bnp ?? null;
+
+      return value == null
+        ? null
+        : Number(value) * 100;
+
+    });
+
+
+  /*
+   * BNP BMK MXN
+   * Benchmark MXN.
+   */
+  const bnpBmkMxn =
+    historyData.map(registro => {
+
+      const value =
+        registro.benchmark
+          ?.BNP
+          ?.mxn ?? null;
+
+      return value == null
+        ? null
+        : Number(value) * 100;
+
+    });
+
+
+  /*
+   * BNP BMK USD
+   * Benchmark USD.
+   */
+  const bnpBmkUsd =
+    historyData.map(registro => {
+
+      const value =
+        registro.benchmark
+          ?.BNP
+          ?.usd ?? null;
+
+      return value == null
+        ? null
+        : Number(value) * 100;
+
+    });
+
+
+  /*
+   * Si ya existe un gráfico en este canvas,
+   * se destruye antes de crear el nuevo.
+   */
+  if (window.mandatarioCharts?.bnp) {
+    window.mandatarioCharts.bnp.destroy();
+  }
+
+
+  if (!window.mandatarioCharts) {
+    window.mandatarioCharts = {};
+  }
+
+
+  window.mandatarioCharts.bnp =
+    new Chart(canvas, {
+
+      type: "line",
+
+      data: {
+
+        labels,
+
+        datasets: [
+
+          {
+            label: "BNP SH USD",
+            data: bnpShUsd,
+            borderColor: "#4da3ff",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
+          },
+
+          {
+            label: "BNP SH MXN",
+            data: bnpShMxn,
+            borderColor: "#4fd18b",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
+          },
+
+          {
+            label: "BNP BMK MXN",
+            data: bnpBmkMxn,
+            borderColor: "#e8bd5c",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
+          },
+
+          {
+            label: "BNP BMK USD",
+            data: bnpBmkUsd,
+            borderColor: "#ef6b73",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
+          }
+
+        ]
+
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        interaction: {
+          intersect: false,
+          mode: "index"
+        },
+
+        plugins: {
+
+          legend: {
+            display: true,
+
+            labels: {
+              boxWidth: 10,
+              usePointStyle: true,
+              color: "#84909c",
+
+              font: {
+                family: "IBM Plex Mono",
+                size: 10
+              }
+            }
+          },
+
+          tooltip: {
+
+            backgroundColor: "#0b0f14",
+
+            borderColor: "#202a33",
+
+            borderWidth: 1,
+
+            titleColor: "#e6edf3",
+
+            bodyColor: "#e6edf3",
+
+            callbacks: {
+
+              label: context => {
+
+                const value =
+                  context.raw;
+
+                return value == null
+                  ? `${context.dataset.label}: —`
+                  : `${context.dataset.label}: ${Number(value).toFixed(4)}%`;
+
+              }
+
+            }
+
+          }
+
+        },
+
+        scales: {
+
+          x: {
+
+            grid: {
+              display: false
+            },
+
+            ticks: {
+
+              color: "#65727f",
+
+              maxTicksLimit: 10,
+
+              font: {
+                family: "IBM Plex Mono",
+                size: 9
+              }
+
+            }
+
+          },
+
+          y: {
+
+            beginAtZero: true,
+
+            grid: {
+              color: "#18212a"
+            },
+
+            ticks: {
+
+              color: "#65727f",
+
+              callback: value =>
+                `${Number(value).toFixed(2)}%`
+
+            }
+
+          }
+
+        }
+
+      }
+
+    });
+}
+
 
 
 
