@@ -86,11 +86,27 @@ async function loadLatest() {
 }
 
 async function loadHistory() {
-  /* Requiere el endpoint action=history del parche de Apps Script incluido
-     con esta V2. El frontend no vuelve a usar historico.json. */
-  const response = await api("history", {dias: HISTORY_DAYS});
-  historyData = Array.isArray(response.data) ? response.data : [];
+
+  const response =
+    await api("history", {
+      dias: HISTORY_DAYS
+    });
+
+  historyData =
+    Array.isArray(response.data)
+      ? response.data
+      : [];
+
   renderCharts();
+
+  /*
+   * El histórico de Portafolios
+   * utiliza los mismos 251 registros
+   * y posteriormente toma los últimos 90.
+   */
+  if (latestData) {
+    renderPortfolios();
+  }
 }
 
 function renderLatest() {
