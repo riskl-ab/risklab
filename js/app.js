@@ -76,15 +76,6 @@ async function api(action, params = {}) {
   return json;
 }
 
-async function loadLatest() {
-  const response = await api("latest");
-  latestData = response.data;
-  $("api-status").textContent = "API ONLINE";
-  $("api-status").classList.add("online");
-  $("current-date").textContent = fechaLarga(response.metadata?.fechaISO || latestData?.fecha);
-  renderLatest();
-}
-
 async function loadHistory() {
 
   const response =
@@ -133,6 +124,80 @@ function renderLatest() {
   renderPortfolioTable("restricted-table", restringido);
   renderPortfolios();
 }
+
+function renderMandatarios() {
+  const mandatario = latestData?.mandatario || {};
+
+  const datos = {
+    bnp: {
+      valorMercado: mandatario?.valordemercado?.bnp ?? null,
+      montoInvertido: mandatario?.montoinvertido?.bnp ?? null,
+      var: mandatario?.valorenriesgo?.bnp ?? null,
+      volatilidad: mandatario?.volatilidad?.bnp ?? null
+    },
+
+    banorte: {
+      valorMercado: mandatario?.valordemercado?.banorte ?? null,
+      montoInvertido: mandatario?.montoinvertido?.banorte ?? null,
+      var: mandatario?.valorenriesgo?.banorte ?? null,
+      volatilidad: mandatario?.volatilidad?.banorte ?? null
+    },
+
+    gbm: {
+      valorMercado: mandatario?.valordemercado?.gbm ?? null,
+      montoInvertido: mandatario?.montoinvertido?.gbm ?? null,
+      var: mandatario?.valorenriesgo?.gbm ?? null,
+      volatilidad: mandatario?.volatilidad?.gbm ?? null
+    },
+
+    escala: {
+      valorMercado: mandatario?.valordemercado?.escala ?? null,
+      montoInvertido: mandatario?.montoinvertido?.escala ?? null,
+      var: mandatario?.valorenriesgo?.escala ?? null,
+      volatilidad: mandatario?.volatilidad?.escala ?? null
+    }
+  };
+
+  Object.entries(datos).forEach(([nombre, data]) => {
+
+    const vmEl = $(`mandatario-${nombre}-vm`);
+    const inversionEl = $(`mandatario-${nombre}-inversion`);
+    const varEl = $(`mandatario-${nombre}-var`);
+    const volEl = $(`mandatario-${nombre}-vol`);
+
+    if (vmEl) {
+      vmEl.textContent =
+        data.valorMercado == null
+          ? "—"
+          : `${fmtNumber(data.valorMercado, 2)} mdp`;
+    }
+
+    if (inversionEl) {
+      inversionEl.textContent =
+        data.montoInvertido == null
+          ? "—"
+          : `${fmtNumber(data.montoInvertido, 2)} mdp`;
+    }
+
+    if (varEl) {
+      varEl.textContent =
+        data.var == null
+          ? "—"
+          : fmtPct(data.var, 4);
+    }
+
+    if (volEl) {
+      volEl.textContent =
+        data.volatilidad == null
+          ? "—"
+          : fmtPct(data.volatilidad, 2);
+    }
+  });
+
+  console.log("RISKLAB mandatarios:", datos);
+}
+
+
 
 function renderPortfolioTable(id, p) {
   const rows = [
@@ -1814,7 +1879,7 @@ async function loadLatest() {
 
   latestData = response.data;
 
-  $("api-status").textContent = "API ONLINE";
+  $("api-status").textContent = "API G00-RIESGOS";
   $("api-status").classList.add("online");
 
   $("current-date").textContent =
@@ -1824,5 +1889,6 @@ async function loadLatest() {
     );
 
   renderLatest();
+  renderMandatarios();
 }
 
