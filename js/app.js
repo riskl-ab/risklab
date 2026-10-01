@@ -93,6 +93,13 @@ async function loadHistory() {
   if (latestData) {
     renderPortfolios();
   }
+
+  // IMPORTANTE:
+  // Ahora que historyData ya está cargado,
+  // reconstruimos las tarjetas de mandatarios.
+  if (latestData) {
+    renderMandatarios();
+  }
 }
 
 function renderLatest() {
