@@ -918,3 +918,9 @@ h3{font-size:14px;font-weight:600}
   outline-offset:2px;
 }
 
+.mandatario-fecha{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:11px;
+  font-family:"IBM Plex Mono", monospace;
+}
