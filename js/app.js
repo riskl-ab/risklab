@@ -224,8 +224,8 @@ function initMandatariosCardToggle() {
 
     label.textContent =
       currentlyHidden
-        ? "Ocultar BAN y GBM"
-        : "Mostrar BAN y GBM";
+        ? "Ocultar información de mandatarios liquidados"
+        : "Mostrar información de mandatarios liquidados";
   });
 }
 
