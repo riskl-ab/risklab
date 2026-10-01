@@ -197,6 +197,39 @@ function renderMandatarios() {
   console.log("RISKLAB mandatarios:", datos);
 }
 
+function initMandatariosCardToggle() {
+
+  const button = $("mandatarios-history-cards-toggle");
+  const label = $("mandatarios-history-cards-label");
+
+  if (!button || !label) return;
+
+  const cards = document.querySelectorAll(
+    ".mandatario-optional"
+  );
+
+  button.addEventListener("click", () => {
+
+    const currentlyHidden =
+      cards.length > 0 && cards[0].hidden;
+
+    cards.forEach(card => {
+      card.hidden = !currentlyHidden;
+    });
+
+    button.setAttribute(
+      "aria-expanded",
+      String(currentlyHidden)
+    );
+
+    label.textContent =
+      currentlyHidden
+        ? "Ocultar BAN y GBM"
+        : "Mostrar BAN y GBM";
+  });
+}
+
+
 
 
 function renderPortfolioTable(id, p) {
@@ -1849,6 +1882,7 @@ function initNavigation() {
 async function init() {
   initNavigation();
   initHistoricalModule();
+  initMandatariosCardToggle();
   try {
     await loadLatest();
     await loadHistory();
