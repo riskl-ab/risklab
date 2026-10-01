@@ -115,6 +115,7 @@ function renderLatest() {
 
   renderPortfolioTable("complete-table", completo);
   renderPortfolioTable("restricted-table", restringido);
+  renderPortfolios();
 }
 
 function renderPortfolioTable(id, p) {
@@ -133,6 +134,447 @@ function renderPortfolioTable(id, p) {
     `<div class="metric-row"><span class="metric-label">${label}</span><span class="metric-value">${value ?? "—"}</span></div>`
   ).join("");
 }
+
+/* =========================================================
+   PORTAFOLIOS — ADMINISTRACIÓN
+   ========================================================= */
+
+const PORTFOLIO_NAMES = [
+  "alfa",
+  "calce",
+  "liquidez",
+  "operativo"
+];
+
+
+/*
+ * Busca una propiedad utilizando varias rutas posibles.
+ * No altera la información recibida desde la API.
+ */
+function pickPortfolio(obj, paths) {
+
+  for (const path of paths) {
+
+    const parts = path.split(".");
+
+    let value = obj;
+
+    for (const part of parts) {
+      value = value?.[part];
+    }
+
+    if (
+      value !== undefined &&
+      value !== null
+    ) {
+      return value;
+    }
+  }
+
+  return null;
+}
+
+
+/*
+ * Obtiene la estructura administrativa
+ * de los cuatro portafolios.
+ *
+ * Se contemplan las variantes que puede producir
+ * el contrato actual sin modificar el backend.
+ */
+function getAdministrativePortfolios() {
+
+  const d = latestData || {};
+
+  const root =
+    d.administrador ||
+    d.administradores ||
+    d.portafolios ||
+    {};
+
+  const result = {};
+
+  PORTFOLIO_NAMES.forEach(nombre => {
+
+    const direct =
+      root[nombre] ||
+      d[nombre] ||
+      {};
+
+    result[nombre] = {
+
+      valorMercado:
+        pickPortfolio(direct, [
+          "valorMercado",
+          "valormercado",
+          "valorMercadoMdp",
+          "valormercadomdp"
+        ]),
+
+      var:
+        pickPortfolio(direct, [
+          "valorenriesgo",
+          "valorEnRiesgo",
+          "var",
+          "var.porcentaje",
+          "valorEnRiesgo.porcentaje"
+        ]),
+
+      volatilidad:
+        pickPortfolio(direct, [
+          "volatilidad"
+        ])
+
+    };
+
+  });
+
+  return result;
+}
+
+
+/*
+ * Renderiza las cuatro tarjetas.
+ */
+function renderPortfolioCards(portfolios) {
+
+  PORTFOLIO_NAMES.forEach(nombre => {
+
+    const p = portfolios[nombre];
+
+    const vm =
+      $(`portfolio-${nombre}-vm`);
+
+    const varEl =
+      $(`portfolio-${nombre}-var`);
+
+    const vol =
+      $(`portfolio-${nombre}-vol`);
+
+
+    if (vm) {
+
+      vm.textContent =
+        p.valorMercado == null
+          ? "—"
+          : fmtNumber(p.valorMercado, 2);
+
+    }
+
+
+    if (varEl) {
+
+      varEl.textContent =
+        p.var == null
+          ? "—"
+          : fmtPct(p.var, 4);
+
+    }
+
+
+    if (vol) {
+
+      vol.textContent =
+        p.volatilidad == null
+          ? "—"
+          : fmtPct(p.volatilidad, 2);
+
+    }
+
+  });
+}
+
+
+/*
+ * Tabla operativa.
+ */
+function renderPortfolioAdministrationTable(
+  portfolios
+) {
+
+  const table =
+    $("portfolio-table");
+
+  if (!table) return;
+
+
+  const fecha =
+    latestData?.fecha ||
+    $("current-date")?.textContent ||
+    "—";
+
+
+  $("portfolio-date").textContent =
+    fecha;
+
+
+  table.innerHTML = `
+
+    <div class="portfolio-table-header">
+
+      <span>Portafolio</span>
+      <span>Valor de mercado</span>
+      <span>Valor en riesgo</span>
+      <span>Volatilidad</span>
+
+    </div>
+
+    ${
+      PORTFOLIO_NAMES.map(nombre => {
+
+        const p =
+          portfolios[nombre];
+
+        const label =
+          nombre.toUpperCase();
+
+        return `
+
+          <div class="portfolio-table-row">
+
+            <span class="portfolio-table-name">
+              ${label}
+            </span>
+
+            <span>
+              ${
+                p.valorMercado == null
+                  ? "—"
+                  : `${fmtNumber(
+                      p.valorMercado,
+                      2
+                    )} mdp`
+              }
+            </span>
+
+            <span>
+              ${
+                p.var == null
+                  ? "—"
+                  : fmtPct(
+                      p.var,
+                      4
+                    )
+              }
+            </span>
+
+            <span>
+              ${
+                p.volatilidad == null
+                  ? "—"
+                  : fmtPct(
+                      p.volatilidad,
+                      2
+                    )
+              }
+            </span>
+
+          </div>
+
+        `;
+
+      }).join("")
+    }
+
+  `;
+}
+
+
+/*
+ * Gráfico comparativo de los cuatro portafolios.
+ *
+ * Importante:
+ * NO utiliza POLICY_LIMIT_PCT.
+ * El objetivo es comparar los portafolios entre sí.
+ */
+function renderPortfolioVarChart(
+  portfolios
+) {
+
+  const canvas =
+    $("portfolio-var-chart");
+
+  if (
+    !canvas ||
+    !window.Chart
+  ) {
+    return;
+  }
+
+
+  const values =
+    PORTFOLIO_NAMES.map(nombre => {
+
+      const value =
+        portfolios[nombre].var;
+
+      return value == null
+        ? null
+        : Number(value) * 100;
+
+    });
+
+
+  if (portfolioCharts.var) {
+    portfolioCharts.var.destroy();
+  }
+
+
+  portfolioCharts.var =
+    new Chart(canvas, {
+
+      type: "bar",
+
+      data: {
+
+        labels: [
+          "ALFA",
+          "CALCE",
+          "LIQUIDEZ",
+          "OPERATIVO"
+        ],
+
+        datasets: [
+
+          {
+            label: "VaR",
+            data: values,
+
+            backgroundColor: [
+              "#4da3ff",
+              "#4fd18b",
+              "#e8bd5c",
+              "#ef6b73"
+            ],
+
+            borderWidth: 0,
+
+            borderRadius: 3,
+
+            maxBarThickness: 46
+          }
+
+        ]
+
+      },
+
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+          legend: {
+            display: false
+          },
+
+          tooltip: {
+
+            backgroundColor: "#0b0f14",
+
+            borderColor: "#202a33",
+
+            borderWidth: 1,
+
+            titleColor: "#e6edf3",
+
+            bodyColor: "#e6edf3",
+
+            callbacks: {
+
+              label: context => {
+
+                const value =
+                  context.raw;
+
+                return value == null
+                  ? "VaR: —"
+                  : `VaR: ${Number(value).toFixed(4)}%`;
+
+              }
+
+            }
+
+          }
+
+        },
+
+
+        scales: {
+
+          x: {
+
+            grid: {
+              display: false
+            },
+
+            ticks: {
+              color: "#84909c",
+
+              font: {
+                family: "IBM Plex Mono",
+                size: 10
+              }
+            }
+
+          },
+
+          y: {
+
+            beginAtZero: true,
+
+            grid: {
+              color: "#18212a"
+            },
+
+            ticks: {
+
+              color: "#65727f",
+
+              callback: value =>
+                `${Number(value).toFixed(2)}%`
+
+            }
+
+          }
+
+        }
+
+      }
+
+    });
+
+}
+
+
+/*
+ * Render principal del módulo.
+ */
+function renderPortfolios() {
+
+  const portfolios =
+    getAdministrativePortfolios();
+
+
+  renderPortfolioCards(
+    portfolios
+  );
+
+
+  renderPortfolioAdministrationTable(
+    portfolios
+  );
+
+
+  renderPortfolioVarChart(
+    portfolios
+  );
+
+}
+
 
 function renderCharts() {
   if (!window.Chart || !historyData.length) return;
