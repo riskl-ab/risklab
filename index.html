@@ -540,9 +540,301 @@
         <div id="view-riesgo" class="view" hidden>
           <div class="empty-view"><span>04</span><h2>Riesgo</h2><p>Módulo reservado para descomposición y controles de riesgo.</p></div>
         </div>
-        <div id="view-mandatarios" class="view" hidden>
-          <div class="empty-view"><span>05</span><h2>Mandatarios</h2><p>Módulo reservado para administradores y mandatarios.</p></div>
+<div id="view-mandatarios" class="view" hidden>
+
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">MANDATARIOS</div>
+      <h2>Seguimiento de mandatos</h2>
+      <p>
+        Valor de mercado, monto invertido, VaR y volatilidad de los fondos administrados.
+      </p>
+    </div>
+
+    <div class="source-badge">
+      Fuente: G00
+    </div>
+  </div>
+
+
+  <!-- =====================================================
+       RESUMEN DE MANDATARIOS
+       ===================================================== -->
+
+  <section class="mandatarios-summary-grid">
+
+
+    <!-- BNP -->
+    <article class="mandatario-card panel mandatario-current">
+
+      <div class="mandatario-card-head">
+
+        <div>
+          <span class="panel-index">M01</span>
+          <h3>BNP</h3>
         </div>
+
+        <span class="mandatario-status current">
+          VIGENTE
+        </span>
+
+      </div>
+
+      <div class="mandatario-metrics">
+
+        <div class="mandatario-metric">
+          <span>Valor de mercado</span>
+          <strong id="mandatario-bnp-vm">—</strong>
+        </div>
+
+        <div class="mandatario-metric">
+          <span>Monto invertido</span>
+          <strong id="mandatario-bnp-inversion">—</strong>
+        </div>
+
+        <div class="mandatario-metric">
+          <span>VaR</span>
+          <strong id="mandatario-bnp-var">—</strong>
+        </div>
+
+        <div class="mandatario-metric">
+          <span>Volatilidad</span>
+          <strong id="mandatario-bnp-vol">—</strong>
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <!-- BANORTE -->
+    <article class="mandatario-card panel mandatario-historical">
+
+      <div class="mandatario-card-head">
+
+        <div>
+          <span class="panel-index">M02</span>
+          <h3>BAN</h3>
+        </div>
+
+        <span class="mandatario-status historical">
+          SIN VIGENCIA
+        </span>
+
+      </div>
+
+      <div class="mandatario-metrics">
+
+        <div class="mandatario-metric">
+          <span>Valor de mercado</span>
+          <strong id="mandatario-ban-vm">—</strong>
+        </div>
+
+        <div class="mandatario-metric">
+          <span>Monto invertido</span>
+          <strong id="mandatario-ban-inversion">—</strong>
+        </div>
+
+        <div class="mandatario-metric">
+          <span>VaR</span>
+          <strong id="mandatario-ban-var">—</strong>
+        </div>
+
+        <div class="mandatario-metric">
+          <span>Volatilidad</span>
+          <strong id="mandatario-ban-vol">—</strong>
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <!-- GBM -->
+    <article class="mandatario-card panel mandatario-historical">
+
+      <div class="mandatario-card-head">
+
+        <div>
+          <span class="panel-index">M03</span>
+          <h3>GBM</h3>
+        </div>
+
+        <span class="mandatario-status historical">
+          SIN VIGENCIA
+        </span>
+
+      </div>
+
+      <div class="mandatario-metrics">
+
+        <div class="mandatario-metric">
+          <span>Valor de mercado</span>
+          <strong id="mandatario-gbm-vm">—</strong>
+        </div>
+
+        <div class="mandatario-metric">
+          <span>Monto invertido</span>
+          <strong id="mandatario-gbm-inversion">—</strong>
+        </div>
+
+        <div class="mandatario-metric">
+          <span>VaR</span>
+          <strong id="mandatario-gbm-var">—</strong>
+        </div>
+
+        <div class="mandatario-metric">
+          <span>Volatilidad</span>
+          <strong id="mandatario-gbm-vol">—</strong>
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <!-- ESCALA -->
+    <article class="mandatario-card panel mandatario-fund">
+
+      <div class="mandatario-card-head">
+
+        <div>
+          <span class="panel-index">M04</span>
+          <h3>ESCALA</h3>
+        </div>
+
+        <span class="mandatario-status fund">
+          FONDO
+        </span>
+
+      </div>
+
+      <div class="mandatario-metrics">
+
+        <div class="mandatario-metric">
+          <span>Valor de mercado</span>
+          <strong id="mandatario-escala-vm">—</strong>
+        </div>
+
+        <div class="mandatario-metric">
+          <span>Monto invertido</span>
+          <strong id="mandatario-escala-inversion">—</strong>
+        </div>
+
+        <div class="mandatario-metric">
+          <span>VaR</span>
+          <strong id="mandatario-escala-var">—</strong>
+        </div>
+
+        <div class="mandatario-metric">
+          <span>Volatilidad</span>
+          <strong id="mandatario-escala-vol">—</strong>
+        </div>
+
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <!-- =====================================================
+       GRÁFICO BNP
+       ===================================================== -->
+
+  <section class="panel mandatario-chart-panel">
+
+    <div class="panel-head">
+
+      <div>
+        <span class="panel-index">M05</span>
+        <h3>BNP · VaR y benchmarks</h3>
+      </div>
+
+      <span class="unit-label">
+        %
+      </span>
+
+    </div>
+
+    <div class="mandatario-chart-meta">
+      <span>Histórico · 251 días</span>
+      <span>Fuente: G00</span>
+    </div>
+
+    <div class="chart-wrap mandatario-chart-wrap">
+      <canvas id="mandatario-bnp-chart"></canvas>
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       HISTÓRICOS SIN VIGENCIA
+       ===================================================== -->
+
+  <section class="panel mandatario-history-panel">
+
+    <button
+      id="mandatario-history-toggle"
+      class="mandatario-history-toggle"
+      type="button"
+      aria-expanded="false"
+    >
+
+      <div>
+
+        <span class="panel-index">M06</span>
+
+        <div class="mandatario-history-title">
+          Históricos sin vigencia
+        </div>
+
+        <div class="mandatario-history-subtitle">
+          GBM · BAN · benchmark USD
+        </div>
+
+      </div>
+
+      <span
+        id="mandatario-history-arrow"
+        class="mandatario-history-arrow"
+      >
+        ▾
+      </span>
+
+    </button>
+
+
+    <div
+      id="mandatario-history-content"
+      class="mandatario-history-content"
+      hidden
+    >
+
+      <div class="mandatario-history-note">
+
+        <span>GBM</span>
+        <strong>Último dato: 15/09/2026</strong>
+
+      </div>
+
+      <div class="mandatario-history-note">
+
+        <span>BAN</span>
+        <strong>Último dato: 09/06/2026</strong>
+
+      </div>
+
+      <div class="chart-wrap mandatario-history-chart-wrap">
+        <canvas id="mandatario-history-chart"></canvas>
+      </div>
+
+    </div>
+
+  </section>
+
+</div>
         <div id="view-administradores" class="view" hidden>
           <div class="empty-view"><span>06</span><h2>Administradores</h2><p>Módulo reservado para seguimiento de administradores.</p></div>
         </div>
