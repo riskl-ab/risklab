@@ -1734,15 +1734,10 @@ function renderMandatarioHistoryChart() {
    * Corresponde a benchmark.GBM.usd.
    */
 
-  const benchmarkGbm = registros.map(registro => {
-
-  const benchmark =
-    registro.benchmark?.GBM ?? null;
+const benchmarkGbm = registros.map(registro => {
 
   const value =
-    typeof benchmark === "number"
-      ? benchmark
-      : benchmark?.usd ?? null;
+    registro.benchmark?.GBM ?? null;
 
   return value == null
     ? null
