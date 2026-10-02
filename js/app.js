@@ -88,20 +88,14 @@ async function loadHistory() {
       ? response.data
       : [];
 
-  renderCharts();
 
-  if (latestData) {
-    renderPortfolios();
-  }
 
-  // IMPORTANTE:
-  // Ahora que historyData ya está cargado,
-  // reconstruimos las tarjetas de mandatarios.
-  if (latestData) {
-    renderMandatarios();
-  }
-}
 
+
+
+
+
+  
 const pruebaBanorte = historyData.find(registro => {
 
   const fecha =
@@ -180,6 +174,27 @@ console.log(
 
 
 
+
+  
+
+
+
+  
+  
+
+  renderCharts();
+
+  if (latestData) {
+    renderPortfolios();
+  }
+
+  // IMPORTANTE:
+  // Ahora que historyData ya está cargado,
+  // reconstruimos las tarjetas de mandatarios.
+  if (latestData) {
+    renderMandatarios();
+  }
+}
 
 function renderLatest() {
   const d = latestData;
