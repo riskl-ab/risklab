@@ -396,7 +396,7 @@ function renderMandatarios() {
 
     bnp,
 
-    banorte,
+    ban: banorte,
 
     gbm,
 
@@ -514,7 +514,7 @@ function renderMandatarios() {
     gbm:
       gbm?.fecha ?? null,
 
-    banorte:
+    ban:
       banorte?.fecha ?? null
 
   };
