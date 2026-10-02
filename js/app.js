@@ -611,6 +611,88 @@ function initMandatariosCardToggle() {
 }
 
 
+function initMandatarioHistoryToggle() {
+
+  const button =
+    $("mandatario-history-toggle");
+
+  const content =
+    $("mandatario-history-content");
+
+  const arrow =
+    $("mandatario-history-arrow");
+
+
+  if (!button || !content) {
+    console.warn(
+      "RISKLAB M06: no se encontró el botón o contenido del histórico."
+    );
+
+    return;
+  }
+
+
+  button.addEventListener("click", () => {
+
+    const currentlyHidden =
+      content.hidden;
+
+
+    /*
+     * Mostrar / ocultar contenido
+     */
+
+    content.hidden =
+      !currentlyHidden;
+
+
+    /*
+     * Actualizar flecha
+     */
+
+    if (arrow) {
+
+      arrow.textContent =
+        currentlyHidden
+          ? "▴"
+          : "▾";
+
+    }
+
+
+    /*
+     * Estado ARIA
+     */
+
+    button.setAttribute(
+      "aria-expanded",
+      String(currentlyHidden)
+    );
+
+
+    /*
+     * El gráfico se crea solamente
+     * cuando el contenedor ya está visible.
+     */
+
+    if (currentlyHidden) {
+
+      requestAnimationFrame(() => {
+
+        console.log(
+          "RISKLAB M06: abriendo histórico de mandatarios"
+        );
+
+        renderMandatarioHistoryChart();
+
+      });
+
+    }
+
+  });
+
+}
+
 
 
 function renderPortfolioTable(id, p) {
@@ -1543,6 +1625,295 @@ function renderMandatarioBnpChart() {
 
     });
 }
+
+
+function renderMandatarioHistoryChart() {
+
+  const canvas = $("mandatario-history-chart");
+
+  if (
+    !canvas ||
+    !window.Chart ||
+    !Array.isArray(historyData) ||
+    !historyData.length
+  ) {
+    return;
+  }
+
+  const registros = historyData
+    .slice()
+    .sort((a, b) => {
+      const fechaA = new Date(
+        a.fechaISO || a.fecha
+      );
+
+      const fechaB = new Date(
+        b.fechaISO || b.fecha
+      );
+
+      return fechaA - fechaB;
+    });
+
+
+  const fechaLiquidacionBan =
+    new Date("2026-06-09T23:59:59");
+
+  const fechaLiquidacionGbm =
+    new Date("2026-09-15T23:59:59");
+
+
+  const labels = registros.map(registro =>
+    fechaCorta(
+      registro.fechaISO ||
+      registro.fecha
+    )
+  );
+
+
+  /*
+   * GBM
+   *
+   * Se muestra solamente hasta
+   * 15/09/2026.
+   */
+
+  const gbm = registros.map(registro => {
+
+    const fecha = new Date(
+      registro.fechaISO ||
+      registro.fecha
+    );
+
+    if (fecha > fechaLiquidacionGbm) {
+      return null;
+    }
+
+    const value =
+      registro.mandatario
+        ?.valorenriesgo
+        ?.gbm ?? null;
+
+    return value == null
+      ? null
+      : Number(value) * 100;
+  });
+
+
+  /*
+   * BANORTE
+   *
+   * Se muestra solamente hasta
+   * 09/06/2026.
+   */
+
+  const ban = registros.map(registro => {
+
+    const fecha = new Date(
+      registro.fechaISO ||
+      registro.fecha
+    );
+
+    if (fecha > fechaLiquidacionBan) {
+      return null;
+    }
+
+    const value =
+      registro.mandatario
+        ?.valorenriesgo
+        ?.banorte ?? null;
+
+    return value == null
+      ? null
+      : Number(value) * 100;
+  });
+
+
+  /*
+   * Benchmark USD
+   *
+   * Corresponde a benchmark.GBM.usd.
+   */
+
+  const benchmarkUsd = registros.map(registro => {
+
+    const value =
+      registro.benchmark
+        ?.GBM
+        ?.usd ?? null;
+
+    return value == null
+      ? null
+      : Number(value) * 100;
+  });
+
+
+  /*
+   * Destruir gráfico anterior
+   */
+
+  if (window.mandatarioCharts?.history) {
+    window.mandatarioCharts.history.destroy();
+  }
+
+
+  if (!window.mandatarioCharts) {
+    window.mandatarioCharts = {};
+  }
+
+
+  /*
+   * Crear gráfico
+   */
+
+  window.mandatarioCharts.history =
+    new Chart(canvas, {
+
+      type: "line",
+
+      data: {
+
+        labels,
+
+        datasets: [
+
+          {
+            label: "GBM",
+            data: gbm,
+            borderColor: "#4da3ff",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
+          },
+
+          {
+            label: "BAN",
+            data: ban,
+            borderColor: "#4fd18b",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
+          },
+
+          {
+            label: "Benchmark USD",
+            data: benchmarkUsd,
+            borderColor: "#e8bd5c",
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            pointRadius: 1,
+            tension: 0.25
+          }
+
+        ]
+
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        interaction: {
+          intersect: false,
+          mode: "index"
+        },
+
+        plugins: {
+
+          legend: {
+            display: true,
+
+            labels: {
+              boxWidth: 10,
+              usePointStyle: true,
+              color: "#84909c",
+
+              font: {
+                family: "IBM Plex Mono",
+                size: 10
+              }
+            }
+          },
+
+          tooltip: {
+
+            backgroundColor: "#0b0f14",
+            borderColor: "#202a33",
+            borderWidth: 1,
+
+            titleColor: "#e6edf3",
+            bodyColor: "#e6edf3",
+
+            callbacks: {
+
+              label: context => {
+
+                const value =
+                  context.raw;
+
+                return value == null
+                  ? `${context.dataset.label}: —`
+                  : `${context.dataset.label}: ${Number(value).toFixed(4)}%`;
+              }
+
+            }
+
+          }
+
+        },
+
+        scales: {
+
+          x: {
+
+            grid: {
+              display: false
+            },
+
+            ticks: {
+
+              color: "#65727f",
+
+              maxTicksLimit: 10,
+
+              font: {
+                family: "IBM Plex Mono",
+                size: 9
+              }
+
+            }
+
+          },
+
+          y: {
+
+            beginAtZero: true,
+
+            grid: {
+              color: "#18212a"
+            },
+
+            ticks: {
+
+              color: "#65727f",
+
+              callback: value =>
+                `${Number(value).toFixed(2)}%`
+
+            }
+
+          }
+
+        }
+
+      }
+
+    });
+}
+
 
 
 
@@ -2601,6 +2972,7 @@ async function init() {
   initNavigation();
   initHistoricalModule();
   initMandatariosCardToggle();
+  initMandatarioHistoryToggle();
   try {
     await loadLatest();
     await loadHistory();
