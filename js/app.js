@@ -169,23 +169,68 @@ function obtenerUltimoMandatario(nombre, fechaLimite) {
 
   const registro = registros[0];
 
+  /*
+   * BANORTE puede aparecer en históricos
+   * con la clave "ban" mientras que la
+   * estructura actual utiliza "banorte".
+   *
+   * GBM, BNP y ESCALA mantienen su clave normal.
+   */
+
+  const claves = nombre === "banorte"
+    ? ["banorte", "ban"]
+    : [nombre];
+
+
+  function obtenerCampo(objeto) {
+
+    if (!objeto) {
+      return null;
+    }
+
+    for (const clave of claves) {
+
+      if (
+        objeto[clave] !== undefined &&
+        objeto[clave] !== null
+      ) {
+        return objeto[clave];
+      }
+
+    }
+
+    return null;
+  }
+
+
   return {
-    fecha: registro.fechaISO || registro.fecha,
+
+    fecha:
+      registro.fechaISO ||
+      registro.fecha,
 
     valorMercado:
-      registro.mandatario?.valordemercado?.[nombre] ?? null,
+      obtenerCampo(
+        registro.mandatario?.valordemercado
+      ),
 
     montoInvertido:
-      registro.mandatario?.montoinvertido?.[nombre] ?? null,
+      obtenerCampo(
+        registro.mandatario?.montoinvertido
+      ),
 
     var:
-      registro.mandatario?.valorenriesgo?.[nombre] ?? null,
+      obtenerCampo(
+        registro.mandatario?.valorenriesgo
+      ),
 
     volatilidad:
-      registro.mandatario?.volatilidad?.[nombre] ?? null
+      obtenerCampo(
+        registro.mandatario?.volatilidad
+      )
+
   };
 }
-
 
 
 function renderMandatarios() {
