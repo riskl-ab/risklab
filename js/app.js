@@ -449,7 +449,7 @@ function renderMandatarios() {
 
     fechaBanorte.textContent =
       banorte?.fecha
-        ? `Último registro: ${fechaLarga(
+        ? `Calculado: ${fechaLarga(
             banorte.fecha
           )}`
         : "Sin registro";
@@ -461,7 +461,7 @@ function renderMandatarios() {
 
     fechaGbm.textContent =
       gbm?.fecha
-        ? `Último registro: ${fechaLarga(
+        ? `Calculado: ${fechaLarga(
             gbm.fecha
           )}`
         : "Sin registro";
