@@ -1734,17 +1734,20 @@ function renderMandatarioHistoryChart() {
    * Corresponde a benchmark.GBM.usd.
    */
 
-  const benchmarkUsd = registros.map(registro => {
+  const benchmarkGbm = registros.map(registro => {
 
-    const value =
-      registro.benchmark
-        ?.GBM
-        ?.usd ?? null;
+  const benchmark =
+    registro.benchmark?.GBM ?? null;
 
-    return value == null
-      ? null
-      : Number(value) * 100;
-  });
+  const value =
+    typeof benchmark === "number"
+      ? benchmark
+      : benchmark?.usd ?? null;
+
+  return value == null
+    ? null
+    : Number(value) * 100;
+});
 
 
   /*
@@ -1797,8 +1800,8 @@ function renderMandatarioHistoryChart() {
           },
 
           {
-            label: "Benchmark USD",
-            data: benchmarkUsd,
+            label: "Benchmark GBM",
+            data: benchmarkGbm,
             borderColor: "#e8bd5c",
             backgroundColor: "transparent",
             borderWidth: 2,
