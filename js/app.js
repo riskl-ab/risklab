@@ -102,6 +102,85 @@ async function loadHistory() {
   }
 }
 
+const pruebaBanorte = historyData.find(registro => {
+
+  const fecha =
+    registro.fechaISO ||
+    registro.fecha ||
+    "";
+
+  return (
+    String(fecha).startsWith("2026-06-09") ||
+    String(fecha).startsWith("09/06/2026")
+  );
+
+});
+
+console.log(
+  "========== RISKLAB BANORTE =========="
+);
+
+console.log(
+  "Registro BANORTE completo:",
+  pruebaBanorte
+);
+
+console.log(
+  "mandatario:",
+  pruebaBanorte?.mandatario
+);
+
+console.log(
+  "valordemercado:",
+  pruebaBanorte?.mandatario?.valordemercado
+);
+
+console.log(
+  "montoinvertido:",
+  pruebaBanorte?.mandatario?.montoinvertido
+);
+
+console.log(
+  "valorenriesgo:",
+  pruebaBanorte?.mandatario?.valorenriesgo
+);
+
+console.log(
+  "volatilidad:",
+  pruebaBanorte?.mandatario?.volatilidad
+);
+
+console.log(
+  "claves valordemercado:",
+  Object.keys(
+    pruebaBanorte?.mandatario?.valordemercado || {}
+  )
+);
+
+console.log(
+  "claves montoinvertido:",
+  Object.keys(
+    pruebaBanorte?.mandatario?.montoinvertido || {}
+  )
+);
+
+console.log(
+  "claves valorenriesgo:",
+  Object.keys(
+    pruebaBanorte?.mandatario?.valorenriesgo || {}
+  )
+);
+
+console.log(
+  "claves volatilidad:",
+  Object.keys(
+    pruebaBanorte?.mandatario?.volatilidad || {}
+  )
+);
+
+
+
+
 function renderLatest() {
   const d = latestData;
   const completo = d?.portafolio?.completo || {};
