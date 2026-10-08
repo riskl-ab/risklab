@@ -575,40 +575,53 @@
        T01 · ÚLTIMO CORTE
        ===================================================== -->
 
-  <section class="panel tasas-panel">
+<section class="panel tasas-panel">
 
-    <div class="panel-header">
+  <div class="panel-header">
 
-      <div>
-        <span class="panel-index">T01</span>
+    <div>
+      <span class="panel-index">T01</span>
 
-        <h3 class="panel-title">
-          Último corte
-        </h3>
+      <h3 class="panel-title">
+        Último corte
+      </h3>
 
-        <p
-          id="tasas-ultimo-fecha"
-          class="panel-subtitle"
-        >
-          Cargando...
-        </p>
-      </div>
-
-      <span
-        id="tasas-status"
-        class="panel-status"
-      >
-        —
-      </span>
-
+      <p class="panel-subtitle">
+        Descarga de tasas del corte corriente
+      </p>
     </div>
 
+    <span class="panel-status">
+      —
+    </span>
 
-<div class="chart-wrap tasas-chart-wrap">
-  <canvas id="tasas-ultimo-chart"></canvas>
-</div>
-  </section>
+  </div>
 
+
+  <div class="tasas-download">
+
+    <a
+      id="tasas-download-actual-nominal"
+      class="button button-primary"
+      href="#"
+      download
+    >
+      Descargar BonosM (Yields)
+    </a>
+
+
+    <a
+      id="tasas-download-actual-real"
+      class="button"
+      href="#"
+      download
+    >
+      Descargar RealBruta (Yields)
+    </a>
+
+  </div>
+
+</section>
 
   <!-- =====================================================
        T02 · CONSULTA Y DESCARGA
