@@ -4530,11 +4530,16 @@ function renderPortfolios() {
   renderPortfolioHistoryChart(historyData);
 }
 
+
 function initNavigation() {
 
   document.querySelectorAll(".nav-item").forEach(item => {
 
     item.addEventListener("click", () => {
+
+      // ------------------------------
+      // 1. Estado de navegación
+      // ------------------------------
 
       document
         .querySelectorAll(".nav-item")
@@ -4542,9 +4547,16 @@ function initNavigation() {
 
       item.classList.add("active");
 
+
+      // ------------------------------
+      // 2. Mostrar vista seleccionada
+      // ------------------------------
+
       document
         .querySelectorAll(".view")
-        .forEach(v => v.hidden = true);
+        .forEach(v => {
+          v.hidden = true;
+        });
 
       const view = $("view-" + item.dataset.view);
 
@@ -4552,52 +4564,90 @@ function initNavigation() {
         view.hidden = false;
       }
 
-      $("view-title").textContent =
-        item.textContent
-          .trim()
-          .replace(/^\d+\s*/, "");
+
+      // ------------------------------
+      // 3. Actualizar título
+      // ------------------------------
+
+      const viewTitle = $("view-title");
+
+      if (viewTitle) {
+        viewTitle.textContent =
+          item.textContent
+            .trim()
+            .replace(/^\d+\s*/, "");
+      }
 
 
       // ------------------------------
-      // Histórico
+      // 4. Módulo Histórico
       // ------------------------------
 
-      if (
-        item.dataset.view === "historico"
-      ) {
-
+      if (item.dataset.view === "historico") {
         initHistoricalDates();
+      }
+
+
+      // ------------------------------
+      // 5. Módulo Mandatarios
+      // ------------------------------
+
+      if (item.dataset.view === "mandatarios") {
+
+        requestAnimationFrame(() => {
+
+          console.log(
+            "RISKLAB M05: abriendo Mandatarios"
+          );
+
+          if (
+            Array.isArray(historyData) &&
+            historyData.length > 0 &&
+            $("mandatario-bnp-chart")
+          ) {
+            renderMandatarioBnpChart();
+          } else {
+            console.warn(
+              "RISKLAB M05: el histórico o el canvas todavía no están disponibles.",
+              {
+                registros: Array.isArray(historyData)
+                  ? historyData.length
+                  : "historyData no es un arreglo",
+                canvas: !!$("mandatario-bnp-chart")
+              }
+            );
+          }
+
+        });
 
       }
 
 
       // ------------------------------
-      // Mandatarios
+      // 6. Módulo Bases de datos / Tasas
       // ------------------------------
 
       if (item.dataset.view === "riesgo") {
-  requestAnimationFrame(async () => {
 
-    console.log(
-      "RISKLAB T03: abriendo gráficos de tasas"
-    );
+        requestAnimationFrame(async () => {
 
-    await renderTasasHistoryChart();
+          console.log(
+            "RISKLAB T03: abriendo gráficos de tasas"
+          );
 
-    renderTasasLongTermChart();
+          await renderTasasHistoryChart();
 
-  });
-}
+          renderTasasLongTermChart();
+
+        });
+
+      }
 
     });
 
   });
 
 }
-
-
-
-
 
 async function init() {
   initNavigation();
