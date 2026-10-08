@@ -1249,18 +1249,16 @@ h3{font-size:14px;font-weight:600}
 }
 
 /* =====================================================
-   D01 · ENCABEZADO DE SECCIÓN
+   07 · ENCABEZADO DE BASES DE DATOS
    ===================================================== */
 
-.tasas-section-header {
-  margin-bottom: 10px;
+#view-riesgo > .view-header {
+  margin-bottom: 20px;
 }
 
 
-.tasas-section-header .panel-index {
-  display: block;
-
-  margin-bottom: 3px;
+#view-riesgo > .view-header .view-kicker {
+  margin-bottom: 4px;
 
   font-size: 9px;
   font-weight: 600;
@@ -1270,23 +1268,22 @@ h3{font-size:14px;font-weight:600}
 }
 
 
-.tasas-section-title {
+#view-riesgo > .view-header .view-title {
   margin: 0;
 
-  font-size: 16px;
-  line-height: 1.25;
+  font-size: 24px;
+  line-height: 1.2;
   font-weight: 600;
 
   color: #E6EDF3;
 }
 
 
-.tasas-section-subtitle {
-  margin: 3px 0 0;
+#view-riesgo > .view-header .view-subtitle {
+  margin: 5px 0 0;
 
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.4;
 
   color: #84909C;
 }
-
