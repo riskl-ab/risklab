@@ -924,3 +924,83 @@ h3{font-size:14px;font-weight:600}
   font-size:11px;
   font-family:"IBM Plex Mono", monospace;
 }
+
+/* =====================================================
+   T03 · CONTROLES DE NODOS
+   ===================================================== */
+
+.tasas-node-controls {
+  margin: 0 0 14px 0;
+  padding: 10px 12px;
+
+  border: 1px solid #202A33;
+  border-radius: 8px;
+
+  background: #0E151C;
+}
+
+
+.tasas-node-controls-title {
+  margin-bottom: 8px;
+
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: #84909C;
+}
+
+
+.tasas-node-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+
+.tasas-node-button {
+  appearance: none;
+
+  padding: 6px 10px;
+
+  border: 1px solid #27333D;
+  border-radius: 5px;
+
+  background: #111820;
+
+  color: #84909C;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+
+.tasas-node-button:hover {
+  border-color: #3A4854;
+  color: #E6EDF3;
+  background: #151E27;
+}
+
+
+.tasas-node-button.active {
+  border-color: #2F8F6B;
+  background: #14231F;
+  color: #E6EDF3;
+}
+
+
+.tasas-node-button:focus-visible {
+  outline: 1px solid #5BAF8A;
+  outline-offset: 2px;
+}
+
+
