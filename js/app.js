@@ -199,6 +199,472 @@ function renderTasasUltimoCorte() {
   );
 }
 
+async function renderTasasHistoryChart() {
+
+  const canvas =
+    $("tasas-history-chart");
+
+  const periodoEl =
+    $("tasas-chart-periodo");
+
+  if (!canvas) {
+    console.warn(
+      "RISKLAB T03: no se encontró el canvas."
+    );
+    return;
+  }
+
+  try {
+
+    const [respuestaNominal, respuestaReal] =
+      await Promise.all([
+
+        fetch("./data/tasas/P00%20-%20G00.csv"),
+
+        fetch("./data/tasas/P01%20-%20G00.csv")
+
+      ]);
+
+
+    if (
+      !respuestaNominal.ok ||
+      !respuestaReal.ok
+    ) {
+      throw new Error(
+        "No se pudieron cargar P00/P01."
+      );
+    }
+
+
+    const [csvNominal, csvReal] =
+      await Promise.all([
+
+        respuestaNominal.text(),
+
+        respuestaReal.text()
+
+      ]);
+
+
+    const nominal =
+      csvNominal
+        .trim()
+        .split(/\r?\n/)
+        .map(linea => linea.split(","));
+
+
+    const real =
+      csvReal
+        .trim()
+        .split(/\r?\n/)
+        .map(linea => linea.split(","));
+
+
+    if (
+      nominal.length < 2 ||
+      real.length < 2
+    ) {
+      throw new Error(
+        "P00/P01 no contienen datos suficientes."
+      );
+    }
+
+
+    const encabezadosNominal =
+      nominal[0].map(valor =>
+        valor.trim()
+      );
+
+    const encabezadosReal =
+      real[0].map(valor =>
+        valor.trim()
+      );
+
+
+    const indiceFechaNominal =
+      encabezadosNominal.indexOf("FECHA");
+
+    const indiceFechaReal =
+      encabezadosReal.indexOf("FECHA");
+
+
+    if (
+      indiceFechaNominal === -1 ||
+      indiceFechaReal === -1
+    ) {
+      throw new Error(
+        "No se encontró la columna FECHA."
+      );
+    }
+
+
+    /*
+     * Plazos comunes de P00 y P01.
+     */
+    const plazos = [
+      "30",
+      "90",
+      "180",
+      "360",
+      "1080",
+      "1800",
+      "2520",
+      "3600",
+      "5400",
+      "7200",
+      "9000",
+      "10800"
+    ];
+
+
+    /*
+     * Encontramos la última fecha disponible
+     * en cada archivo.
+     */
+    const fechasNominal =
+      nominal
+        .slice(1)
+        .map(fila =>
+          fila[indiceFechaNominal]?.trim()
+        )
+        .filter(Boolean);
+
+
+    const fechasReal =
+      real
+        .slice(1)
+        .map(fila =>
+          fila[indiceFechaReal]?.trim()
+        )
+        .filter(Boolean);
+
+
+    const ultimaFechaNominal =
+      fechasNominal.sort().at(-1);
+
+    const ultimaFechaReal =
+      fechasReal.sort().at(-1);
+
+
+    /*
+     * Para T03 utilizamos el último corte
+     * común entre ambos archivos.
+     */
+    const fechasComunes =
+      fechasNominal.filter(fecha =>
+        fechasReal.includes(fecha)
+      );
+
+
+    if (!fechasComunes.length) {
+      throw new Error(
+        "No existe una fecha común entre P00 y P01."
+      );
+    }
+
+
+    const ultimaFecha =
+      fechasComunes.sort().at(-1);
+
+
+    /*
+     * Buscar las filas correspondientes
+     * al último corte.
+     */
+    const filaNominal =
+      nominal
+        .slice(1)
+        .find(fila =>
+          fila[indiceFechaNominal]?.trim() ===
+          ultimaFecha
+        );
+
+
+    const filaReal =
+      real
+        .slice(1)
+        .find(fila =>
+          fila[indiceFechaReal]?.trim() ===
+          ultimaFecha
+        );
+
+
+    if (!filaNominal || !filaReal) {
+      throw new Error(
+        "No se encontraron las filas del último corte."
+      );
+    }
+
+
+    /*
+     * Construimos las posiciones de las
+     * 12 columnas de plazo.
+     */
+    const indicesNominal =
+      plazos.map(plazo =>
+        encabezadosNominal.indexOf(plazo)
+      );
+
+    const indicesReal =
+      plazos.map(plazo =>
+        encabezadosReal.indexOf(plazo)
+      );
+
+
+    if (
+      indicesNominal.some(indice => indice === -1) ||
+      indicesReal.some(indice => indice === -1)
+    ) {
+      throw new Error(
+        "Falta uno o más plazos en P00/P01."
+      );
+    }
+
+
+    /*
+     * Convertimos los valores a porcentaje.
+     *
+     * Los CSV contienen valores decimales:
+     * 0.067443 -> 6.7443%
+     */
+    const valoresNominal =
+      indicesNominal.map(indice => {
+
+        const valor =
+          Number(
+            filaNominal[indice]
+          );
+
+        return Number.isFinite(valor)
+          ? valor * 100
+          : null;
+
+      });
+
+
+    const valoresReal =
+      indicesReal.map(indice => {
+
+        const valor =
+          Number(
+            filaReal[indice]
+          );
+
+        return Number.isFinite(valor)
+          ? valor * 100
+          : null;
+
+      });
+
+
+    /*
+     * Etiqueta del corte.
+     */
+    if (periodoEl) {
+
+      const fecha =
+        new Date(ultimaFecha);
+
+      if (!isNaN(fecha.getTime())) {
+
+        periodoEl.textContent =
+          `Corte: ${fecha.toLocaleDateString(
+            "es-MX",
+            {
+              month: "long",
+              year: "numeric"
+            }
+          )}`;
+
+      } else {
+
+        periodoEl.textContent =
+          `Corte: ${ultimaFecha}`;
+
+      }
+
+    }
+
+
+    /*
+     * Si ya existe un gráfico,
+     * destruirlo antes de crear otro.
+     */
+    if (
+      window.tasasHistoryChart
+    ) {
+
+      window.tasasHistoryChart.destroy();
+
+    }
+
+
+    window.tasasHistoryChart =
+      new Chart(
+        canvas,
+        {
+
+          type: "line",
+
+          data: {
+
+            labels: plazos,
+
+            datasets: [
+
+              {
+
+                label:
+                  "BonosM (Yields)",
+
+                data:
+                  valoresNominal,
+
+                tension: 0.25,
+
+                spanGaps: true
+
+              },
+
+              {
+
+                label:
+                  "RealBruta (Yields)",
+
+                data:
+                  valoresReal,
+
+                tension: 0.25,
+
+                spanGaps: true
+
+              }
+
+            ]
+
+          },
+
+          options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            interaction: {
+
+              mode: "index",
+
+              intersect: false
+
+            },
+
+            scales: {
+
+              x: {
+
+                title: {
+
+                  display: true,
+
+                  text: "Plazo (días)"
+
+                }
+
+              },
+
+              y: {
+
+                title: {
+
+                  display: true,
+
+                  text: "Tasa (%)"
+
+                },
+
+                ticks: {
+
+                  callback:
+                    value =>
+                      `${value}%`
+
+                }
+
+              }
+
+            },
+
+            plugins: {
+
+              legend: {
+
+                display: true
+
+              },
+
+              tooltip: {
+
+                callbacks: {
+
+                  label:
+                    context =>
+                      `${context.dataset.label}: ` +
+                      `${Number(
+                        context.raw
+                      ).toFixed(4)}%`
+
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+      );
+
+
+    console.log(
+      "RISKLAB T03: gráfico generado."
+    );
+
+    console.log(
+      "RISKLAB T03: fecha:",
+      ultimaFecha
+    );
+
+    console.log(
+      "RISKLAB T03: nominal:",
+      valoresNominal
+    );
+
+    console.log(
+      "RISKLAB T03: real:",
+      valoresReal
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "RISKLAB T03:",
+      error
+    );
+
+    if (periodoEl) {
+
+      periodoEl.textContent =
+        "No fue posible cargar el corte.";
+
+    }
+
+  }
+
+}
+
+
+
 
 function initTasasSelector() {
 
