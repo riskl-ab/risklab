@@ -6,6 +6,7 @@ let latestData = null;
 let historyData = [];
 let charts = { vm: null, var: null };
 let portfolioCharts = { var: null };
+let tasasIndice = null;
 // ============================================================
 // GRÁFICOS DEL MÓDULO HISTÓRICO
 // Independientes de los gráficos del VISOR
@@ -61,6 +62,138 @@ function pick(obj, paths) {
   }
   return null;
 }
+
+
+function actualizarLinksTasas() {
+
+  const select = $("tasas-corte-select");
+  const linkNominal = $("tasas-download-nominal");
+  const linkReal = $("tasas-download-real");
+
+  if (
+    !select ||
+    !linkNominal ||
+    !linkReal
+  ) {
+    return;
+  }
+
+  const periodo = select.value;
+
+  const corte = tasasIndice?.cortes?.find(
+    item => item.periodo === periodo
+  );
+
+  if (!corte) {
+
+    linkNominal.href = "#";
+    linkReal.href = "#";
+
+    linkNominal.removeAttribute("download");
+    linkReal.removeAttribute("download");
+
+    return;
+  }
+
+  linkNominal.href =
+    `./data/tasas/${corte.nominal}`;
+
+  linkReal.href =
+    `./data/tasas/${corte.real}`;
+
+  linkNominal.setAttribute(
+    "download",
+    ""
+  );
+
+  linkReal.setAttribute(
+    "download",
+    "");
+
+  console.log(
+    "RISKLAB TASAS: corte seleccionado:",
+    periodo
+  );
+
+  console.log(
+    "RISKLAB TASAS: nominal:",
+    linkNominal.href
+  );
+
+  console.log(
+    "RISKLAB TASAS: real:",
+    linkReal.href
+  );
+}
+
+
+function initTasasSelector() {
+
+  const select = $("tasas-corte-select");
+
+  if (!select) {
+    console.warn(
+      "RISKLAB TASAS: no se encontró tasas-corte-select."
+    );
+    return;
+  }
+
+  if (
+    !tasasIndice ||
+    !Array.isArray(tasasIndice.cortes)
+  ) {
+    console.warn(
+      "RISKLAB TASAS: no hay cortes disponibles."
+    );
+    return;
+  }
+
+  select.innerHTML = "";
+
+  tasasIndice.cortes.forEach(corte => {
+
+    const option =
+      document.createElement("option");
+
+    option.value = corte.periodo;
+    option.textContent = corte.periodo;
+
+    select.appendChild(option);
+
+  });
+
+  if (tasasIndice.actual) {
+    select.value = tasasIndice.actual;
+  }
+
+  actualizarLinksTasas();
+
+  console.log(
+    "RISKLAB TASAS: selector inicializado con",
+    tasasIndice.cortes.length,
+    "cortes."
+  );
+}
+
+
+function initTasasDownloads() {
+
+  const select = $("tasas-corte-select");
+
+  if (!select) {
+    return;
+  }
+
+  select.addEventListener(
+    "change",
+    actualizarLinksTasas
+  );
+
+}
+
+
+
+
 
 async function api(action, params = {}) {
   if (API_URL.includes("PEGAR_AQUI")) {
@@ -2966,11 +3099,19 @@ function initNavigation() {
 
 }
 
+
+
+
+
 async function init() {
   initNavigation();
   initHistoricalModule();
   initMandatariosCardToggle();
   initMandatarioHistoryToggle();
+  await loadTasasIndice();
+  initTasasSelector();
+  initTasasDownloads();
+  
   try {
     await loadLatest();
     await loadHistory();
@@ -2987,6 +3128,39 @@ async function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
+
+async function loadTasasIndice() {
+
+  const response = await fetch(
+    "./data/tasas/indice.json"
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `No se pudo cargar indice.json (${response.status})`
+    );
+  }
+
+  tasasIndice = await response.json();
+
+  console.log(
+    "RISKLAB TASAS: índice cargado",
+    tasasIndice
+  );
+
+  console.log(
+    "RISKLAB TASAS: cortes disponibles:",
+    tasasIndice.cortes?.length || 0
+  );
+
+  return tasasIndice;
+}
+
+
+
+
+
 
 
 async function loadLatest() {
