@@ -888,7 +888,49 @@ function renderMandatarios() {
   );
 }
 
+function initTasasHistoricoToggle() {
 
+  const button =
+    $("tasas-historico-toggle");
+
+  const content =
+    $("tasas-historico-content");
+
+  const arrow =
+    $("tasas-historico-arrow");
+
+  if (!button || !content) {
+    console.warn(
+      "RISKLAB TASAS T02: no se encontró el botón o contenido."
+    );
+    return;
+  }
+
+  button.addEventListener("click", () => {
+
+    const currentlyHidden =
+      content.hidden;
+
+    content.hidden =
+      !currentlyHidden;
+
+    button.setAttribute(
+      "aria-expanded",
+      String(currentlyHidden)
+    );
+
+    if (arrow) {
+
+      arrow.textContent =
+        currentlyHidden
+          ? "▴"
+          : "▾";
+
+    }
+
+  });
+
+}
 
 
 
@@ -3294,6 +3336,7 @@ async function init() {
   initTasasCorteActual();
   initTasasSelector();
   initTasasDownloads();
+  initTasasHistoricoToggle();
   
   try {
     await loadLatest();
