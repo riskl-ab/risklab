@@ -926,6 +926,195 @@ h3{font-size:14px;font-weight:600}
 }
 
 /* =====================================================
+   TASAS · DESCARGAS:::::::::::::::::::::T01
+   ===================================================== */
+
+.tasas-download {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  margin-top: 14px;
+}
+
+
+.tasas-download-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+
+.tasas-download .button,
+.tasas-download-actions .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 32px;
+  padding: 0 12px;
+
+  border: 1px solid #27333D;
+  border-radius: 5px;
+
+  background: #111820;
+
+  color: #B8C2CC;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+
+  text-decoration: none;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+
+.tasas-download .button:hover,
+.tasas-download-actions .button:hover {
+  border-color: #3A4854;
+
+  background: #151E27;
+
+  color: #E6EDF3;
+}
+
+
+.tasas-download .button-primary {
+  border-color: #2F8F6B;
+
+  background: #14231F;
+
+  color: #D7F2E5;
+}
+
+
+.tasas-download .button-primary:hover {
+  border-color: #4AA47F;
+
+  background: #193027;
+
+  color: #FFFFFF;
+}
+
+/* =====================================================
+   TASAS · T01
+   ===================================================== */
+
+.tasas-current-period {
+  display: inline-block;
+
+  margin-top: 6px;
+
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+
+  color: #84909C;
+}
+
+/* =====================================================
+   T02 · SELECTORES
+   ===================================================== */
+
+.tasas-download {
+  align-items: flex-end;
+}
+
+
+.tasas-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+
+.tasas-field label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+
+  color: #84909C;
+}
+
+
+.tasas-select {
+  min-width: 130px;
+  height: 32px;
+
+  padding: 0 9px;
+
+  border: 1px solid #27333D;
+  border-radius: 5px;
+
+  background: #0E151C;
+
+  color: #C8D1D9;
+
+  font-family: inherit;
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+
+.tasas-select:hover {
+  border-color: #3A4854;
+}
+
+
+.tasas-select:focus {
+  outline: none;
+
+  border-color: #4A8F73;
+
+  box-shadow:
+    0 0 0 1px rgba(74, 143, 115, 0.18);
+}
+
+
+.tasas-select:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* =====================================================
+   T02 · CONTENIDO DESPLEGABLE
+   ===================================================== */
+
+.tasas-historico-content {
+  padding-top: 4px;
+}
+
+
+.tasas-historico-content .tasas-download {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.tasas-panel-toggle {
+  width: 100%;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+
+.tasas-panel-toggle:hover .panel-title {
+  color: #E6EDF3;
+}
+
+
+.tasas-panel-toggle .panel-title {
+  transition: color 0.15s ease;
+}
+
+
+/* =====================================================
    T03 · CONTROLES DE NODOS
    ===================================================== */
 
