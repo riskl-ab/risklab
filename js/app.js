@@ -129,11 +129,12 @@ function actualizarLinksTasas() {
 
 function initTasasSelector() {
 
-  const select = $("tasas-corte-select");
+  const yearSelect = $("tasas-year-select");
+  const corteSelect = $("tasas-corte-select");
 
-  if (!select) {
+  if (!yearSelect || !corteSelect) {
     console.warn(
-      "RISKLAB TASAS: no se encontró tasas-corte-select."
+      "RISKLAB TASAS: no se encontraron los selectores de año/corte."
     );
     return;
   }
@@ -148,9 +149,87 @@ function initTasasSelector() {
     return;
   }
 
-  select.innerHTML = "";
+  /*
+   * Obtener años únicos a partir del índice.
+   */
+  const years = [
+    ...new Set(
+      tasasIndice.cortes.map(corte =>
+        corte.periodo.substring(0, 4)
+      )
+    )
+  ].sort((a, b) => Number(b) - Number(a));
 
-  tasasIndice.cortes.forEach(corte => {
+  /*
+   * Llenar selector de años.
+   */
+  yearSelect.innerHTML = "";
+
+  years.forEach(year => {
+
+    const option =
+      document.createElement("option");
+
+    option.value = year;
+    option.textContent = year;
+
+    yearSelect.appendChild(option);
+
+  });
+
+  /*
+   * Seleccionar inicialmente el año
+   * correspondiente al último corte.
+   */
+  const actualYear =
+    tasasIndice.actual
+      ? tasasIndice.actual.substring(0, 4)
+      : years[0];
+
+  yearSelect.value = actualYear;
+
+  /*
+   * Construir cortes del año seleccionado.
+   */
+  actualizarCortesPorAnio();
+
+  console.log(
+    "RISKLAB TASAS: años disponibles:",
+    years
+  );
+}
+
+function actualizarCortesPorAnio() {
+
+  const yearSelect = $("tasas-year-select");
+  const corteSelect = $("tasas-corte-select");
+
+  if (!yearSelect || !corteSelect) {
+    return;
+  }
+
+  const year = yearSelect.value;
+
+  if (!year) {
+
+    corteSelect.innerHTML =
+      `<option value="">Selecciona un año</option>`;
+
+    corteSelect.disabled = true;
+
+    actualizarLinksTasas();
+
+    return;
+  }
+
+  const cortesDelAnio =
+    tasasIndice.cortes.filter(corte =>
+      corte.periodo.startsWith(`${year}-`)
+    );
+
+  corteSelect.innerHTML = "";
+
+  cortesDelAnio.forEach(corte => {
 
     const option =
       document.createElement("option");
@@ -158,33 +237,62 @@ function initTasasSelector() {
     option.value = corte.periodo;
     option.textContent = corte.periodo;
 
-    select.appendChild(option);
+    corteSelect.appendChild(option);
 
   });
 
-  if (tasasIndice.actual) {
-    select.value = tasasIndice.actual;
+  corteSelect.disabled =
+    cortesDelAnio.length === 0;
+
+  /*
+   * Si estamos en el año actual,
+   * seleccionar el corte actual.
+   */
+  if (
+    year ===
+    tasasIndice.actual?.substring(0, 4)
+  ) {
+
+    corteSelect.value =
+      tasasIndice.actual;
+
+  } else if (cortesDelAnio.length) {
+
+    /*
+     * Para años históricos seleccionamos
+     * el corte más reciente disponible.
+     */
+    corteSelect.value =
+      cortesDelAnio[0].periodo;
   }
 
   actualizarLinksTasas();
 
   console.log(
-    "RISKLAB TASAS: selector inicializado con",
-    tasasIndice.cortes.length,
-    "cortes."
+    "RISKLAB TASAS: año:",
+    year,
+    "cortes:",
+    cortesDelAnio.length
   );
 }
 
 
+
 function initTasasDownloads() {
 
-  const select = $("tasas-corte-select");
+  const yearSelect = $("tasas-year-select");
+  const corteSelect = $("tasas-corte-select");
 
-  if (!select) {
+  if (!yearSelect || !corteSelect) {
     return;
   }
 
-  select.addEventListener(
+  yearSelect.addEventListener(
+    "change",
+    actualizarCortesPorAnio
+  );
+
+  corteSelect.addEventListener(
     "change",
     actualizarLinksTasas
   );
