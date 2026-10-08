@@ -690,20 +690,42 @@ function renderTasasLongTermChart() {
   try {
 
     /*
-     * Convertimos nuevamente los CSV
-     * utilizando los mismos datos ya cargados.
+     * -----------------------------------------------------
+     * 1. Nodos que se mostrarán en el histórico
+     * -----------------------------------------------------
      */
+
+    const nodosHistoricos = [
+      "30",
+      "90",
+      "360",
+      "1800",
+      "5400",
+      "10800"
+    ];
+
+
+    /*
+     * -----------------------------------------------------
+     * 2. Convertir los CSV en matrices
+     * -----------------------------------------------------
+     */
+
     const nominal =
       tasasP00
         .trim()
         .split(/\r?\n/)
-        .map(linea => linea.split(","));
+        .map(linea =>
+          linea.split(",")
+        );
 
     const real =
       tasasP01
         .trim()
         .split(/\r?\n/)
-        .map(linea => linea.split(","));
+        .map(linea =>
+          linea.split(",")
+        );
 
 
     if (
@@ -715,6 +737,12 @@ function renderTasasLongTermChart() {
       );
     }
 
+
+    /*
+     * -----------------------------------------------------
+     * 3. Encabezados
+     * -----------------------------------------------------
+     */
 
     const encabezadosNominal =
       nominal[0].map(valor =>
@@ -734,28 +762,61 @@ function renderTasasLongTermChart() {
       encabezadosReal.indexOf("FECHA");
 
 
-    const indice10800Nominal =
-      encabezadosNominal.indexOf("10800");
-
-    const indice10800Real =
-      encabezadosReal.indexOf("10800");
-
-
     if (
       indiceFechaNominal === -1 ||
-      indiceFechaReal === -1 ||
-      indice10800Nominal === -1 ||
-      indice10800Real === -1
+      indiceFechaReal === -1
     ) {
       throw new Error(
-        "No se encontró FECHA o nodo 10800 en P00/P01."
+        "No se encontró la columna FECHA."
       );
     }
 
 
     /*
-     * Creamos mapas por fecha.
+     * -----------------------------------------------------
+     * 4. Verificar que existan los seis nodos
+     * -----------------------------------------------------
      */
+
+    const indicesNominal = {};
+    const indicesReal = {};
+
+
+    nodosHistoricos.forEach(nodo => {
+
+      indicesNominal[nodo] =
+        encabezadosNominal.indexOf(nodo);
+
+      indicesReal[nodo] =
+        encabezadosReal.indexOf(nodo);
+
+    });
+
+
+    const nodosFaltantes =
+      nodosHistoricos.filter(nodo =>
+        indicesNominal[nodo] === -1 ||
+        indicesReal[nodo] === -1
+      );
+
+
+    if (nodosFaltantes.length) {
+
+      throw new Error(
+        `Faltan nodos en P00/P01: ${
+          nodosFaltantes.join(", ")
+        }`
+      );
+
+    }
+
+
+    /*
+     * -----------------------------------------------------
+     * 5. Crear mapas por fecha
+     * -----------------------------------------------------
+     */
+
     const mapaNominal =
       new Map();
 
@@ -801,9 +862,11 @@ function renderTasasLongTermChart() {
 
 
     /*
-     * Nos quedamos únicamente con las fechas
-     * que existen en ambos archivos.
+     * -----------------------------------------------------
+     * 6. Fechas comunes entre P00 y P01
+     * -----------------------------------------------------
      */
+
     const fechas =
       [...mapaNominal.keys()]
         .filter(fecha =>
@@ -813,70 +876,43 @@ function renderTasasLongTermChart() {
 
 
     if (!fechas.length) {
+
       throw new Error(
         "No existen fechas comunes entre P00 y P01."
       );
+
     }
 
 
     /*
-     * Construimos las dos series del nodo
-     * 10,800 días.
+     * -----------------------------------------------------
+     * 7. Últimos 72 cortes
+     * -----------------------------------------------------
      */
-    const valoresNominal = [];
-    const valoresReal = [];
 
-
-    fechas.forEach(fecha => {
-
-      const filaNominal =
-        mapaNominal.get(fecha);
-
-      const filaReal =
-        mapaReal.get(fecha);
-
-
-      const valorNominal =
-        Number(
-          filaNominal[indice10800Nominal]
-        );
-
-      const valorReal =
-        Number(
-          filaReal[indice10800Real]
-        );
-
-
-      valoresNominal.push(
-        Number.isFinite(valorNominal)
-          ? valorNominal * 100
-          : null
-      );
-
-
-      valoresReal.push(
-        Number.isFinite(valorReal)
-          ? valorReal * 100
-          : null
-      );
-
-    });
+    const fechas72 =
+      fechas.slice(-72);
 
 
     /*
-     * Etiquetas del eje X.
+     * -----------------------------------------------------
+     * 8. Etiquetas del eje X
      *
-     * Se muestran los cortes mensuales.
+     * Conservamos la fecha completa cuando es
+     * necesario y usamos DD/MM para fechas
+     * reconocibles en formato español.
+     * -----------------------------------------------------
      */
+
     const labels =
-      fechas.map(fecha => {
+      fechas72.map(fecha => {
 
         const partes =
           fecha.split("/");
 
         if (partes.length === 3) {
 
-          return `${partes[1]}/${partes[2]}`;
+          return `${partes[0]}/${partes[1]}/${partes[2]}`;
 
         }
 
@@ -886,8 +922,114 @@ function renderTasasLongTermChart() {
 
 
     /*
-     * Destruir gráfico anterior si existe.
+     * -----------------------------------------------------
+     * 9. Construir las 12 series
+     * -----------------------------------------------------
      */
+
+    const datasets = [];
+
+
+    nodosHistoricos.forEach(nodo => {
+
+      /*
+       * -----------------------------
+       * BonosM / P00
+       * -----------------------------
+       */
+
+      const valoresNominal =
+        fechas72.map(fecha => {
+
+          const fila =
+            mapaNominal.get(fecha);
+
+          if (!fila) {
+            return null;
+          }
+
+          const valor =
+            Number(
+              fila[indicesNominal[nodo]]
+            );
+
+          return Number.isFinite(valor)
+            ? valor * 100
+            : null;
+
+        });
+
+
+      datasets.push({
+
+        label:
+          `BonosM · ${Number(nodo).toLocaleString(
+            "es-MX"
+          )} días`,
+
+        data:
+          valoresNominal,
+
+        tension: 0.2,
+
+        spanGaps: true
+
+      });
+
+
+      /*
+       * -----------------------------
+       * RealBruta / P01
+       * -----------------------------
+       */
+
+      const valoresReal =
+        fechas72.map(fecha => {
+
+          const fila =
+            mapaReal.get(fecha);
+
+          if (!fila) {
+            return null;
+          }
+
+          const valor =
+            Number(
+              fila[indicesReal[nodo]]
+            );
+
+          return Number.isFinite(valor)
+            ? valor * 100
+            : null;
+
+        });
+
+
+      datasets.push({
+
+        label:
+          `RealBruta · ${Number(nodo).toLocaleString(
+            "es-MX"
+          )} días`,
+
+        data:
+          valoresReal,
+
+        tension: 0.2,
+
+        spanGaps: true
+
+      });
+
+    });
+
+
+    /*
+     * -----------------------------------------------------
+     * 10. Destruir gráfico anterior
+     * -----------------------------------------------------
+     */
+
     if (
       window.tasasLongTermChart
     ) {
@@ -896,6 +1038,12 @@ function renderTasasLongTermChart() {
 
     }
 
+
+    /*
+     * -----------------------------------------------------
+     * 11. Crear gráfico
+     * -----------------------------------------------------
+     */
 
     window.tasasLongTermChart =
       new Chart(
@@ -908,37 +1056,7 @@ function renderTasasLongTermChart() {
 
             labels,
 
-            datasets: [
-
-              {
-
-                label:
-                  "BonosM · 10,800 días",
-
-                data:
-                  valoresNominal,
-
-                tension: 0.2,
-
-                spanGaps: true
-
-              },
-
-              {
-
-                label:
-                  "RealBruta · 10,800 días",
-
-                data:
-                  valoresReal,
-
-                tension: 0.2,
-
-                spanGaps: true
-
-              }
-
-            ]
+            datasets
 
           },
 
@@ -964,7 +1082,8 @@ function renderTasasLongTermChart() {
 
                   display: true,
 
-                  text: "Cortes mensuales"
+                  text:
+                    "Cortes mensuales · últimos 72"
 
                 },
 
@@ -1004,7 +1123,9 @@ function renderTasasLongTermChart() {
 
               legend: {
 
-                display: true
+                display: true,
+
+                position: "bottom"
 
               },
 
@@ -1013,11 +1134,27 @@ function renderTasasLongTermChart() {
                 callbacks: {
 
                   label:
-                    context =>
-                      `${context.dataset.label}: ` +
-                      `${Number(
-                        context.raw
-                      ).toFixed(4)}%`
+                    context => {
+
+                      if (
+                        context.raw === null ||
+                        context.raw === undefined
+                      ) {
+
+                        return (
+                          `${context.dataset.label}: —`
+                        );
+
+                      }
+
+                      return (
+                        `${context.dataset.label}: ` +
+                        `${Number(
+                          context.raw
+                        ).toFixed(4)}%`
+                      );
+
+                    }
 
                 }
 
@@ -1031,25 +1168,40 @@ function renderTasasLongTermChart() {
       );
 
 
+    /*
+     * -----------------------------------------------------
+     * 12. Diagnóstico
+     * -----------------------------------------------------
+     */
+
     console.log(
-      "RISKLAB T03: histórico 10800 generado."
+      "RISKLAB T03: histórico generado."
     );
 
     console.log(
-      "RISKLAB T03: número de cortes:",
+      "RISKLAB T03: nodos:",
+      nodosHistoricos
+    );
+
+    console.log(
+      "RISKLAB T03: cortes totales:",
       fechas.length
     );
 
     console.log(
-      "RISKLAB T03: primera fecha:",
-      fechas[0]
+      "RISKLAB T03: cortes utilizados:",
+      fechas72.length
     );
 
     console.log(
-      "RISKLAB T03: última fecha:",
-      fechas[fechas.length - 1]
+      "RISKLAB T03: primer corte:",
+      fechas72[0]
     );
 
+    console.log(
+      "RISKLAB T03: último corte:",
+      fechas72[fechas72.length - 1]
+    );
 
   } catch (error) {
 
@@ -1061,7 +1213,6 @@ function renderTasasLongTermChart() {
   }
 
 }
-
 
 function initTasasSelector() {
 
