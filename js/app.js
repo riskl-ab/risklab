@@ -3291,6 +3291,7 @@ async function init() {
   initMandatarioHistoryToggle();
   await loadTasasIndice();
   renderTasasUltimoCorte();
+  initTasasCorteActual();
   initTasasSelector();
   initTasasDownloads();
   
@@ -3340,7 +3341,111 @@ async function loadTasasIndice() {
 }
 
 
+function initTasasCorteActual() {
 
+  const periodoEl =
+    $("tasas-actual-periodo");
+
+  const linkNominal =
+    $("tasas-download-actual-nominal");
+
+  const linkReal =
+    $("tasas-download-actual-real");
+
+  if (
+    !periodoEl ||
+    !linkNominal ||
+    !linkReal
+  ) {
+    console.warn(
+      "RISKLAB TASAS T01: no se encontraron los elementos."
+    );
+    return;
+  }
+
+  if (
+    !tasasIndice ||
+    !tasasIndice.actual ||
+    !Array.isArray(tasasIndice.cortes)
+  ) {
+    periodoEl.textContent =
+      "Corte no disponible";
+
+    return;
+  }
+
+  const periodo =
+    tasasIndice.actual;
+
+  const corte =
+    tasasIndice.cortes.find(
+      item => item.periodo === periodo
+    );
+
+  if (!corte) {
+
+    periodoEl.textContent =
+      "Corte no disponible";
+
+    return;
+  }
+
+  const [anio, mes] =
+    periodo.split("-");
+
+  const meses = [
+    "",
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre"
+  ];
+
+  const nombreMes =
+    meses[Number(mes)];
+
+  periodoEl.textContent =
+    `Corte corriente: ${nombreMes} ${anio}`;
+
+  linkNominal.href =
+    `./data/tasas/${corte.nominal}`;
+
+  linkReal.href =
+    `./data/tasas/${corte.real}`;
+
+  linkNominal.setAttribute(
+    "download",
+    ""
+  );
+
+  linkReal.setAttribute(
+    "download",
+    ""
+  );
+
+  console.log(
+    "RISKLAB T01: corte corriente:",
+    periodo
+  );
+
+  console.log(
+    "RISKLAB T01: nominal:",
+    corte.nominal
+  );
+
+  console.log(
+    "RISKLAB T01: real:",
+    corte.real
+  );
+}
 
 
 
