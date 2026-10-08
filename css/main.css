@@ -1247,3 +1247,46 @@ h3{font-size:14px;font-weight:600}
 .tasas-panel:last-child {
   margin-bottom: 0;
 }
+
+/* =====================================================
+   D01 · ENCABEZADO DE SECCIÓN
+   ===================================================== */
+
+.tasas-section-header {
+  margin-bottom: 10px;
+}
+
+
+.tasas-section-header .panel-index {
+  display: block;
+
+  margin-bottom: 3px;
+
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+
+  color: #4AA3FF;
+}
+
+
+.tasas-section-title {
+  margin: 0;
+
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 600;
+
+  color: #E6EDF3;
+}
+
+
+.tasas-section-subtitle {
+  margin: 3px 0 0;
+
+  font-size: 11px;
+  line-height: 1.4;
+
+  color: #84909C;
+}
+
