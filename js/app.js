@@ -3781,6 +3781,18 @@ function initNavigation() {
         });
 
       }
+      if (
+        item.dataset.view === "riesgo"
+      ) {
+        
+        requestAnimationFrame(() => {
+    
+          console.log(
+            "RISKLAB T03: abriendo gráfico de tasas"
+          );
+    renderTasasHistoryChart();
+  });
+}
 
     });
 
