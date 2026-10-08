@@ -691,7 +691,7 @@ function renderTasasLongTermChart() {
 
     /*
      * -----------------------------------------------------
-     * 1. Nodos que se mostrarán en el histórico
+     * 1. Nodos históricos
      * -----------------------------------------------------
      */
 
@@ -707,7 +707,7 @@ function renderTasasLongTermChart() {
 
     /*
      * -----------------------------------------------------
-     * 2. Convertir los CSV en matrices
+     * 2. Convertir CSV
      * -----------------------------------------------------
      */
 
@@ -774,7 +774,7 @@ function renderTasasLongTermChart() {
 
     /*
      * -----------------------------------------------------
-     * 4. Verificar que existan los seis nodos
+     * 4. Localizar nodos
      * -----------------------------------------------------
      */
 
@@ -813,7 +813,7 @@ function renderTasasLongTermChart() {
 
     /*
      * -----------------------------------------------------
-     * 5. Crear mapas por fecha
+     * 5. Mapas por fecha
      * -----------------------------------------------------
      */
 
@@ -863,7 +863,7 @@ function renderTasasLongTermChart() {
 
     /*
      * -----------------------------------------------------
-     * 6. Fechas comunes entre P00 y P01
+     * 6. Fechas comunes
      * -----------------------------------------------------
      */
 
@@ -897,10 +897,6 @@ function renderTasasLongTermChart() {
     /*
      * -----------------------------------------------------
      * 8. Etiquetas del eje X
-     *
-     * Conservamos la fecha completa cuando es
-     * necesario y usamos DD/MM para fechas
-     * reconocibles en formato español.
      * -----------------------------------------------------
      */
 
@@ -923,18 +919,26 @@ function renderTasasLongTermChart() {
 
     /*
      * -----------------------------------------------------
-     * 9. Construir las 12 series
+     * 9. Crear datasets
+     *
+     * Cada nodo genera DOS datasets:
+     *
+     *   BonosM
+     *   RealBruta
+     *
+     * Los dos quedarán vinculados mediante
+     * el índice del nodo.
      * -----------------------------------------------------
      */
 
     const datasets = [];
 
 
-    nodosHistoricos.forEach(nodo => {
+    nodosHistoricos.forEach((nodo, nodoIndex) => {
 
       /*
        * -----------------------------
-       * BonosM / P00
+       * BonosM
        * -----------------------------
        */
 
@@ -972,14 +976,20 @@ function renderTasasLongTermChart() {
 
         tension: 0.2,
 
-        spanGaps: true
+        spanGaps: true,
+
+        /*
+         * Solamente 30 días comienza visible.
+         */
+        hidden:
+          nodoIndex !== 0
 
       });
 
 
       /*
        * -----------------------------
-       * RealBruta / P01
+       * RealBruta
        * -----------------------------
        */
 
@@ -1017,7 +1027,13 @@ function renderTasasLongTermChart() {
 
         tension: 0.2,
 
-        spanGaps: true
+        spanGaps: true,
+
+        /*
+         * Solamente 30 días comienza visible.
+         */
+        hidden:
+          nodoIndex !== 0
 
       });
 
@@ -1121,11 +1137,13 @@ function renderTasasLongTermChart() {
 
             plugins: {
 
+              /*
+               * Ocultamos la leyenda tradicional
+               * de Chart.js.
+               */
               legend: {
 
-                display: true,
-
-                position: "bottom"
+                display: false
 
               },
 
@@ -1170,7 +1188,227 @@ function renderTasasLongTermChart() {
 
     /*
      * -----------------------------------------------------
-     * 12. Diagnóstico
+     * 12. Crear controles de nodos
+     * -----------------------------------------------------
+     */
+
+    const contenedor =
+      canvas.closest(
+        ".tasas-history-longterm"
+      );
+
+
+    if (!contenedor) {
+
+      console.warn(
+        "RISKLAB T03: no se encontró el contenedor del histórico."
+      );
+
+      return;
+
+    }
+
+
+    /*
+     * Eliminar controles anteriores
+     * para evitar duplicados al volver
+     * a abrir la sección.
+     */
+    const controlesAnteriores =
+      contenedor.querySelector(
+        ".tasas-node-controls"
+      );
+
+
+    if (controlesAnteriores) {
+
+      controlesAnteriores.remove();
+
+    }
+
+
+    /*
+     * Crear nuevo contenedor.
+     */
+    const controles =
+      document.createElement("div");
+
+    controles.className =
+      "tasas-node-controls";
+
+
+    /*
+     * Título de los controles.
+     */
+    const controlesTitulo =
+      document.createElement("div");
+
+    controlesTitulo.className =
+      "tasas-node-controls-title";
+
+    controlesTitulo.textContent =
+      "Nodos";
+
+    controles.appendChild(
+      controlesTitulo
+    );
+
+
+    /*
+     * Botones.
+     */
+    const botones =
+      document.createElement("div");
+
+    botones.className =
+      "tasas-node-buttons";
+
+
+    nodosHistoricos.forEach(
+      (nodo, nodoIndex) => {
+
+        const boton =
+          document.createElement("button");
+
+        boton.type =
+          "button";
+
+        boton.className =
+          "tasas-node-button";
+
+
+        /*
+         * 30 días comienza activo.
+         */
+        if (nodoIndex === 0) {
+
+          boton.classList.add(
+            "active"
+          );
+
+        }
+
+
+        boton.setAttribute(
+          "aria-pressed",
+          String(nodoIndex === 0)
+        );
+
+
+        boton.textContent =
+          `${Number(nodo).toLocaleString(
+            "es-MX"
+          )} días`;
+
+
+        boton.addEventListener(
+          "click",
+          () => {
+
+            const chart =
+              window.tasasLongTermChart;
+
+            if (!chart) {
+              return;
+            }
+
+
+            /*
+             * Estado actual del nodo.
+             */
+            const estaVisible =
+              chart.isDatasetVisible(
+                nodoIndex * 2
+              );
+
+
+            const nuevaVisibilidad =
+              !estaVisible;
+
+
+            /*
+             * Dataset 1:
+             * BonosM
+             */
+            chart.setDatasetVisibility(
+              nodoIndex * 2,
+              nuevaVisibilidad
+            );
+
+
+            /*
+             * Dataset 2:
+             * RealBruta
+             */
+            chart.setDatasetVisibility(
+              nodoIndex * 2 + 1,
+              nuevaVisibilidad
+            );
+
+
+            /*
+             * Estado visual del botón.
+             */
+            boton.classList.toggle(
+              "active",
+              nuevaVisibilidad
+            );
+
+
+            boton.setAttribute(
+              "aria-pressed",
+              String(nuevaVisibilidad)
+            );
+
+
+            chart.update();
+
+          }
+        );
+
+
+        botones.appendChild(
+          boton
+        );
+
+      }
+    );
+
+
+    controles.appendChild(
+      botones
+    );
+
+
+    /*
+     * Insertar los controles justo
+     * antes del gráfico.
+     */
+    const chartWrap =
+      canvas.closest(
+        ".chart-wrap"
+      );
+
+
+    if (chartWrap) {
+
+      chartWrap.parentNode.insertBefore(
+        controles,
+        chartWrap
+      );
+
+    } else {
+
+      contenedor.appendChild(
+        controles
+      );
+
+    }
+
+
+    /*
+     * -----------------------------------------------------
+     * 13. Diagnóstico
      * -----------------------------------------------------
      */
 
@@ -1213,7 +1451,6 @@ function renderTasasLongTermChart() {
   }
 
 }
-
 function initTasasSelector() {
 
   const yearSelect = $("tasas-year-select");
