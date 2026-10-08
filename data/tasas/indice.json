@@ -47,7 +47,6 @@
       "nominal": "nominales/2026/2026-01_N.csv",
       "real": "reales/2026/2026-01_R.csv"
     },
-
     {
       "periodo": "2025-12",
       "nominal": "nominales/2025/2025-12_N.csv",
@@ -108,7 +107,6 @@
       "nominal": "nominales/2025/2025-01_N.csv",
       "real": "reales/2025/2025-01_R.csv"
     },
-
     {
       "periodo": "2024-12",
       "nominal": "nominales/2024/2024-12_N.csv",
@@ -168,6 +166,801 @@
       "periodo": "2024-01",
       "nominal": "nominales/2024/2024-01_N.csv",
       "real": "reales/2024/2024-01_R.csv"
+    },
+    {
+      "periodo": "2023-12",
+      "nominal": "nominales/2023/2023-12_N.csv",
+      "real": "reales/2023/2023-12_R.csv"
+    },
+    {
+      "periodo": "2023-11",
+      "nominal": "nominales/2023/2023-11_N.csv",
+      "real": "reales/2023/2023-11_R.csv"
+    },
+    {
+      "periodo": "2023-10",
+      "nominal": "nominales/2023/2023-10_N.csv",
+      "real": "reales/2023/2023-10_R.csv"
+    },
+    {
+      "periodo": "2023-09",
+      "nominal": "nominales/2023/2023-09_N.csv",
+      "real": "reales/2023/2023-09_R.csv"
+    },
+    {
+      "periodo": "2023-08",
+      "nominal": "nominales/2023/2023-08_N.csv",
+      "real": "reales/2023/2023-08_R.csv"
+    },
+    {
+      "periodo": "2023-07",
+      "nominal": "nominales/2023/2023-07_N.csv",
+      "real": "reales/2023/2023-07_R.csv"
+    },
+    {
+      "periodo": "2023-06",
+      "nominal": "nominales/2023/2023-06_N.csv",
+      "real": "reales/2023/2023-06_R.csv"
+    },
+    {
+      "periodo": "2023-05",
+      "nominal": "nominales/2023/2023-05_N.csv",
+      "real": "reales/2023/2023-05_R.csv"
+    },
+    {
+      "periodo": "2023-04",
+      "nominal": "nominales/2023/2023-04_N.csv",
+      "real": "reales/2023/2023-04_R.csv"
+    },
+    {
+      "periodo": "2023-03",
+      "nominal": "nominales/2023/2023-03_N.csv",
+      "real": "reales/2023/2023-03_R.csv"
+    },
+    {
+      "periodo": "2023-02",
+      "nominal": "nominales/2023/2023-02_N.csv",
+      "real": "reales/2023/2023-02_R.csv"
+    },
+    {
+      "periodo": "2023-01",
+      "nominal": "nominales/2023/2023-01_N.csv",
+      "real": "reales/2023/2023-01_R.csv"
+    },
+    {
+      "periodo": "2022-12",
+      "nominal": "nominales/2022/2022-12_N.csv",
+      "real": "reales/2022/2022-12_R.csv"
+    },
+    {
+      "periodo": "2022-11",
+      "nominal": "nominales/2022/2022-11_N.csv",
+      "real": "reales/2022/2022-11_R.csv"
+    },
+    {
+      "periodo": "2022-10",
+      "nominal": "nominales/2022/2022-10_N.csv",
+      "real": "reales/2022/2022-10_R.csv"
+    },
+    {
+      "periodo": "2022-09",
+      "nominal": "nominales/2022/2022-09_N.csv",
+      "real": "reales/2022/2022-09_R.csv"
+    },
+    {
+      "periodo": "2022-08",
+      "nominal": "nominales/2022/2022-08_N.csv",
+      "real": "reales/2022/2022-08_R.csv"
+    },
+    {
+      "periodo": "2022-07",
+      "nominal": "nominales/2022/2022-07_N.csv",
+      "real": "reales/2022/2022-07_R.csv"
+    },
+    {
+      "periodo": "2022-06",
+      "nominal": "nominales/2022/2022-06_N.csv",
+      "real": "reales/2022/2022-06_R.csv"
+    },
+    {
+      "periodo": "2022-05",
+      "nominal": "nominales/2022/2022-05_N.csv",
+      "real": "reales/2022/2022-05_R.csv"
+    },
+    {
+      "periodo": "2022-04",
+      "nominal": "nominales/2022/2022-04_N.csv",
+      "real": "reales/2022/2022-04_R.csv"
+    },
+    {
+      "periodo": "2022-03",
+      "nominal": "nominales/2022/2022-03_N.csv",
+      "real": "reales/2022/2022-03_R.csv"
+    },
+    {
+      "periodo": "2022-02",
+      "nominal": "nominales/2022/2022-02_N.csv",
+      "real": "reales/2022/2022-02_R.csv"
+    },
+    {
+      "periodo": "2022-01",
+      "nominal": "nominales/2022/2022-01_N.csv",
+      "real": "reales/2022/2022-01_R.csv"
+    },
+    {
+      "periodo": "2021-12",
+      "nominal": "nominales/2021/2021-12_N.csv",
+      "real": "reales/2021/2021-12_R.csv"
+    },
+    {
+      "periodo": "2021-11",
+      "nominal": "nominales/2021/2021-11_N.csv",
+      "real": "reales/2021/2021-11_R.csv"
+    },
+    {
+      "periodo": "2021-10",
+      "nominal": "nominales/2021/2021-10_N.csv",
+      "real": "reales/2021/2021-10_R.csv"
+    },
+    {
+      "periodo": "2021-09",
+      "nominal": "nominales/2021/2021-09_N.csv",
+      "real": "reales/2021/2021-09_R.csv"
+    },
+    {
+      "periodo": "2021-08",
+      "nominal": "nominales/2021/2021-08_N.csv",
+      "real": "reales/2021/2021-08_R.csv"
+    },
+    {
+      "periodo": "2021-07",
+      "nominal": "nominales/2021/2021-07_N.csv",
+      "real": "reales/2021/2021-07_R.csv"
+    },
+    {
+      "periodo": "2021-06",
+      "nominal": "nominales/2021/2021-06_N.csv",
+      "real": "reales/2021/2021-06_R.csv"
+    },
+    {
+      "periodo": "2021-05",
+      "nominal": "nominales/2021/2021-05_N.csv",
+      "real": "reales/2021/2021-05_R.csv"
+    },
+    {
+      "periodo": "2021-04",
+      "nominal": "nominales/2021/2021-04_N.csv",
+      "real": "reales/2021/2021-04_R.csv"
+    },
+    {
+      "periodo": "2021-03",
+      "nominal": "nominales/2021/2021-03_N.csv",
+      "real": "reales/2021/2021-03_R.csv"
+    },
+    {
+      "periodo": "2021-02",
+      "nominal": "nominales/2021/2021-02_N.csv",
+      "real": "reales/2021/2021-02_R.csv"
+    },
+    {
+      "periodo": "2021-01",
+      "nominal": "nominales/2021/2021-01_N.csv",
+      "real": "reales/2021/2021-01_R.csv"
+    },
+    {
+      "periodo": "2020-12",
+      "nominal": "nominales/2020/2020-12_N.csv",
+      "real": "reales/2020/2020-12_R.csv"
+    },
+    {
+      "periodo": "2020-11",
+      "nominal": "nominales/2020/2020-11_N.csv",
+      "real": "reales/2020/2020-11_R.csv"
+    },
+    {
+      "periodo": "2020-10",
+      "nominal": "nominales/2020/2020-10_N.csv",
+      "real": "reales/2020/2020-10_R.csv"
+    },
+    {
+      "periodo": "2020-09",
+      "nominal": "nominales/2020/2020-09_N.csv",
+      "real": "reales/2020/2020-09_R.csv"
+    },
+    {
+      "periodo": "2020-08",
+      "nominal": "nominales/2020/2020-08_N.csv",
+      "real": "reales/2020/2020-08_R.csv"
+    },
+    {
+      "periodo": "2020-07",
+      "nominal": "nominales/2020/2020-07_N.csv",
+      "real": "reales/2020/2020-07_R.csv"
+    },
+    {
+      "periodo": "2020-06",
+      "nominal": "nominales/2020/2020-06_N.csv",
+      "real": "reales/2020/2020-06_R.csv"
+    },
+    {
+      "periodo": "2020-05",
+      "nominal": "nominales/2020/2020-05_N.csv",
+      "real": "reales/2020/2020-05_R.csv"
+    },
+    {
+      "periodo": "2020-04",
+      "nominal": "nominales/2020/2020-04_N.csv",
+      "real": "reales/2020/2020-04_R.csv"
+    },
+    {
+      "periodo": "2020-03",
+      "nominal": "nominales/2020/2020-03_N.csv",
+      "real": "reales/2020/2020-03_R.csv"
+    },
+    {
+      "periodo": "2020-02",
+      "nominal": "nominales/2020/2020-02_N.csv",
+      "real": "reales/2020/2020-02_R.csv"
+    },
+    {
+      "periodo": "2020-01",
+      "nominal": "nominales/2020/2020-01_N.csv",
+      "real": "reales/2020/2020-01_R.csv"
+    },
+    {
+      "periodo": "2019-12",
+      "nominal": "nominales/2019/2019-12_N.csv",
+      "real": "reales/2019/2019-12_R.csv"
+    },
+    {
+      "periodo": "2019-11",
+      "nominal": "nominales/2019/2019-11_N.csv",
+      "real": "reales/2019/2019-11_R.csv"
+    },
+    {
+      "periodo": "2019-10",
+      "nominal": "nominales/2019/2019-10_N.csv",
+      "real": "reales/2019/2019-10_R.csv"
+    },
+    {
+      "periodo": "2019-09",
+      "nominal": "nominales/2019/2019-09_N.csv",
+      "real": "reales/2019/2019-09_R.csv"
+    },
+    {
+      "periodo": "2019-08",
+      "nominal": "nominales/2019/2019-08_N.csv",
+      "real": "reales/2019/2019-08_R.csv"
+    },
+    {
+      "periodo": "2019-07",
+      "nominal": "nominales/2019/2019-07_N.csv",
+      "real": "reales/2019/2019-07_R.csv"
+    },
+    {
+      "periodo": "2019-06",
+      "nominal": "nominales/2019/2019-06_N.csv",
+      "real": "reales/2019/2019-06_R.csv"
+    },
+    {
+      "periodo": "2019-05",
+      "nominal": "nominales/2019/2019-05_N.csv",
+      "real": "reales/2019/2019-05_R.csv"
+    },
+    {
+      "periodo": "2019-04",
+      "nominal": "nominales/2019/2019-04_N.csv",
+      "real": "reales/2019/2019-04_R.csv"
+    },
+    {
+      "periodo": "2019-03",
+      "nominal": "nominales/2019/2019-03_N.csv",
+      "real": "reales/2019/2019-03_R.csv"
+    },
+    {
+      "periodo": "2019-02",
+      "nominal": "nominales/2019/2019-02_N.csv",
+      "real": "reales/2019/2019-02_R.csv"
+    },
+    {
+      "periodo": "2019-01",
+      "nominal": "nominales/2019/2019-01_N.csv",
+      "real": "reales/2019/2019-01_R.csv"
+    },
+    {
+      "periodo": "2018-12",
+      "nominal": "nominales/2018/2018-12_N.csv",
+      "real": "reales/2018/2018-12_R.csv"
+    },
+    {
+      "periodo": "2018-11",
+      "nominal": "nominales/2018/2018-11_N.csv",
+      "real": "reales/2018/2018-11_R.csv"
+    },
+    {
+      "periodo": "2018-10",
+      "nominal": "nominales/2018/2018-10_N.csv",
+      "real": "reales/2018/2018-10_R.csv"
+    },
+    {
+      "periodo": "2018-09",
+      "nominal": "nominales/2018/2018-09_N.csv",
+      "real": "reales/2018/2018-09_R.csv"
+    },
+    {
+      "periodo": "2018-08",
+      "nominal": "nominales/2018/2018-08_N.csv",
+      "real": "reales/2018/2018-08_R.csv"
+    },
+    {
+      "periodo": "2018-07",
+      "nominal": "nominales/2018/2018-07_N.csv",
+      "real": "reales/2018/2018-07_R.csv"
+    },
+    {
+      "periodo": "2018-06",
+      "nominal": "nominales/2018/2018-06_N.csv",
+      "real": "reales/2018/2018-06_R.csv"
+    },
+    {
+      "periodo": "2018-05",
+      "nominal": "nominales/2018/2018-05_N.csv",
+      "real": "reales/2018/2018-05_R.csv"
+    },
+    {
+      "periodo": "2018-04",
+      "nominal": "nominales/2018/2018-04_N.csv",
+      "real": "reales/2018/2018-04_R.csv"
+    },
+    {
+      "periodo": "2018-03",
+      "nominal": "nominales/2018/2018-03_N.csv",
+      "real": "reales/2018/2018-03_R.csv"
+    },
+    {
+      "periodo": "2018-02",
+      "nominal": "nominales/2018/2018-02_N.csv",
+      "real": "reales/2018/2018-02_R.csv"
+    },
+    {
+      "periodo": "2018-01",
+      "nominal": "nominales/2018/2018-01_N.csv",
+      "real": "reales/2018/2018-01_R.csv"
+    },
+    {
+      "periodo": "2017-12",
+      "nominal": "nominales/2017/2017-12_N.csv",
+      "real": "reales/2017/2017-12_R.csv"
+    },
+    {
+      "periodo": "2017-11",
+      "nominal": "nominales/2017/2017-11_N.csv",
+      "real": "reales/2017/2017-11_R.csv"
+    },
+    {
+      "periodo": "2017-10",
+      "nominal": "nominales/2017/2017-10_N.csv",
+      "real": "reales/2017/2017-10_R.csv"
+    },
+    {
+      "periodo": "2017-09",
+      "nominal": "nominales/2017/2017-09_N.csv",
+      "real": "reales/2017/2017-09_R.csv"
+    },
+    {
+      "periodo": "2017-08",
+      "nominal": "nominales/2017/2017-08_N.csv",
+      "real": "reales/2017/2017-08_R.csv"
+    },
+    {
+      "periodo": "2017-07",
+      "nominal": "nominales/2017/2017-07_N.csv",
+      "real": "reales/2017/2017-07_R.csv"
+    },
+    {
+      "periodo": "2017-06",
+      "nominal": "nominales/2017/2017-06_N.csv",
+      "real": "reales/2017/2017-06_R.csv"
+    },
+    {
+      "periodo": "2017-05",
+      "nominal": "nominales/2017/2017-05_N.csv",
+      "real": "reales/2017/2017-05_R.csv"
+    },
+    {
+      "periodo": "2017-04",
+      "nominal": "nominales/2017/2017-04_N.csv",
+      "real": "reales/2017/2017-04_R.csv"
+    },
+    {
+      "periodo": "2017-03",
+      "nominal": "nominales/2017/2017-03_N.csv",
+      "real": "reales/2017/2017-03_R.csv"
+    },
+    {
+      "periodo": "2017-02",
+      "nominal": "nominales/2017/2017-02_N.csv",
+      "real": "reales/2017/2017-02_R.csv"
+    },
+    {
+      "periodo": "2017-01",
+      "nominal": "nominales/2017/2017-01_N.csv",
+      "real": "reales/2017/2017-01_R.csv"
+    },
+    {
+      "periodo": "2016-12",
+      "nominal": "nominales/2016/2016-12_N.csv",
+      "real": "reales/2016/2016-12_R.csv"
+    },
+    {
+      "periodo": "2016-11",
+      "nominal": "nominales/2016/2016-11_N.csv",
+      "real": "reales/2016/2016-11_R.csv"
+    },
+    {
+      "periodo": "2016-10",
+      "nominal": "nominales/2016/2016-10_N.csv",
+      "real": "reales/2016/2016-10_R.csv"
+    },
+    {
+      "periodo": "2016-09",
+      "nominal": "nominales/2016/2016-09_N.csv",
+      "real": "reales/2016/2016-09_R.csv"
+    },
+    {
+      "periodo": "2016-08",
+      "nominal": "nominales/2016/2016-08_N.csv",
+      "real": "reales/2016/2016-08_R.csv"
+    },
+    {
+      "periodo": "2016-07",
+      "nominal": "nominales/2016/2016-07_N.csv",
+      "real": "reales/2016/2016-07_R.csv"
+    },
+    {
+      "periodo": "2016-06",
+      "nominal": "nominales/2016/2016-06_N.csv",
+      "real": "reales/2016/2016-06_R.csv"
+    },
+    {
+      "periodo": "2016-05",
+      "nominal": "nominales/2016/2016-05_N.csv",
+      "real": "reales/2016/2016-05_R.csv"
+    },
+    {
+      "periodo": "2016-04",
+      "nominal": "nominales/2016/2016-04_N.csv",
+      "real": "reales/2016/2016-04_R.csv"
+    },
+    {
+      "periodo": "2016-03",
+      "nominal": "nominales/2016/2016-03_N.csv",
+      "real": "reales/2016/2016-03_R.csv"
+    },
+    {
+      "periodo": "2016-02",
+      "nominal": "nominales/2016/2016-02_N.csv",
+      "real": "reales/2016/2016-02_R.csv"
+    },
+    {
+      "periodo": "2016-01",
+      "nominal": "nominales/2016/2016-01_N.csv",
+      "real": "reales/2016/2016-01_R.csv"
+    },
+    {
+      "periodo": "2015-12",
+      "nominal": "nominales/2015/2015-12_N.csv",
+      "real": "reales/2015/2015-12_R.csv"
+    },
+    {
+      "periodo": "2015-11",
+      "nominal": "nominales/2015/2015-11_N.csv",
+      "real": "reales/2015/2015-11_R.csv"
+    },
+    {
+      "periodo": "2015-10",
+      "nominal": "nominales/2015/2015-10_N.csv",
+      "real": "reales/2015/2015-10_R.csv"
+    },
+    {
+      "periodo": "2015-09",
+      "nominal": "nominales/2015/2015-09_N.csv",
+      "real": "reales/2015/2015-09_R.csv"
+    },
+    {
+      "periodo": "2015-08",
+      "nominal": "nominales/2015/2015-08_N.csv",
+      "real": "reales/2015/2015-08_R.csv"
+    },
+    {
+      "periodo": "2015-07",
+      "nominal": "nominales/2015/2015-07_N.csv",
+      "real": "reales/2015/2015-07_R.csv"
+    },
+    {
+      "periodo": "2015-06",
+      "nominal": "nominales/2015/2015-06_N.csv",
+      "real": "reales/2015/2015-06_R.csv"
+    },
+    {
+      "periodo": "2015-05",
+      "nominal": "nominales/2015/2015-05_N.csv",
+      "real": "reales/2015/2015-05_R.csv"
+    },
+    {
+      "periodo": "2015-04",
+      "nominal": "nominales/2015/2015-04_N.csv",
+      "real": "reales/2015/2015-04_R.csv"
+    },
+    {
+      "periodo": "2015-03",
+      "nominal": "nominales/2015/2015-03_N.csv",
+      "real": "reales/2015/2015-03_R.csv"
+    },
+    {
+      "periodo": "2015-02",
+      "nominal": "nominales/2015/2015-02_N.csv",
+      "real": "reales/2015/2015-02_R.csv"
+    },
+    {
+      "periodo": "2015-01",
+      "nominal": "nominales/2015/2015-01_N.csv",
+      "real": "reales/2015/2015-01_R.csv"
+    },
+    {
+      "periodo": "2014-12",
+      "nominal": "nominales/2014/2014-12_N.csv",
+      "real": "reales/2014/2014-12_R.csv"
+    },
+    {
+      "periodo": "2014-11",
+      "nominal": "nominales/2014/2014-11_N.csv",
+      "real": "reales/2014/2014-11_R.csv"
+    },
+    {
+      "periodo": "2014-10",
+      "nominal": "nominales/2014/2014-10_N.csv",
+      "real": "reales/2014/2014-10_R.csv"
+    },
+    {
+      "periodo": "2014-09",
+      "nominal": "nominales/2014/2014-09_N.csv",
+      "real": "reales/2014/2014-09_R.csv"
+    },
+    {
+      "periodo": "2014-08",
+      "nominal": "nominales/2014/2014-08_N.csv",
+      "real": "reales/2014/2014-08_R.csv"
+    },
+    {
+      "periodo": "2014-07",
+      "nominal": "nominales/2014/2014-07_N.csv",
+      "real": "reales/2014/2014-07_R.csv"
+    },
+    {
+      "periodo": "2014-06",
+      "nominal": "nominales/2014/2014-06_N.csv",
+      "real": "reales/2014/2014-06_R.csv"
+    },
+    {
+      "periodo": "2014-05",
+      "nominal": "nominales/2014/2014-05_N.csv",
+      "real": "reales/2014/2014-05_R.csv"
+    },
+    {
+      "periodo": "2014-04",
+      "nominal": "nominales/2014/2014-04_N.csv",
+      "real": "reales/2014/2014-04_R.csv"
+    },
+    {
+      "periodo": "2014-03",
+      "nominal": "nominales/2014/2014-03_N.csv",
+      "real": "reales/2014/2014-03_R.csv"
+    },
+    {
+      "periodo": "2014-02",
+      "nominal": "nominales/2014/2014-02_N.csv",
+      "real": "reales/2014/2014-02_R.csv"
+    },
+    {
+      "periodo": "2014-01",
+      "nominal": "nominales/2014/2014-01_N.csv",
+      "real": "reales/2014/2014-01_R.csv"
+    },
+    {
+      "periodo": "2013-12",
+      "nominal": "nominales/2013/2013-12_N.csv",
+      "real": "reales/2013/2013-12_R.csv"
+    },
+    {
+      "periodo": "2013-11",
+      "nominal": "nominales/2013/2013-11_N.csv",
+      "real": "reales/2013/2013-11_R.csv"
+    },
+    {
+      "periodo": "2013-10",
+      "nominal": "nominales/2013/2013-10_N.csv",
+      "real": "reales/2013/2013-10_R.csv"
+    },
+    {
+      "periodo": "2013-09",
+      "nominal": "nominales/2013/2013-09_N.csv",
+      "real": "reales/2013/2013-09_R.csv"
+    },
+    {
+      "periodo": "2013-08",
+      "nominal": "nominales/2013/2013-08_N.csv",
+      "real": "reales/2013/2013-08_R.csv"
+    },
+    {
+      "periodo": "2013-07",
+      "nominal": "nominales/2013/2013-07_N.csv",
+      "real": "reales/2013/2013-07_R.csv"
+    },
+    {
+      "periodo": "2013-06",
+      "nominal": "nominales/2013/2013-06_N.csv",
+      "real": "reales/2013/2013-06_R.csv"
+    },
+    {
+      "periodo": "2013-05",
+      "nominal": "nominales/2013/2013-05_N.csv",
+      "real": "reales/2013/2013-05_R.csv"
+    },
+    {
+      "periodo": "2013-04",
+      "nominal": "nominales/2013/2013-04_N.csv",
+      "real": "reales/2013/2013-04_R.csv"
+    },
+    {
+      "periodo": "2013-03",
+      "nominal": "nominales/2013/2013-03_N.csv",
+      "real": "reales/2013/2013-03_R.csv"
+    },
+    {
+      "periodo": "2013-02",
+      "nominal": "nominales/2013/2013-02_N.csv",
+      "real": "reales/2013/2013-02_R.csv"
+    },
+    {
+      "periodo": "2013-01",
+      "nominal": "nominales/2013/2013-01_N.csv",
+      "real": "reales/2013/2013-01_R.csv"
+    },
+    {
+      "periodo": "2012-12",
+      "nominal": "nominales/2012/2012-12_N.csv",
+      "real": "reales/2012/2012-12_R.csv"
+    },
+    {
+      "periodo": "2012-11",
+      "nominal": "nominales/2012/2012-11_N.csv",
+      "real": "reales/2012/2012-11_R.csv"
+    },
+    {
+      "periodo": "2012-10",
+      "nominal": "nominales/2012/2012-10_N.csv",
+      "real": "reales/2012/2012-10_R.csv"
+    },
+    {
+      "periodo": "2012-09",
+      "nominal": "nominales/2012/2012-09_N.csv",
+      "real": "reales/2012/2012-09_R.csv"
+    },
+    {
+      "periodo": "2012-08",
+      "nominal": "nominales/2012/2012-08_N.csv",
+      "real": "reales/2012/2012-08_R.csv"
+    },
+    {
+      "periodo": "2012-07",
+      "nominal": "nominales/2012/2012-07_N.csv",
+      "real": "reales/2012/2012-07_R.csv"
+    },
+    {
+      "periodo": "2012-06",
+      "nominal": "nominales/2012/2012-06_N.csv",
+      "real": "reales/2012/2012-06_R.csv"
+    },
+    {
+      "periodo": "2012-05",
+      "nominal": "nominales/2012/2012-05_N.csv",
+      "real": "reales/2012/2012-05_R.csv"
+    },
+    {
+      "periodo": "2012-04",
+      "nominal": "nominales/2012/2012-04_N.csv",
+      "real": "reales/2012/2012-04_R.csv"
+    },
+    {
+      "periodo": "2012-03",
+      "nominal": "nominales/2012/2012-03_N.csv",
+      "real": "reales/2012/2012-03_R.csv"
+    },
+    {
+      "periodo": "2012-02",
+      "nominal": "nominales/2012/2012-02_N.csv",
+      "real": "reales/2012/2012-02_R.csv"
+    },
+    {
+      "periodo": "2012-01",
+      "nominal": "nominales/2012/2012-01_N.csv",
+      "real": "reales/2012/2012-01_R.csv"
+    },
+    {
+      "periodo": "2011-12",
+      "nominal": "nominales/2011/2011-12_N.csv",
+      "real": "reales/2011/2011-12_R.csv"
+    },
+    {
+      "periodo": "2011-11",
+      "nominal": "nominales/2011/2011-11_N.csv",
+      "real": "reales/2011/2011-11_R.csv"
+    },
+    {
+      "periodo": "2011-10",
+      "nominal": "nominales/2011/2011-10_N.csv",
+      "real": "reales/2011/2011-10_R.csv"
+    },
+    {
+      "periodo": "2011-09",
+      "nominal": "nominales/2011/2011-09_N.csv",
+      "real": "reales/2011/2011-09_R.csv"
+    },
+    {
+      "periodo": "2011-08",
+      "nominal": "nominales/2011/2011-08_N.csv",
+      "real": "reales/2011/2011-08_R.csv"
+    },
+    {
+      "periodo": "2011-07",
+      "nominal": "nominales/2011/2011-07_N.csv",
+      "real": "reales/2011/2011-07_R.csv"
+    },
+    {
+      "periodo": "2011-06",
+      "nominal": "nominales/2011/2011-06_N.csv",
+      "real": "reales/2011/2011-06_R.csv"
+    },
+    {
+      "periodo": "2011-05",
+      "nominal": "nominales/2011/2011-05_N.csv",
+      "real": "reales/2011/2011-05_R.csv"
+    },
+    {
+      "periodo": "2011-04",
+      "nominal": "nominales/2011/2011-04_N.csv",
+      "real": "reales/2011/2011-04_R.csv"
+    },
+    {
+      "periodo": "2011-03",
+      "nominal": "nominales/2011/2011-03_N.csv",
+      "real": "reales/2011/2011-03_R.csv"
+    },
+    {
+      "periodo": "2011-02",
+      "nominal": "nominales/2011/2011-02_N.csv",
+      "real": "reales/2011/2011-02_R.csv"
+    },
+    {
+      "periodo": "2011-01",
+      "nominal": "nominales/2011/2011-01_N.csv",
+      "real": "reales/2011/2011-01_R.csv"
+    },
+    {
+      "periodo": "2010-12",
+      "nominal": "nominales/2010/2010-12_N.csv",
+      "real": "reales/2010/2010-12_R.csv"
+    },
+    {
+      "periodo": "2010-11",
+      "nominal": "nominales/2010/2010-11_N.csv",
+      "real": "reales/2010/2010-11_R.csv"
+    },
+    {
+      "periodo": "2010-10",
+      "nominal": "nominales/2010/2010-10_N.csv",
+      "real": "reales/2010/2010-10_R.csv"
     }
   ]
 }
