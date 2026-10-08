@@ -219,9 +219,9 @@ async function renderTasasHistoryChart() {
     const [respuestaNominal, respuestaReal] =
       await Promise.all([
 
-        fetch("./data/tasas/P00%20-%20G00.csv"),
+        fetch("./data/tasas/G00%20-%20P00.csv"),
 
-        fetch("./data/tasas/P01%20-%20G00.csv")
+        fetch("./data/tasas/G00%20-%20P01.csv")
 
       ]);
 
