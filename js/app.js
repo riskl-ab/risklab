@@ -126,6 +126,79 @@ function actualizarLinksTasas() {
   );
 }
 
+function renderTasasUltimoCorte() {
+
+  const fecha = $("tasas-ultimo-fecha");
+  const status = $("tasas-status");
+  const body = $("tasas-ultimo-body");
+
+  if (!fecha || !status || !body) {
+    return;
+  }
+
+  if (
+    !tasasIndice ||
+    !Array.isArray(tasasIndice.cortes) ||
+    !tasasIndice.actual
+  ) {
+
+    fecha.textContent = "Sin información";
+
+    status.textContent = "SIN DATOS";
+
+    body.innerHTML = `
+      <tr>
+        <td colspan="3">
+          No se pudo cargar el corte corriente.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  const periodo = tasasIndice.actual;
+
+  const corte = tasasIndice.cortes.find(
+    item => item.periodo === periodo
+  );
+
+  if (!corte) {
+
+    fecha.textContent = "Sin información";
+
+    status.textContent = "SIN DATOS";
+
+    body.innerHTML = `
+      <tr>
+        <td colspan="3">
+          No se encontró el corte ${periodo}.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  fecha.textContent =
+    `Corte corriente: ${periodo}`;
+
+  status.textContent = "ACTUAL";
+
+  body.innerHTML = `
+    <tr>
+      <td colspan="3">
+        Corte disponible: ${periodo}
+      </td>
+    </tr>
+  `;
+
+  console.log(
+    "RISKLAB T01: corte corriente:",
+    corte
+  );
+}
+
 
 function initTasasSelector() {
 
@@ -3217,6 +3290,7 @@ async function init() {
   initMandatariosCardToggle();
   initMandatarioHistoryToggle();
   await loadTasasIndice();
+  renderTasasUltimoCorte();
   initTasasSelector();
   initTasasDownloads();
   
