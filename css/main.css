@@ -1096,21 +1096,65 @@ h3{font-size:14px;font-weight:600}
   padding-bottom: 4px;
 }
 
+/* =====================================================
+   T02 · ENCABEZADO DESPLEGABLE
+   ===================================================== */
+
 .tasas-panel-toggle {
+  appearance: none;
+  -webkit-appearance: none;
+
   width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+  border-radius: 0;
+
+  background: transparent;
+
+  color: inherit;
+
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+
   text-align: left;
 
   cursor: pointer;
+
+  box-shadow: none;
 }
 
 
-.tasas-panel-toggle:hover .panel-title {
-  color: #E6EDF3;
+.tasas-panel-toggle:hover {
+  background: transparent;
+}
+
+
+.tasas-panel-toggle:focus {
+  outline: none;
+}
+
+
+.tasas-panel-toggle:focus-visible {
+  outline: 1px solid #4A8F73;
+  outline-offset: 3px;
 }
 
 
 .tasas-panel-toggle .panel-title {
   transition: color 0.15s ease;
+}
+
+
+.tasas-panel-toggle:hover .panel-title {
+  color: #E6EDF3;
 }
 
 
