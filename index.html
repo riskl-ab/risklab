@@ -634,67 +634,86 @@
        T02 · CONSULTA Y DESCARGA
        ===================================================== -->
 
-  <section class="panel tasas-panel">
+<section class="panel tasas-panel">
 
-    <div class="panel-header">
+  <button
+    id="tasas-historico-toggle"
+    class="panel-header tasas-panel-toggle"
+    type="button"
+    aria-expanded="false"
+  >
 
-      <div>
-        <span class="panel-index">T02</span>
+    <div>
 
-        <h3 class="panel-title">
-          Consulta y descarga
-        </h3>
+      <span class="panel-index">T02</span>
 
-        <p class="panel-subtitle">
-          Selecciona el corte mensual disponible
-        </p>
+      <h3 class="panel-title">
+        Consulta y descarga
+      </h3>
 
-      </div>
+      <p class="panel-subtitle">
+        Selecciona el corte mensual disponible
+      </p>
 
     </div>
 
+    <span
+      id="tasas-historico-arrow"
+      class="tasas-history-arrow"
+    >
+      ▾
+    </span>
+
+  </button>
+
+
+  <div
+    id="tasas-historico-content"
+    class="tasas-historico-content"
+    hidden
+  >
 
     <div class="tasas-download">
 
-<div class="tasas-field">
+      <div class="tasas-field">
 
-  <label for="tasas-year-select">
-    Año
-  </label>
+        <label for="tasas-year-select">
+          Año
+        </label>
 
-  <select
-    id="tasas-year-select"
-    class="tasas-select"
-  >
+        <select
+          id="tasas-year-select"
+          class="tasas-select"
+        >
 
-    <option value="">
-      Cargando años...
-    </option>
+          <option value="">
+            Cargando años...
+          </option>
 
-  </select>
+        </select>
 
-</div>
+      </div>
 
 
-<div class="tasas-field">
+      <div class="tasas-field">
 
-  <label for="tasas-corte-select">
-    Corte
-  </label>
+        <label for="tasas-corte-select">
+          Corte
+        </label>
 
-  <select
-    id="tasas-corte-select"
-    class="tasas-select"
-    disabled
-  >
+        <select
+          id="tasas-corte-select"
+          class="tasas-select"
+          disabled
+        >
 
-    <option value="">
-      Selecciona un año
-    </option>
+          <option value="">
+            Selecciona un año
+          </option>
 
-  </select>
+        </select>
 
-</div>
+      </div>
 
 
       <div class="tasas-download-actions">
@@ -721,7 +740,9 @@
 
     </div>
 
-  </section>
+  </div>
+
+</section>
 
 
   <!-- =====================================================
