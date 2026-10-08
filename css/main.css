@@ -1236,4 +1236,14 @@ h3{font-size:14px;font-weight:600}
   outline-offset: 2px;
 }
 
+/* =====================================================
+   BASES DE DATOS · ESPACIADO DE PANELES
+   ===================================================== */
 
+.tasas-panel {
+  margin-bottom: 14px;
+}
+
+.tasas-panel:last-child {
+  margin-bottom: 0;
+}
