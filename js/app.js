@@ -868,11 +868,35 @@ function renderTasasLongTermChart() {
      */
 
     const fechas =
-      [...mapaNominal.keys()]
-        .filter(fecha =>
-          mapaReal.has(fecha)
-        )
-        .sort();
+  [...mapaNominal.keys()]
+    .filter(fecha =>
+      mapaReal.has(fecha)
+    )
+    .sort((a, b) => {
+
+      const [diaA, mesA, anioA] =
+        a.split("/").map(Number);
+
+      const [diaB, mesB, anioB] =
+        b.split("/").map(Number);
+
+      const fechaA =
+        new Date(
+          anioA,
+          mesA - 1,
+          diaA
+        );
+
+      const fechaB =
+        new Date(
+          anioB,
+          mesB - 1,
+          diaB
+        );
+
+      return fechaA - fechaB;
+
+    });
 
 
     if (!fechas.length) {
