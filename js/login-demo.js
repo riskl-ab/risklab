@@ -10,7 +10,7 @@
 
   const DEMO_USERS = {
     "alugoga": {
-      password: "alugoga",
+      password: "216267899",
       label: "Jefatura de Riesgos Financieros"
     },
     "ovallejomo": {
@@ -18,7 +18,11 @@
       label: "Dirección de Análisis"
     },
     "alandinja": {
-      password: "alandinja",
+      password: "Onedirection",
+      label: "Coordinación de Estudios Actuariales"
+    },
+    "aramirezza": {
+      password: "aramirezza",
       label: "Coordinación de Estudios Actuariales"
     },
     "hgomezre": {
