@@ -62,8 +62,8 @@
           <div class="brand-sub">RIESGOS FINANCIEROS</div>
         </div>
       </div>
-
-      <nav class="nav" aria-label="Navegación principal">
+      
+      <nav class="nav" id="mobile-navigation" aria-label="Navegación principal">
         <div class="nav-group-title">Monitor</div>
         <button class="nav-item active" data-view="visor"><span>01</span> Visor</button>
         <button class="nav-item" data-view="historico"><span>02</span> Histórico</button>
@@ -86,6 +86,19 @@
 
     <main class="main">
       <header class="topbar">
+        
+<button
+  id="mobile-nav-toggle"
+  class="mobile-nav-toggle"
+  type="button"
+  aria-label="Abrir menú de navegación"
+  aria-expanded="false"
+  aria-controls="mobile-navigation"
+>
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
         <div>
           <div class="eyebrow">INSTITUTO DE SEGURIDAD SOCIAL DEL ESTADO DE GUANAJUATO</div>
           <h1 id="view-title">Visor</h1>
