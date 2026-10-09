@@ -4676,7 +4676,12 @@ async function init() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", init);
+// La aplicación solo consulta API y datos después de superar el login de demostración.
+window.addEventListener("risklab:authenticated", () => {
+  init().catch(error => {
+    console.error("RISKLAB: error al iniciar la aplicación", error);
+  });
+}, { once: true });
 
 
 async function loadTasasIndice() {

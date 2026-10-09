@@ -7,10 +7,54 @@
   <link rel="icon" type="image/png" href="./assets/favicon.png">
   <link rel="stylesheet" href="./css/main.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+  <script src="./js/login-demo.js" defer></script>
   <script src="./js/app.js" defer></script>
 </head>
-<body>
-  <div class="app-shell">
+<body class="login-locked">
+  <div id="login-overlay" class="login-overlay" role="dialog" aria-modal="true" aria-labelledby="login-title">
+    <div class="login-card">
+      <div class="login-brand">
+        <img src="./assets/favicon.png" alt="" class="login-favicon">
+        <div>
+          <div class="login-brand-name">RiskLab</div>
+          <div class="login-brand-caption">RISK MONITOR · ACCESO RESTRINGIDO</div>
+        </div>
+      </div>
+
+      <div class="login-divider"></div>
+
+      <div class="login-intro">
+        <div class="login-lock" aria-hidden="true">⌑</div>
+        <h1 id="login-title">Iniciar sesión</h1>
+        <p>Ingresa tus credenciales para continuar</p>
+      </div>
+
+      <form id="login-form" class="login-form" novalidate>
+        <label for="login-username">Usuario</label>
+        <input id="login-username" name="username" type="text" autocomplete="username"
+          placeholder="Tu usuario" required autofocus>
+        <label for="login-password">Contraseña</label>
+        <div class="login-password-wrap">
+          <input id="login-password" name="password" type="password" autocomplete="current-password"
+            placeholder="Tu contraseña" required>
+          <button id="login-password-toggle" class="login-password-toggle" type="button"
+            aria-label="Mostrar contraseña">Ver</button>
+        </div>
+        <p id="login-error" class="login-error" role="alert" hidden>Usuario o contraseña incorrectos.</p>
+        <button class="login-submit" type="submit">
+          <span>Acceder a RiskLab</span><span aria-hidden="true">→</span>
+        </button>
+      </form>
+
+      <div class="login-foot">
+        <span class="login-status-dot"></span>
+        <span>Entorno de demostración</span>
+      </div>
+    </div>
+    <p class="login-disclaimer">Prototipo de acceso · No protege los datos del servidor</p>
+  </div>
+
+  <div class="app-shell" id="risklab-app">
     <aside class="sidebar">
       <div class="brand">
         <div class="brand-mark"><img src="./assets/favicon.png" alt="RiskLab"></div>
