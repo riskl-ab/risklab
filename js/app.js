@@ -2757,7 +2757,7 @@ function renderPortfolioHistoryChart(history) {
    */
   const registros =
     Array.isArray(history)
-      ? history.slice(-90)
+      ? history.slice(-50) //portafolios aquí se acota la diferencia entre historia data que trae el año bursatil 
       : [];
 
   if (!registros.length) {
