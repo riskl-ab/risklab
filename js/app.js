@@ -4533,9 +4533,55 @@ function renderPortfolios() {
 
 function initNavigation() {
 
+  
+  const mobileToggle = $("mobile-nav-toggle");
+  const appShell = document.querySelector(".app-shell");
+
+  function setMobileNavigation(open) {
+    if (!mobileToggle || !appShell) return;
+
+    appShell.classList.toggle("mobile-nav-open", open);
+
+    mobileToggle.setAttribute(
+      "aria-expanded",
+      String(open)
+    );
+
+    mobileToggle.setAttribute(
+      "aria-label",
+      open
+        ? "Cerrar menú de navegación"
+        : "Abrir menú de navegación"
+    );
+  }
+
+  if (mobileToggle && !mobileToggle.dataset.initialized) {
+    mobileToggle.dataset.initialized = "true";
+
+    mobileToggle.addEventListener("click", () => {
+      const isOpen =
+        mobileToggle.getAttribute("aria-expanded") === "true";
+
+      setMobileNavigation(!isOpen);
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        setMobileNavigation(false);
+      }
+    });
+  }
+
+
+
+  
+
   document.querySelectorAll(".nav-item").forEach(item => {
 
     item.addEventListener("click", () => {
+
+
+      setMobileNavigation(false);
 
       // ------------------------------
       // 1. Estado de navegación
