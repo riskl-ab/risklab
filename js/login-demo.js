@@ -10,16 +10,16 @@
 
   const DEMO_USERS = {
     "alugoga": {
-      password: "216267899",
-      label: "Ab"
+      password: "alugoga",
+      label: "Abner Lugo"
     },
     "ovallejomo": {
       password: "ovallejomo",
-      label: "ovallejomo"
+      label: "Dirección de Análisis Actuarial, Estadístico, Económico y de Riesgos Financieros"
     },
     "hgomezre": {
       password: "hgomezre",
-      label: "hgomezre"
+      label: "Coordinación de Riesgos Financieros"
     }
   };
 
