@@ -11,11 +11,15 @@
   const DEMO_USERS = {
     "alugoga": {
       password: "alugoga",
-      label: "Abner Lugo"
+      label: "Jefatura de Riesgos Financieros"
     },
     "ovallejomo": {
       password: "ovallejomo",
-      label: "Dirección de Análisis Actuarial, Estadístico, Económico y de Riesgos Financieros"
+      label: "Dirección de Análisis"
+    },
+    "alandinja": {
+      password: "alandinja",
+      label: "Coordinación de Estudios Actuariales"
     },
     "hgomezre": {
       password: "hgomezre",
