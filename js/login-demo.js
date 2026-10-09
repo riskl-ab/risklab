@@ -9,17 +9,17 @@
   "use strict";
 
   const DEMO_USERS = {
-    "analista": {
-      password: "RiskLab2026!",
-      label: "Analista"
+    "alugoga": {
+      password: "216267899",
+      label: "Ab"
     },
-    "consulta": {
-      password: "RiesgoDemo26!",
-      label: "Consulta"
+    "ovallejomo": {
+      password: "ovallejomo",
+      label: "ovallejomo"
     },
-    "administrador": {
-      password: "MonitorDemo26!",
-      label: "Administrador"
+    "hgomezre": {
+      password: "hgomezre",
+      label: "hgomezre"
     }
   };
 
