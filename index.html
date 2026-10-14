@@ -134,6 +134,60 @@
             <div class="source-badge">Composición de Cartera: Dirección de Inversiones</div>
           </div>
 
+
+
+
+
+
+          
+          
+<div id="view-captura" class="view" hidden>
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">GESTIÓN DE INFORMACIÓN</div>
+      <h2>Captura de información</h2>
+      <p>Registro de información para el monitor de riesgos.</p>
+    </div>
+  </div>
+
+  <form id="capture-form" class="capture-form">
+    <label for="capture-date">Fecha de información</label>
+    <input id="capture-date" name="fecha"
+           type="date" required>
+
+    <label for="capture-category">Categoría</label>
+    <select id="capture-category" name="categoria" required>
+      <option value="">Selecciona una categoría</option>
+      <option value="cartera">Cartera</option>
+      <option value="riesgo">Riesgo</option>
+      <option value="mercado">Mercado</option>
+    </select>
+
+    <label for="capture-description">Descripción</label>
+    <textarea id="capture-description" name="descripcion"
+              rows="4" maxlength="1000" required></textarea>
+
+    <button type="submit" class="nav-item">
+      Validar captura
+    </button>
+
+    <p id="capture-message" role="status" aria-live="polite"></p>
+  </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
           <div class="kpi-grid">
             <article class="kpi-card">
               <span>Valor de mercado</span>
