@@ -4,7 +4,7 @@
   const DEMO_USERS = {
     "alugoga": {
       password: "216267899",
-      label: "Jefatura de Riesgos Financieros",
+      label: "Administrador",
       permissions: { laboratorio: true, captura: true }
     },
     "ovallejomo": {
