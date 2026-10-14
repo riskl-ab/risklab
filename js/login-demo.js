@@ -25,6 +25,14 @@
       password: "aramirezza",
       label: "Coordinación de Estudios Actuariales"
     },
+    "hcastanedaar": {
+      password: "5020103",
+      label: "Coordinación de Análisis de Inversiones en Capitales, Divisas y Derivados"
+    },
+    "jaraujova": {
+      password: "5020103",
+      label: "Dirección de Inversiones"
+    },    
     "hgomezre": {
       password: "hgomezre",
       label: "Coordinación de Riesgos Financieros"
