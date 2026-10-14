@@ -72,15 +72,13 @@
 
 
         
-        <div class="nav-group-title">Laboratorio</div>
-        <button class="nav-item" data-view="portafolios"><span>05</span> Composición</button>
-        <button class="nav-item" data-view="portafolios"><span>06</span> Limpieza</button>
-        <button class="nav-item" data-view="riesgo"><span>07</span> Bases de datos</button>
+        <div class="nav-group-title" data-permission="laboratorio">Laboratorio</div>
+        <button class="nav-item" data-view="riesgo" data-permission="laboratorio"><span>05</span> Bases de datos</button>
       </nav>
 
-        <div class="nav-group-title">Inversiones</div>
-        <button class="nav-item" data-view="portafolios"><span>08</span> Cartera</button>
-        <button class="nav-item" data-view="portafolios"><span>09</span> Precios</button>
+        <div class="nav-group-title" data-permission="captura">Inversiones</div>
+        <button class="nav-item" data-view="portafolios" data-permission="captura"><span>06</span> Cartera</button>
+        <button class="nav-item" data-view="portafolios" data-permission="captura"><span>07</span> Precios</button>
       </nav>
 
       
@@ -109,10 +107,20 @@
           <div class="eyebrow">INSTITUTO DE SEGURIDAD SOCIAL DEL ESTADO DE GUANAJUATO</div>
           <h1 id="view-title">Visor</h1>
         </div>
-        <div class="topbar-right">
-          <div class="data-status" id="api-status">Conectando…</div>
-          <div class="date-chip" id="current-date">—</div>
-        </div>
+        
+<div class="topbar-right">
+  <div class="data-status" id="api-status">Conectando…</div>
+  <div class="date-chip" id="current-date">—</div>
+
+  <div class="user-identity" id="user-identity" hidden>
+    <div class="user-avatar" aria-hidden="true">U</div>
+    <div class="user-identity-text">
+      <strong id="user-username">Usuario</strong>
+      <span id="user-role">Perfil de acceso</span>
+    </div>
+  </div>
+</div>
+
       </header>
 
       <section class="content">
