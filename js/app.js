@@ -4892,3 +4892,58 @@ async function loadLatest() {
   renderMandatarios();
 }
 
+
+/* =========================================================
+   IDENTIDAD DEL USUARIO Y PERMISOS DE NAVEGACIÓN
+   ========================================================= */
+
+(() => {
+  "use strict";
+
+  function aplicarPermisosRiskLab(event) {
+    const detalle = event.detail || {};
+    const username = detalle.username || "Usuario";
+    const role = detalle.role || "Perfil de acceso";
+
+    const permisos = {
+      laboratorio: detalle.permissions?.laboratorio === true,
+      captura: detalle.permissions?.captura === true
+    };
+
+    // Mostrar la identidad en la barra superior.
+    const identity = document.getElementById("user-identity");
+    const usernameElement = document.getElementById("user-username");
+    const roleElement = document.getElementById("user-role");
+    const avatar = document.querySelector(".user-avatar");
+
+    if (usernameElement) usernameElement.textContent = username;
+    if (roleElement) roleElement.textContent = role;
+    if (avatar) {
+      avatar.textContent = username.charAt(0).toUpperCase();
+    }
+    if (identity) identity.hidden = false;
+
+    // Mostrar u ocultar cada elemento protegido.
+    document.querySelectorAll("[data-permission]").forEach((element) => {
+      const permiso = element.dataset.permission;
+      element.hidden = permisos[permiso] !== true;
+    });
+
+    // Si el usuario no tiene permisos para una vista,
+    // evitar que permanezca en ella.
+    const vistaActiva = document.querySelector(".nav-item.active");
+
+    if (vistaActiva && vistaActiva.hidden) {
+      const visor = document.querySelector(
+        '.nav-item[data-view="visor"]'
+      );
+
+      visor?.click();
+    }
+  }
+
+  window.addEventListener(
+    "risklab:authenticated",
+    aplicarPermisosRiskLab
+  );
+})();
