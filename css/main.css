@@ -1686,4 +1686,21 @@ body.login-locked .app-shell {
   .user-identity-text span {
     font-size: 10px;
   }
+
+.user-identity {
+  background: #111820;
+  border: 1px solid #303d49;
+}
+
+.user-identity-text strong {
+  color: #e6edf3;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.user-identity-text span {
+  color: #aebdca;
+  font-size: 11px;
+}
+  
 }
