@@ -4947,3 +4947,23 @@ async function loadLatest() {
     aplicarPermisosRiskLab
   );
 })();
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("capture-form");
+  const message = document.getElementById("capture-message");
+
+  if (!form || !message) return;
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (!form.reportValidity()) return;
+
+    message.textContent =
+      "Validación correcta. La información aún no se ha guardado.";
+  });
+});
+
