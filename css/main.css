@@ -1668,6 +1668,8 @@ body.login-locked .app-shell {
 
 @media (max-width: 700px) {
   .user-identity {
+    background: #111820;
+    border: 1px solid #303d49;
     max-width: 180px;
     padding: 6px 8px;
     gap: 7px;
@@ -1681,26 +1683,15 @@ body.login-locked .app-shell {
 
   .user-identity-text strong {
     font-size: 11px;
+    color: #e6edf3;
+    font-size: 12px;
+    font-weight: 700;
   }
 
   .user-identity-text span {
     font-size: 10px;
+    color: #aebdca;
+    font-size: 11px;
   }
-
-.user-identity {
-  background: #111820;
-  border: 1px solid #303d49;
-}
-
-.user-identity-text strong {
-  color: #e6edf3;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.user-identity-text span {
-  color: #aebdca;
-  font-size: 11px;
-}
   
 }
