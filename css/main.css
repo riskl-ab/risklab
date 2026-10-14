@@ -1614,3 +1614,76 @@ body.login-locked .app-shell {
   }
 }
 
+
+/* Identificación del usuario autenticado */
+.user-identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  background: var(--surface, #fff);
+  min-width: 0;
+  max-width: 300px;
+}
+
+.user-identity[hidden] {
+  display: none !important;
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #18354a;
+  color: #fff;
+  font-weight: 700;
+}
+
+.user-identity-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 3px;
+}
+
+.user-identity-text strong,
+.user-identity-text span {
+  overflow-wrap: anywhere;
+}
+
+.user-identity-text strong {
+  font-size: 12px;
+}
+
+.user-identity-text span {
+  font-size: 11px;
+  color: var(--text-muted, #64748b);
+}
+
+@media (max-width: 700px) {
+  .user-identity {
+    max-width: 180px;
+    padding: 6px 8px;
+    gap: 7px;
+  }
+
+  .user-avatar {
+    flex-basis: 30px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .user-identity-text strong {
+    font-size: 11px;
+  }
+
+  .user-identity-text span {
+    font-size: 10px;
+  }
+}
