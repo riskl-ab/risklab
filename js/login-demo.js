@@ -4,37 +4,37 @@
   const DEMO_USERS = {
     "alugoga": {
       password: "216267899",
-      label: "Jefatura de Riesgos Financieros"
+      label: "Jefatura de Riesgos Financieros",
       permissions: { laboratorio: true, captura: true }
     },
     "ovallejomo": {
       password: "ovallejomo",
-      label: "Dirección de Análisis"
+      label: "Dirección de Análisis",
       permissions: { laboratorio: false, captura: false }
     },
     "alandinja": {
       password: "Onedirection",
-      label: "Coordinación de Estudios Actuariales"
+      label: "Coordinación de Estudios Actuariales",
       permissions: { laboratorio: false, captura: false }
     },
     "aramirezza": {
       password: "aramirezza",
-      label: "Subdirección de Planeación"
+      label: "Subdirección de Planeación",
       permissions: { laboratorio: false, captura: false }
     },
     "hcastanedaar": {
       password: "5020103",
-      label: "Coordinación de Análisis de Inversiones en Capitales, Divisas y Derivados"
+      label: "Coordinación de Análisis de Inversiones en Capitales, Divisas y Derivados",
       permissions: { laboratorio: false, captura: false }
     },
     "jaraujova": {
       password: "5020103",
-      label: "Dirección de Inversiones"
+      label: "Dirección de Inversiones",
       permissions: { laboratorio: false, captura: false }
     },    
     "hgomezre": {
       password: "hgomezre",
-      label: "Coordinación de Riesgos Financieros"
+      label: "Coordinación de Riesgos Financieros",
       permissions: { laboratorio: false, captura: false }
     }
   };
