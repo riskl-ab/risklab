@@ -15,12 +15,12 @@
     "alandinja": {
       password: "Onedirection",
       label: "Coordinación de Estudios Actuariales",
-      permissions: { laboratorio: false, captura: false }
+      permissions: { laboratorio: true, captura: true }
     },
     "aramirezza": {
       password: "aramirezza",
       label: "Subdirección de Planeación",
-      permissions: { laboratorio: false, captura: false }
+      permissions: { laboratorio: true, captura: true }
     },
     "hcastanedaar": {
       password: "5020103",
