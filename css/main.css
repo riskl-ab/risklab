@@ -1617,8 +1617,17 @@ body.login-locked .app-shell {
 
 /* Identificación del usuario autenticado */
 .user-identity {
-  background: #111820;
-  border: 1px solid #303d49;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  background: var(--surface, #fff);
+  min-width: 0;
+  max-width: 300px;
+  background: #4a84c7;
+  border: 3px solid #303d49;
 }
 
 .user-identity[hidden] {
