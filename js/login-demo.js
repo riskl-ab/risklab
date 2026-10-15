@@ -34,7 +34,7 @@
     },
     "lgomezca": {
       password: "lgomezca",
-      label: "Coordinador de Análisis Estadístico y Económico",
+      label: "Coordinación de Análisis Estadístico y Económico",
       permissions: { laboratorio: true, captura: true }
     },    
     "hgomezre": {
