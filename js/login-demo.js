@@ -10,7 +10,7 @@
     "ovallejomo": {
       password: "ovallejomo",
       label: "Dirección de Análisis Actuarial, Económico y de Riesgos Financieros",
-      permissions: { laboratorio: false, captura: false }
+      permissions: { laboratorio: true, captura: true }
     },
     "alandinja": {
       password: "Onedirection",
@@ -25,22 +25,22 @@
     "hcastanedaar": {
       password: "5020103",
       label: "Coordinación de Análisis de Inversiones en Capitales, Divisas y Derivados",
-      permissions: { laboratorio: false, captura: false }
+      permissions: { laboratorio: true, captura: true }
     },
     "jaraujova": {
       password: "5020103",
       label: "Dirección de Inversiones",
-      permissions: { laboratorio: false, captura: false }
+      permissions: { laboratorio: true, captura: true }
     },
     "lgomezca": {
       password: "lgomezca",
       label: "Coordinador de Análisis Estadístico y Económico",
-      permissions: { laboratorio: false, captura: false }
+      permissions: { laboratorio: true, captura: true }
     },    
     "hgomezre": {
       password: "hgomezre",
       label: "Coordinación de Riesgos Financieros",
-      permissions: { laboratorio: false, captura: false }
+      permissions: { laboratorio: true, captura: true }
     }
   };
 
