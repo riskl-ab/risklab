@@ -1626,7 +1626,7 @@ body.login-locked .app-shell {
   background: var(--surface, #fff);
   min-width: 0;
   max-width: 300px;
-  background: #4a84c7;
+  background: #1b3047;
   border: 3px solid #303d49;
 }
 
@@ -1642,7 +1642,7 @@ body.login-locked .app-shell {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #18354a;
+  background: #cc1100;
   color: #fff;
   font-weight: 700;
 }
@@ -1666,7 +1666,7 @@ body.login-locked .app-shell {
 }
 
 .user-identity-text span {
-  color: #aebdca;
+  color: #ffffff;
   font-size: 11px;
 }
 
