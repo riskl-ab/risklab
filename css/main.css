@@ -1617,15 +1617,8 @@ body.login-locked .app-shell {
 
 /* Identificación del usuario autenticado */
 .user-identity {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 12px;
-  border: 1px solid var(--border-soft);
-  border-radius: 12px;
-  background: var(--surface, #fff);
-  min-width: 0;
-  max-width: 300px;
+  background: #111820;
+  border: 1px solid #303d49;
 }
 
 .user-identity[hidden] {
@@ -1658,12 +1651,14 @@ body.login-locked .app-shell {
 }
 
 .user-identity-text strong {
+  color: #e6edf3;
   font-size: 12px;
+  font-weight: 700;
 }
 
 .user-identity-text span {
+  color: #aebdca;
   font-size: 11px;
-  color: var(--text-muted, #64748b);
 }
 
 @media (max-width: 700px) {
