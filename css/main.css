@@ -1699,3 +1699,99 @@ body.login-locked .app-shell {
   }
   
 }
+
+
+/* =====================================================
+   RISKLAB — IDENTIFICACIÓN RESPONSIVA EN MÓVILES
+   ===================================================== */
+
+@media (max-width: 760px) {
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    height: auto;
+    min-height: 76px;
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .topbar > div:not(.topbar-right) {
+    flex: 1 1 150px;
+    min-width: 0;
+  }
+
+  .topbar .eyebrow {
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .topbar-right {
+    display: flex;
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .topbar-right .data-status {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .topbar-right .user-identity {
+    flex: 1 1 220px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    justify-content: flex-start;
+  }
+
+  .user-identity .user-avatar {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .user-identity-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .user-identity-text strong,
+  .user-identity-text span {
+    overflow-wrap: anywhere;
+    word-break: normal;
+    line-height: 1.35;
+  }
+}
+
+@media (max-width: 520px) {
+  .topbar {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .topbar-right {
+    gap: 8px;
+  }
+
+  .topbar-right .user-identity {
+    padding: 9px 10px;
+    gap: 10px;
+  }
+
+  .user-identity-text strong {
+    font-size: 12px;
+  }
+
+  .user-identity-text span {
+    font-size: 11px;
+  }
+}
+
+
