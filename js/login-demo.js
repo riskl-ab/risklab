@@ -4,12 +4,12 @@
   const DEMO_USERS = {
     "alugoga": {
       password: "216267899",
-      label: "Administrador",
+      label: "Jefe de Administración de Riesgos",
       permissions: { laboratorio: true, captura: true }
     },
     "ovallejomo": {
       password: "ovallejomo",
-      label: "Dirección de Análisis",
+      label: "Dirección de Análisis Actuarial, Económico y de Riesgos Financieros",
       permissions: { laboratorio: false, captura: false }
     },
     "alandinja": {
@@ -30,6 +30,11 @@
     "jaraujova": {
       password: "5020103",
       label: "Dirección de Inversiones",
+      permissions: { laboratorio: false, captura: false }
+    },
+    "lgomezca": {
+      password: "lgomezca",
+      label: "Coordinador de Análisis Estadístico y Económico",
       permissions: { laboratorio: false, captura: false }
     },    
     "hgomezre": {
