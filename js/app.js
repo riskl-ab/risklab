@@ -5102,12 +5102,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     $("cartera-example")?.addEventListener("click", () => {
       input.value = [
-        "Cuenta Alfa\tDeuda\tNacional",
-        "Cuenta Beta\tCapital\tInternacional",
-        "Cuenta Alfa\tDeuda\tExtranjera",
-        "Cuenta Gamma\tDeuda\tNacional",
-        "Cuenta Beta\tCapital\tInternacional",
-        "Cuenta Delta\tCapital\tNacional"
+        "1_ALSEA_*\tMANDATO BNP PARIBAS\tALFA",
+        "1A_ANET_*\tMANDATO BNP PARIBAS\tALFA",
+        "1A_CAT_*\tMANDATO BNP PARIBAS\tALFA",
+        "51_ESCALA_E\tACTINVER\tALFA",
+        "CD_BANOB_24U\tDEUDA\tCALCE",
+        "M_BONOS_381118\tDEUDA\tALFA",
+        "S_UDIBONO_351122\tDEUDA\tCALCE"
       ].join("\n");
 
       procesar();
