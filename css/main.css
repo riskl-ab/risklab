@@ -1795,3 +1795,158 @@ body.login-locked .app-shell {
 }
 
 
+/* =====================================================
+   MÓDULO 07 · CAPTURA DE CARTERA
+   ===================================================== */
+
+.cartera-capture-panel,
+.cartera-result-panel {
+  margin-bottom: 18px;
+  min-width: 0;
+}
+
+.cartera-capture-panel label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.capture-help {
+  color: var(--text-muted, #aebdca);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 7px 0 12px;
+}
+
+#cartera-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 180px;
+  padding: 12px;
+  resize: vertical;
+  border: 1px solid var(--border, #303d49);
+  border-radius: 8px;
+  background: var(--bg, #0b0f14);
+  color: var(--text, #e6edf3);
+  font: 13px/1.5 monospace;
+}
+
+#cartera-input:focus {
+  outline: 2px solid #4a8f73;
+  outline-offset: 2px;
+}
+
+.cartera-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cartera-actions button {
+  min-height: 40px;
+  padding: 9px 13px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.cartera-actions .btn-primary {
+  background: #245640;
+  border: 1px solid #39795b;
+  color: #fff;
+}
+
+.cartera-actions .btn-secondary {
+  background: var(--panel, #111820);
+  border: 1px solid var(--border, #303d49);
+  color: var(--text, #e6edf3);
+}
+
+.cartera-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.cartera-kpis .panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cartera-kpis span {
+  color: var(--text-muted, #aebdca);
+  font-size: 12px;
+}
+
+.cartera-kpis strong {
+  font-size: 25px;
+}
+
+.cartera-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.cartera-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.cartera-table th,
+.cartera-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--border, #303d49);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.cartera-table th {
+  color: var(--text-muted, #aebdca);
+}
+
+.cartera-lists-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.cartera-list-group {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border, #303d49);
+  overflow-wrap: anywhere;
+}
+
+.cartera-list-group h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.cartera-list-group ol {
+  padding-left: 22px;
+  margin: 8px 0 0;
+  line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+  .cartera-kpis {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .cartera-lists-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cartera-actions button {
+    flex: 1 1 130px;
+  }
+}
+
+
+
+
