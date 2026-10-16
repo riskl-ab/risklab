@@ -77,7 +77,7 @@
         <button class="nav-item" data-view="riesgo" data-permission="laboratorio"><span>06</span> Análisis de Riesgo</button>
 
         <div class="nav-group-title" data-permission="captura">Inversiones</div>
-        <button class="nav-item" data-view="portafolios" data-permission="captura"><span>07</span> Cartera</button>
+        <button class="nav-item" data-view="cartera" data-permission="captura"><span>07</span> Cartera</button>
         <button class="nav-item" data-view="portafolios" data-permission="captura"><span>08</span> Precios</button>
 
         <div class="nav-group-title" data-permission="captura">Captura</div>
@@ -138,12 +138,11 @@
             <div class="source-badge">Composición de Cartera: Dirección de Inversiones</div>
           </div>
 
-
-
-
-
-
           
+
+
+
+
           
 <div id="view-captura" class="view" hidden>
   <div class="section-head">
@@ -367,6 +366,115 @@
 
 </div>
 
+
+<!-- =====================================================
+     07 · CARTERA — CAPTURA A/K/L
+     ===================================================== -->
+<div id="view-cartera" class="view" hidden>
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">INVERSIONES · MÓDULO 07</div>
+      <h2>Captura de composición de cartera</h2>
+      <p>Pega desde Excel las columnas A, K y L para revisar y clasificar los registros.</p>
+    </div>
+    <div class="source-badge">Procesamiento local</div>
+  </div>
+
+  <article class="panel cartera-capture-panel">
+    <label for="cartera-input">
+      Datos de Excel · Columnas A, K y L
+    </label>
+    <p class="capture-help">
+      Copia las tres columnas en ese orden y pégalas aquí.
+      Cada fila debe contener un valor en A, uno en K y uno en L.
+      No incluyas encabezados.
+    </p>
+
+    <textarea
+      id="cartera-input"
+      rows="8"
+      placeholder="Cuenta Alfa&#9;Deuda&#9;Nacional&#10;Cuenta Beta&#9;Capital&#9;Internacional"
+      spellcheck="false"
+    ></textarea>
+
+    <div class="cartera-actions">
+      <button type="button" class="btn-primary" id="cartera-process">
+        Procesar información
+      </button>
+      <button type="button" class="btn-secondary" id="cartera-example">
+        Cargar ejemplo
+      </button>
+      <button type="button" class="btn-secondary" id="cartera-clear">
+        Limpiar
+      </button>
+    </div>
+
+    <p id="cartera-message" class="capture-help" role="status" aria-live="polite">
+      Aún no se ha procesado información.
+    </p>
+  </article>
+
+  <div id="cartera-results" hidden>
+    <div class="cartera-kpis">
+      <article class="panel">
+        <span>Filas recibidas</span>
+        <strong id="cartera-count-rows">0</strong>
+      </article>
+      <article class="panel">
+        <span>Etiquetas K</span>
+        <strong id="cartera-count-k">0</strong>
+      </article>
+      <article class="panel">
+        <span>Etiquetas L</span>
+        <strong id="cartera-count-l">0</strong>
+      </article>
+    </div>
+
+    <article class="panel cartera-result-panel">
+      <h3>Vista previa de la matriz A/K/L</h3>
+      <p class="capture-help">
+        Se conservan los registros repetidos en esta vista.
+      </p>
+      <div class="cartera-table-wrap">
+        <table class="cartera-table">
+          <thead>
+            <tr>
+              <th>A · Registro</th>
+              <th>K · Etiqueta</th>
+              <th>L · Etiqueta</th>
+            </tr>
+          </thead>
+          <tbody id="cartera-matrix-body"></tbody>
+        </table>
+      </div>
+    </article>
+
+    <div class="cartera-lists-grid">
+      <article class="panel cartera-result-panel">
+        <h3>Listas únicas por etiqueta K</h3>
+        <p class="capture-help">
+          Cada etiqueta K tiene su propia lista alfabética de A.
+        </p>
+        <div id="cartera-lists-k"></div>
+      </article>
+
+      <article class="panel cartera-result-panel">
+        <h3>Listas únicas por etiqueta L</h3>
+        <p class="capture-help">
+          Cada etiqueta L tiene su propia lista alfabética de A.
+        </p>
+        <div id="cartera-lists-l"></div>
+      </article>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+        
 <!-- =========================================================
      03 PORTAFOLIOS
      ========================================================= -->
