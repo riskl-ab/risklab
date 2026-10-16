@@ -374,26 +374,25 @@
   <div class="section-head">
     <div>
       <div class="section-kicker">INVERSIONES · MÓDULO 07</div>
-      <h2>Captura de composición de cartera</h2>
-      <p>Pega desde Excel las columnas A, K y L para revisar y clasificar los registros.</p>
+      <h2>Composición diaria</h2>
+      <p>Creación de matrices de precios para el cálculo de rendimientos diarios.</p>
     </div>
     <div class="source-badge">Procesamiento local</div>
   </div>
 
   <article class="panel cartera-capture-panel">
     <label for="cartera-input">
-      Datos de Excel · Columnas A, K y L
+      Cartera de Inversiones · Columnas: Instrumento, Observaciones y Portafolio
     </label>
     <p class="capture-help">
-      Copia las tres columnas en ese orden y pégalas aquí.
-      Cada fila debe contener un valor en A, uno en K y uno en L.
-      No incluyas encabezados.
+      Copia las tres columnas (carteras 2026: A, K y L) en ese orden y pégalas aquí.
+      No incluir encabezados.
     </p>
 
     <textarea
       id="cartera-input"
       rows="8"
-      placeholder="Cuenta Alfa&#9;Deuda&#9;Nacional&#10;Cuenta Beta&#9;Capital&#9;Internacional"
+      placeholder="1A_VRTX_*&#9;MANDATO BNP PARIBAS&#9;ALFA&#10;91_FUNO_25-2L&#9;CARTERA DEUDA&#9;CALCE"
       spellcheck="false"
     ></textarea>
 
@@ -421,17 +420,17 @@
         <strong id="cartera-count-rows">0</strong>
       </article>
       <article class="panel">
-        <span>Etiquetas K</span>
+        <span>Observaciones</span>
         <strong id="cartera-count-k">0</strong>
       </article>
       <article class="panel">
-        <span>Etiquetas L</span>
+        <span>Portafolio</span>
         <strong id="cartera-count-l">0</strong>
       </article>
     </div>
 
     <article class="panel cartera-result-panel">
-      <h3>Vista previa de la matriz A/K/L</h3>
+      <h3>Vista previa de la cartera</h3>
       <p class="capture-help">
         Se conservan los registros repetidos en esta vista.
       </p>
@@ -439,9 +438,9 @@
         <table class="cartera-table">
           <thead>
             <tr>
-              <th>A · Registro</th>
-              <th>K · Etiqueta</th>
-              <th>L · Etiqueta</th>
+              <th>INSTRUMENTO</th>
+              <th>OBSERVACIONES</th>
+              <th>PORTAFOLIO</th>
             </tr>
           </thead>
           <tbody id="cartera-matrix-body"></tbody>
@@ -451,17 +450,17 @@
 
     <div class="cartera-lists-grid">
       <article class="panel cartera-result-panel">
-        <h3>Listas únicas por etiqueta K</h3>
+        <h3>Instrumentos únicos</h3>
         <p class="capture-help">
-          Cada etiqueta K tiene su propia lista alfabética de A.
+          Cada mandatario, fondo y/o cartera de deuda tiene su propia lista de instrumentos.
         </p>
         <div id="cartera-lists-k"></div>
       </article>
 
       <article class="panel cartera-result-panel">
-        <h3>Listas únicas por etiqueta L</h3>
+        <h3>Mandatarios, fondos y cartera de deuda</h3>
         <p class="capture-help">
-          Cada etiqueta L tiene su propia lista alfabética de A.
+          Cada portafolio tiene su propia lista de instrumentos.
         </p>
         <div id="cartera-lists-l"></div>
       </article>
