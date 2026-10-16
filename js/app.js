@@ -4967,3 +4967,169 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+
+/* =====================================================
+   RISKLAB · MÓDULO 07 · CAPTURA DE CARTERA
+   Procesamiento local de las columnas A, K y L
+   ===================================================== */
+(() => {
+  "use strict";
+
+  function iniciarCapturaCartera() {
+    const input = document.getElementById("cartera-input");
+    const processButton = document.getElementById("cartera-process");
+
+    if (!input || !processButton || input.dataset.initialized === "true") {
+      return;
+    }
+
+    input.dataset.initialized = "true";
+
+    const $ = (id) => document.getElementById(id);
+    const results = $("cartera-results");
+    const message = $("cartera-message");
+    const collator = new Intl.Collator("es", {
+      sensitivity: "base",
+      numeric: true
+    });
+
+    function escapar(valor) {
+      return String(valor).replace(/[&<>"']/g, (caracter) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[caracter]);
+    }
+
+    function agruparPor(registros, campo) {
+      const grupos = new Map();
+
+      registros.forEach((registro) => {
+        const etiqueta = registro[campo];
+
+        if (!grupos.has(etiqueta)) {
+          grupos.set(etiqueta, new Set());
+        }
+
+        grupos.get(etiqueta).add(registro.a);
+      });
+
+      return [...grupos.entries()].sort((a, b) =>
+        collator.compare(a[0], b[0])
+      );
+    }
+
+    function renderizarListas(contenedorId, grupos) {
+      const contenedor = $(contenedorId);
+
+      contenedor.innerHTML = grupos.map(([etiqueta, valores]) => {
+        const lista = [...valores].sort(collator.compare);
+
+        return `
+          <section class="cartera-list-group">
+            <h4>Etiqueta: ${escapar(etiqueta)}</h4>
+            <p class="capture-help">
+              ${lista.length} registro(s) único(s)
+            </p>
+            <ol>
+              ${lista.map((valor) =>
+                `<li>${escapar(valor)}</li>`
+              ).join("")}
+            </ol>
+          </section>
+        `;
+      }).join("");
+    }
+
+    function procesar() {
+      const lineas = input.value.split(/\r?\n/);
+      const registros = [];
+      const errores = [];
+
+      lineas.forEach((linea, indice) => {
+        if (!linea.trim()) return;
+
+        const celdas = linea.split("\t");
+
+        if (celdas.length !== 3 || celdas.some((celda) => !celda.trim())) {
+          errores.push(indice + 1);
+          return;
+        }
+
+        registros.push({
+          a: celdas[0].trim(),
+          k: celdas[1].trim(),
+          l: celdas[2].trim()
+        });
+      });
+
+      if (errores.length || registros.length === 0) {
+        results.hidden = true;
+
+        message.textContent = errores.length
+          ? `Revisa las filas ${errores.join(", ")}: cada una debe tener exactamente tres campos no vacíos. No se procesó la carga.`
+          : "Pega al menos una fila completa de Excel.";
+
+        return;
+      }
+
+      $("cartera-count-rows").textContent = registros.length;
+      $("cartera-count-k").textContent =
+        new Set(registros.map((registro) => registro.k)).size;
+      $("cartera-count-l").textContent =
+        new Set(registros.map((registro) => registro.l)).size;
+
+      $("cartera-matrix-body").innerHTML = registros.map((registro) => `
+        <tr>
+          <td>${escapar(registro.a)}</td>
+          <td>${escapar(registro.k)}</td>
+          <td>${escapar(registro.l)}</td>
+        </tr>
+      `).join("");
+
+      renderizarListas("cartera-lists-k", agruparPor(registros, "k"));
+      renderizarListas("cartera-lists-l", agruparPor(registros, "l"));
+
+      results.hidden = false;
+      message.textContent =
+        `Procesamiento correcto: ${registros.length} filas válidas. La matriz conserva los duplicados; las listas se deduplican por separado.`;
+    }
+
+    processButton.addEventListener("click", procesar);
+
+    $("cartera-example")?.addEventListener("click", () => {
+      input.value = [
+        "Cuenta Alfa\tDeuda\tNacional",
+        "Cuenta Beta\tCapital\tInternacional",
+        "Cuenta Alfa\tDeuda\tExtranjera",
+        "Cuenta Gamma\tDeuda\tNacional",
+        "Cuenta Beta\tCapital\tInternacional",
+        "Cuenta Delta\tCapital\tNacional"
+      ].join("\n");
+
+      procesar();
+    });
+
+    $("cartera-clear")?.addEventListener("click", () => {
+      input.value = "";
+      results.hidden = true;
+      message.textContent = "Captura limpiada. Aún no se ha procesado información.";
+      input.focus();
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciarCapturaCartera, {
+      once: true
+    });
+  } else {
+    iniciarCapturaCartera();
+  }
+})();
+
+
+
+
