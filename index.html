@@ -367,47 +367,36 @@
 </div>
 
 
+
 <!-- =====================================================
-     07 · CARTERA — CAPTURA A/K/L
+     07 · CARTERA — CAPTURA Y ANÁLISIS A:M
      ===================================================== -->
 <div id="view-cartera" class="view" hidden>
   <div class="section-head">
     <div>
       <div class="section-kicker">INVERSIONES · COMPOSICIÓN</div>
       <h2>Composición diaria de la cartera de inversiones</h2>
-      <p>Creación de matrices de precios para el cálculo de rendimientos diarios.</p>
+      <p>Recepción de la tabla original y matrices de análisis para el cálculo de rendimientos diarios.</p>
     </div>
     <div class="source-badge">Procesamiento local</div>
   </div>
 
   <article class="panel cartera-capture-panel">
-    <label for="cartera-input">
-      Instrumento, Observaciones y Portafolio
-    </label>
+    <label for="cartera-input">Tabla original de Excel · Columnas A:M</label>
     <p class="capture-help">
-      Copia las tres columnas en ese orden y pégalas aquí.
-      No incluir encabezados.
+      Copia la tabla completa desde INSTRUMENTO hasta ID, incluyendo o no
+      la fila de encabezados. Se aceptan filas tabuladas copiadas desde Excel.
     </p>
 
-    <textarea
-      id="cartera-input"
-      rows="8"
-      placeholder="INSTRUMENTO&#9;OBSERVACIONES&#9;PORTAFOLIO&#10;"
-      spellcheck="false"
-    ></textarea>
+    <textarea id="cartera-input" rows="9"
+      placeholder="INSTRUMENTO&#9;INICIO PAPEL&#9;VENC PAPEL&#9;MOI COMPRA&#9;TITULOS&#9;PRECIO&#9;VALOR EN LIBROS&#9;TASA&#9;OPERACION&#9;TASA PACTADA&#9;OBSERVACIONES&#9;PORTAFOLIO&#9;ID"
+      spellcheck="false"></textarea>
 
     <div class="cartera-actions">
-      <button type="button" class="btn-primary" id="cartera-process">
-        Procesar información
-      </button>
-      <button type="button" class="btn-secondary" id="cartera-example">
-        Cargar ejemplo
-      </button>
-      <button type="button" class="btn-secondary" id="cartera-clear">
-        Limpiar
-      </button>
+      <button type="button" class="btn-primary" id="cartera-process">Procesar información</button>
+      <button type="button" class="btn-secondary" id="cartera-example">Cargar ejemplo</button>
+      <button type="button" class="btn-secondary" id="cartera-clear">Limpiar</button>
     </div>
-
     <p id="cartera-message" class="capture-help" role="status" aria-live="polite">
       Aún no se ha procesado información.
     </p>
@@ -415,34 +404,56 @@
 
   <div id="cartera-results" hidden>
     <div class="cartera-kpis">
-      <article class="panel">
-        <span>Filas recibidas</span>
-        <strong id="cartera-count-rows">0</strong>
-      </article>
-      <article class="panel">
-        <span>Observaciones</span>
-        <strong id="cartera-count-k">0</strong>
-      </article>
-      <article class="panel">
-        <span>Portafolio</span>
-        <strong id="cartera-count-l">0</strong>
-      </article>
+      <article class="panel"><span>Filas recibidas</span><strong id="cartera-count-rows">0</strong></article>
+      <article class="panel"><span>Instrumentos únicos</span><strong id="cartera-count-instruments">0</strong></article>
+      <article class="panel"><span>Portafolios</span><strong id="cartera-count-l">0</strong></article>
     </div>
 
     <article class="panel cartera-result-panel">
-      <h3>Vista previa de la cartera</h3>
-      <p class="capture-help">
-        Se conservan los registros repetidos en esta vista.
-      </p>
+      <h3>Filtros de consulta</h3>
+      <p class="capture-help">Cada filtro es independiente; puedes combinar varios. «Todos» no limita esa dimensión.</p>
+      <div class="cartera-filter-grid">
+        <label>Instrumento (A)
+          <select id="cartera-filter-a"><option value="">Todos los instrumentos</option></select>
+        </label>
+        <label>Observaciones (K)
+          <select id="cartera-filter-k"><option value="">Todas las observaciones</option></select>
+        </label>
+        <label>Portafolio (L)
+          <select id="cartera-filter-l"><option value="">Todos los portafolios</option></select>
+        </label>
+        <label>Tasa (H)
+          <select id="cartera-filter-h"><option value="">Todas las tasas</option></select>
+        </label>
+        <label>Operación (I)
+          <select id="cartera-filter-i"><option value="">Todas las operaciones</option></select>
+        </label>
+      </div>
+      <button type="button" class="btn-secondary" id="cartera-reset-filters">Restablecer filtros</button>
+    </article>
+
+    <article class="panel cartera-result-panel">
+      <h3>Resumen del instrumento</h3>
+      <p class="capture-help">Los importes se agregan por el valor exacto de A dentro de los filtros activos.</p>
+      <div class="cartera-kpis cartera-summary-kpis">
+        <article class="panel"><span>Valor de mercado (E × F)</span><strong id="cartera-sum-market">$0.00</strong></article>
+        <article class="panel"><span>MOI compra (D)</span><strong id="cartera-sum-moi">$0.00</strong></article>
+        <article class="panel"><span>Valor en libros (G)</span><strong id="cartera-sum-books">$0.00</strong></article>
+      </div>
+      <p id="cartera-summary-note" class="capture-help"></p>
+    </article>
+
+    <article class="panel cartera-result-panel">
+      <h3>Vista previa de la tabla recibida</h3>
+      <p class="capture-help">Se conservan las filas originales que cumplen los filtros, incluidos los duplicados.</p>
       <div class="cartera-table-wrap">
         <table class="cartera-table">
-          <thead>
-            <tr>
-              <th>INSTRUMENTO</th>
-              <th>OBSERVACIONES</th>
-              <th>PORTAFOLIO</th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>INSTRUMENTO (A)</th><th>INICIO (B)</th><th>VENC. (C)</th>
+            <th>MOI COMPRA (D)</th><th>TÍTULOS (E)</th><th>PRECIO (F)</th>
+            <th>VALOR LIBROS (G)</th><th>TASA (H)</th><th>OPERACIÓN (I)</th>
+            <th>TASA PACTADA (J)</th><th>OBSERVACIONES (K)</th><th>PORTAFOLIO (L)</th><th>ID (M)</th>
+          </tr></thead>
           <tbody id="cartera-matrix-body"></tbody>
         </table>
       </div>
@@ -450,27 +461,38 @@
 
     <div class="cartera-lists-grid">
       <article class="panel cartera-result-panel">
-        <h3>Instrumentos únicos</h3>
-        <p class="capture-help">
-          Cada mandatario, fondo y/o cartera de deuda tiene su propia lista de instrumentos.
-        </p>
+        <h3>Instrumentos únicos por OBSERVACIONES (K)</h3>
         <div id="cartera-lists-k"></div>
       </article>
-
       <article class="panel cartera-result-panel">
-        <h3>Mandatarios, fondos y cartera de deuda</h3>
-        <p class="capture-help">
-          Cada portafolio tiene su propia lista de instrumentos.
-        </p>
+        <h3>Instrumentos únicos por PORTAFOLIO (L)</h3>
         <div id="cartera-lists-l"></div>
       </article>
+      <article class="panel cartera-result-panel">
+        <h3>Instrumentos únicos por TASA (H)</h3>
+        <div id="cartera-lists-h"></div>
+      </article>
+      <article class="panel cartera-result-panel">
+        <h3>Instrumentos únicos por OPERACIÓN (I)</h3>
+        <div id="cartera-lists-i"></div>
+      </article>
     </div>
+
+    <article class="panel cartera-result-panel">
+      <h3>Resumen agregado por instrumento</h3>
+      <p class="capture-help">Una fila por instrumento A. Los totales respetan los filtros K, L, H e I; si eliges un instrumento, el resumen se limita a él.</p>
+      <div class="cartera-table-wrap">
+        <table class="cartera-table">
+          <thead><tr>
+            <th>Instrumento</th><th>Filas</th><th>Valor mercado (E × F)</th>
+            <th>MOI compra (D)</th><th>Valor en libros (G)</th>
+          </tr></thead>
+          <tbody id="cartera-summary-body"></tbody>
+        </table>
+      </div>
+    </article>
   </div>
 </div>
-
-
-
-
 
 
         
