@@ -378,14 +378,13 @@
       <h2>Composición diaria de la cartera de inversiones</h2>
       <p>Recepción de la tabla original y matrices de análisis para el cálculo de rendimientos diarios.</p>
     </div>
-    <div class="source-badge">Procesamiento local</div>
+    <div class="source-badge">Probando: Procesamiento local</div>
   </div>
 
   <article class="panel cartera-capture-panel">
-    <label for="cartera-input">Tabla original de Excel · Columnas A:M</label>
+    <label for="cartera-input">INST LP</label>
     <p class="capture-help">
-      Copia la tabla completa desde INSTRUMENTO hasta ID, incluyendo o no
-      la fila de encabezados. Se aceptan filas tabuladas copiadas desde Excel.
+      Origen: INST LP del insumo diario provisto por la Dirección de Inversiones, considera desde INSTRUMENTO hasta ID, incluyendo o no la fila de encabezados.
     </p>
 
     <textarea id="cartera-input" rows="9"
@@ -404,7 +403,7 @@
 
   <div id="cartera-results" hidden>
     <div class="cartera-kpis">
-      <article class="panel"><span>Filas recibidas</span><strong id="cartera-count-rows">0</strong></article>
+      <article class="panel"><span>Registros</span><strong id="cartera-count-rows">0</strong></article>
       <article class="panel"><span>Instrumentos únicos</span><strong id="cartera-count-instruments">0</strong></article>
       <article class="panel"><span>Portafolios</span><strong id="cartera-count-l">0</strong></article>
     </div>
@@ -484,7 +483,7 @@
       <div class="cartera-table-wrap">
         <table class="cartera-table">
           <thead><tr>
-            <th>Instrumento</th><th>Filas</th><th>Valor mercado (E × F)</th>
+            <th>Instrumento</th><th>Filas</th><th>Valor de mercado</th>
             <th>MOI compra (D)</th><th>Valor en libros (G)</th>
           </tr></thead>
           <tbody id="cartera-summary-body"></tbody>
