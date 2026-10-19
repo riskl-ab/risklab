@@ -4969,24 +4969,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
 /* =====================================================
-   RISKLAB · MÓDULO 07 · CAPTURA DE CARTERA
-   Procesamiento local de las columnas A, K y L
+   RISKLAB · MÓDULO 07 · CAPTURA DE CARTERA A:M
+   Mantiene la matriz original y agrega filtros y totales.
    ===================================================== */
 (() => {
   "use strict";
 
   function iniciarCapturaCartera() {
-    const input = document.getElementById("cartera-input");
-    const processButton = document.getElementById("cartera-process");
+    const $ = (id) => document.getElementById(id);
+    const input = $("cartera-input");
+    const processButton = $("cartera-process");
 
-    if (!input || !processButton || input.dataset.initialized === "true") {
-      return;
-    }
-
+    if (!input || !processButton || input.dataset.initialized === "true") return;
     input.dataset.initialized = "true";
 
-    const $ = (id) => document.getElementById(id);
     const results = $("cartera-results");
     const message = $("cartera-message");
     const collator = new Intl.Collator("es", {
@@ -4994,128 +4992,273 @@ document.addEventListener("DOMContentLoaded", () => {
       numeric: true
     });
 
-    function escapar(valor) {
-      return String(valor).replace(/[&<>"']/g, (caracter) => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[caracter]);
+    // Orden de columnas original A:M.
+    const fields = [
+      "a", "b", "c", "d", "e", "f", "g",
+      "h", "i", "j", "k", "l", "m"
+    ];
+
+    const headers = [
+      "INSTRUMENTO", "INICIO PAPEL", "VENC PAPEL", "MOI COMPRA",
+      "TITULOS", "PRECIO", "VALOR EN LIBROS", "TASA",
+      "OPERACION", "TASA PACTADA", "OBSERVACIONES", "PORTAFOLIO", "ID"
+    ];
+
+    let registros = [];
+
+    function escapar(value) {
+      return String(value ?? "").replace(/[&<>"']/g, c => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;",
+        '"': "&quot;", "'": "&#39;"
+      })[c]);
     }
 
-    function agruparPor(registros, campo) {
+    function normalizar(value) {
+      return String(value ?? "").trim().toLocaleUpperCase("es");
+    }
+
+    function esEncabezado(cells) {
+      return normalizar(cells[0]) === "INSTRUMENTO" ||
+        (normalizar(cells[0]) === "A" &&
+         normalizar(cells[10]) === "K");
+    }
+
+    // Convierte números pegados desde Excel a valores numéricos.
+    // Acepta números simples, separadores de miles y moneda.
+    function numero(value) {
+      if (typeof value === "number") return Number.isFinite(value) ? value : 0;
+
+      let s = String(value ?? "").trim();
+      if (!s) return 0;
+
+      s = s.replace(/[$€£\s]/g, "").replace(/[^\d,.\-]/g, "");
+      if (!s || !/\d/.test(s)) return 0;
+
+      const comma = s.lastIndexOf(",");
+      const dot = s.lastIndexOf(".");
+
+      if (comma >= 0 && dot >= 0) {
+        const decimal = comma > dot ? "," : ".";
+        const thousands = decimal === "," ? /\./g : /,/g;
+        s = s.replace(thousands, "");
+        if (decimal === ",") s = s.replace(",", ".");
+      } else if (comma >= 0) {
+        const decimals = s.length - comma - 1;
+        s = decimals > 0 && decimals <= 2
+          ? s.replace(",", ".")
+          : s.replace(/,/g, "");
+      } else if (dot >= 0) {
+        const decimals = s.length - dot - 1;
+        if (decimals === 3) s = s.replace(/\./g, "");
+      }
+
+      const result = Number(s);
+      return Number.isFinite(result) ? result : 0;
+    }
+
+    const moneda = value => value.toLocaleString("es-MX", {
+      style: "currency",
+      currency: "MXN",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+
+    function agrupar(campo, filas = registros) {
       const grupos = new Map();
 
-      registros.forEach((registro) => {
-        const etiqueta = registro[campo];
-
-        if (!grupos.has(etiqueta)) {
-          grupos.set(etiqueta, new Set());
-        }
-
-        grupos.get(etiqueta).add(registro.a);
+      filas.forEach(row => {
+        const label = row[campo] || "(Sin dato)";
+        if (!grupos.has(label)) grupos.set(label, new Set());
+        if (row.a) grupos.get(label).add(row.a);
       });
 
-      return [...grupos.entries()].sort((a, b) =>
-        collator.compare(a[0], b[0])
-      );
+      return [...grupos.entries()].sort((x, y) => collator.compare(x[0], y[0]));
     }
 
-    function renderizarListas(contenedorId, grupos) {
-      const contenedor = $(contenedorId);
+    function poblarFiltro(id, campo, etiquetaTodos) {
+      const select = $(id);
+      const anterior = select.value;
+      const valores = [...new Set(registros.map(r => r[campo] || "(Sin dato)"))]
+        .sort(collator.compare);
 
-      contenedor.innerHTML = grupos.map(([etiqueta, valores]) => {
-        const lista = [...valores].sort(collator.compare);
+      select.innerHTML = `<option value="">${escapar(etiquetaTodos)}</option>` +
+        valores.map(v => `<option value="${escapar(v)}">${escapar(v)}</option>`).join("");
 
-        return `
-          <section class="cartera-list-group">
-            <h4>Etiqueta: ${escapar(etiqueta)}</h4>
-            <p class="capture-help">
-              ${lista.length} registro(s) único(s)
-            </p>
-            <ol>
-              ${lista.map((valor) =>
-                `<li>${escapar(valor)}</li>`
-              ).join("")}
-            </ol>
-          </section>
-        `;
-      }).join("");
+      if (valores.includes(anterior)) select.value = anterior;
+    }
+
+    function filasFiltradas() {
+      const filtros = [
+        ["cartera-filter-a", "a"],
+        ["cartera-filter-k", "k"],
+        ["cartera-filter-l", "l"],
+        ["cartera-filter-h", "h"],
+        ["cartera-filter-i", "i"]
+      ];
+
+      return registros.filter(row => filtros.every(([id, field]) => {
+        const value = $(id)?.value || "";
+        return !value || (row[field] || "(Sin dato)") === value;
+      }));
+    }
+
+    function renderizarListas(id, grupos) {
+      $(id).innerHTML = grupos.map(([label, values]) => {
+        const lista = [...values].sort(collator.compare);
+        return `<section class="cartera-list-group">
+          <h4>${escapar(label)}</h4>
+          <p class="capture-help">${lista.length} instrumento(s) único(s)</p>
+          <ol>${lista.map(v => `<li>${escapar(v)}</li>`).join("")}</ol>
+        </section>`;
+      }).join("") || '<p class="capture-help">No hay resultados para estos filtros.</p>';
+    }
+
+    function renderizar() {
+      const filas = filasFiltradas();
+
+      $("cartera-count-rows").textContent = filas.length;
+      $("cartera-count-instruments").textContent =
+        new Set(filas.map(r => r.a).filter(Boolean)).size;
+      $("cartera-count-l").textContent =
+        new Set(filas.map(r => r.l).filter(Boolean)).size;
+
+      $("cartera-matrix-body").innerHTML = filas.map(row =>
+        `<tr>${fields.map(f => `<td>${escapar(row[f])}</td>`).join("")}</tr>`
+      ).join("");
+
+      renderizarListas("cartera-lists-k", agrupar("k", filas));
+      renderizarListas("cartera-lists-l", agrupar("l", filas));
+      renderizarListas("cartera-lists-h", agrupar("h", filas));
+      renderizarListas("cartera-lists-i", agrupar("i", filas));
+
+      // Consolidación por instrumento exacto A.
+      const sumas = new Map();
+
+      filas.forEach(row => {
+        if (!row.a) return;
+
+        if (!sumas.has(row.a)) {
+          sumas.set(row.a, { count: 0, market: 0, moi: 0, books: 0 });
+        }
+
+        const item = sumas.get(row.a);
+        item.count += 1;
+        item.market += numero(row.e) * numero(row.f);
+        item.moi += numero(row.d);
+        item.books += numero(row.g);
+      });
+
+      const resumen = [...sumas.entries()].sort((a, b) =>
+        collator.compare(a[0], b[0])
+      );
+
+      $("cartera-summary-body").innerHTML = resumen.map(([instrumento, v]) =>
+        `<tr>
+          <td>${escapar(instrumento)}</td>
+          <td>${v.count}</td>
+          <td>${moneda(v.market)}</td>
+          <td>${moneda(v.moi)}</td>
+          <td>${moneda(v.books)}</td>
+        </tr>`
+      ).join("") || '<tr><td colspan="5">Sin resultados</td></tr>';
+
+      const total = [...sumas.values()].reduce((acc, v) => ({
+        market: acc.market + v.market,
+        moi: acc.moi + v.moi,
+        books: acc.books + v.books
+      }), { market: 0, moi: 0, books: 0 });
+
+      $("cartera-sum-market").textContent = moneda(total.market);
+      $("cartera-sum-moi").textContent = moneda(total.moi);
+      $("cartera-sum-books").textContent = moneda(total.books);
+
+      $("cartera-summary-note").textContent =
+        `${filas.length} filas filtradas. El valor de mercado se calcula por fila como TÍTULOS × PRECIO y después se suma por instrumento.`;
+
+      results.hidden = false;
     }
 
     function procesar() {
-      const lineas = input.value.split(/\r?\n/);
-      const registros = [];
-      const errores = [];
+      const lineas = input.value.split(/\r?\n/).filter(line => line.trim());
 
-      lineas.forEach((linea, indice) => {
-        if (!linea.trim()) return;
-
-        const celdas = linea.split("\t");
-
-        if (celdas.length !== 3 || celdas.some((celda) => !celda.trim())) {
-          errores.push(indice + 1);
-          return;
-        }
-
-        registros.push({
-          a: celdas[0].trim(),
-          k: celdas[1].trim(),
-          l: celdas[2].trim()
-        });
-      });
-
-      if (errores.length || registros.length === 0) {
+      if (!lineas.length) {
         results.hidden = true;
-
-        message.textContent = errores.length
-          ? `Revisa las filas ${errores.join(", ")}: cada una debe tener exactamente tres campos no vacíos. No se procesó la carga.`
-          : "Pega al menos una fila completa de Excel.";
-
+        message.textContent = "Pega la tabla de Excel antes de procesar.";
         return;
       }
 
-      $("cartera-count-rows").textContent = registros.length;
-      $("cartera-count-k").textContent =
-        new Set(registros.map((registro) => registro.k)).size;
-      $("cartera-count-l").textContent =
-        new Set(registros.map((registro) => registro.l)).size;
+      let inicio = 0;
+      const primera = lineas[0].split("\t");
+      if (esEncabezado(primera)) inicio = 1;
 
-      $("cartera-matrix-body").innerHTML = registros.map((registro) => `
-        <tr>
-          <td>${escapar(registro.a)}</td>
-          <td>${escapar(registro.k)}</td>
-          <td>${escapar(registro.l)}</td>
-        </tr>
-      `).join("");
+      const nuevas = [];
+      const errores = [];
 
-      renderizarListas("cartera-lists-k", agruparPor(registros, "k"));
-      renderizarListas("cartera-lists-l", agruparPor(registros, "l"));
+      for (let i = inicio; i < lineas.length; i++) {
+        const cells = lineas[i].split("\t");
 
-      results.hidden = false;
-      message.textContent =
-        `Procesamiento correcto: ${registros.length} filas válidas. La matriz conserva los duplicados; las listas se deduplican por separado.`;
+        // Exigimos las 13 columnas para evitar desfasar B:M.
+        if (cells.length !== 13 || !cells[0].trim()) {
+          errores.push(i + 1);
+          continue;
+        }
+
+        const row = {};
+        fields.forEach((field, index) => {
+          row[field] = cells[index].trim();
+        });
+        nuevas.push(row);
+      }
+
+      if (errores.length || !nuevas.length) {
+        results.hidden = true;
+        message.textContent = errores.length
+          ? `Carga no procesada. Revisa las filas ${errores.join(", ")}: se requieren 13 columnas (A:M) y un instrumento en A.`
+          : "No se encontraron filas de datos válidas debajo del encabezado.";
+        return;
+      }
+
+      registros = nuevas;
+
+      poblarFiltro("cartera-filter-a", "a", "Todos los instrumentos");
+      poblarFiltro("cartera-filter-k", "k", "Todas las observaciones");
+      poblarFiltro("cartera-filter-l", "l", "Todos los portafolios");
+      poblarFiltro("cartera-filter-h", "h", "Todas las tasas");
+      poblarFiltro("cartera-filter-i", "i", "Todas las operaciones");
+
+      renderizar();
+      message.textContent = `Carga correcta: ${registros.length} filas recibidas con 13 columnas.`;
     }
 
     processButton.addEventListener("click", procesar);
 
-    $("cartera-example")?.addEventListener("click", () => {
-      input.value = [
-        "1_ALSEA_*\tMANDATO BNP PARIBAS\tALFA",
-        "1A_ANET_*\tMANDATO BNP PARIBAS\tALFA",
-        "1A_CAT_*\tMANDATO BNP PARIBAS\tALFA",
-        "51_ESCALA_E\tACTINVER\tALFA",
-        "CD_BANOB_24U\tDEUDA\tCALCE",
-        "M_BONOS_381118\tDEUDA\tALFA",
-        "S_UDIBONO_351122\tDEUDA\tCALCE"
-      ].join("\n");
+    ["cartera-filter-a", "cartera-filter-k", "cartera-filter-l",
+     "cartera-filter-h", "cartera-filter-i"].forEach(id => {
+      $(id)?.addEventListener("change", renderizar);
+    });
 
+    $("cartera-reset-filters")?.addEventListener("click", () => {
+      ["cartera-filter-a", "cartera-filter-k", "cartera-filter-l",
+       "cartera-filter-h", "cartera-filter-i"].forEach(id => {
+        if ($(id)) $(id).value = "";
+      });
+      if (registros.length) renderizar();
+    });
+
+    $("cartera-example")?.addEventListener("click", () => {
+      const exampleRows = [
+        ["1_ALSEA_*","","","1000","100","10","950","8.5","COMPRA","8.2","MANDATO BNP PARIBAS","ALFA","1001"],
+        ["1A_ANET_*","","","1200","200","12","1100","9.0","COMPRA","8.8","MANDATO BNP PARIBAS","ALFA","1002"],
+        ["1_ALSEA_*","","","500","50","10","480","8.5","VENTA","8.1","ACTINVER","ALFA","1003"],
+        ["CD_BANOB_24U","","","2500","300","9.5","2400","7.5","COMPRA","7.4","DEUDA","CALCE","1004"]
+      ];
+      input.value = [headers.join("\t"), ...exampleRows.map(r => r.join("\t"))].join("\n");
       procesar();
     });
 
     $("cartera-clear")?.addEventListener("click", () => {
       input.value = "";
+      registros = [];
       results.hidden = true;
       message.textContent = "Captura limpiada. Aún no se ha procesado información.";
       input.focus();
@@ -5123,14 +5266,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", iniciarCapturaCartera, {
-      once: true
-    });
+    document.addEventListener("DOMContentLoaded", iniciarCapturaCartera, { once: true });
   } else {
     iniciarCapturaCartera();
   }
 })();
-
-
 
 
