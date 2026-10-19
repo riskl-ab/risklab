@@ -5247,10 +5247,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     $("cartera-example")?.addEventListener("click", () => {
       const exampleRows = [
-        ["1_ALSEA_*","","","1000","100","10","950","8.5","COMPRA","8.2","MANDATO BNP PARIBAS","ALFA","1001"],
-        ["1A_ANET_*","","","1200","200","12","1100","9.0","COMPRA","8.8","MANDATO BNP PARIBAS","ALFA","1002"],
-        ["1_ALSEA_*","","","500","50","10","480","8.5","VENTA","8.1","ACTINVER","ALFA","1003"],
-        ["CD_BANOB_24U","","","2500","300","9.5","2400","7.5","COMPRA","7.4","DEUDA","CALCE","1004"]
+        ["1_ALSEA_*","MM/DD/AAAA","MM/DD/AAAA","1000","100","10","950","N/A","DIRECTO","8.2","MANDATO BNP PARIBAS","ALFA","1001"],
+        ["1A_ANET_*","MM/DD/AAAA","MM/DD/AAAA","1200","200","12","1100","N/A","DIRECTO","8.8","MANDATO BNP PARIBAS","ALFA","1002"],
+        ["1_ALSEA_*","MM/DD/AAAA","MM/DD/AAAA","500","50","10","480","N/A","DIRECTO","8.1","ACTINVER","ALFA","1003"],
+        ["CD_BANOB_24U","MM/DD/AAAA","MM/DD/AAAA","2500","300","9.5","2400","N/A","DIRECTO","7.4","DEUDA","CALCE","1004"]
       ];
       input.value = [headers.join("\t"), ...exampleRows.map(r => r.join("\t"))].join("\n");
       procesar();
