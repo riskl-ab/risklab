@@ -442,21 +442,40 @@
       <p id="cartera-summary-note" class="capture-help"></p>
     </article>
 
-    <article class="panel cartera-result-panel">
-      <h3>Vista previa de la tabla recibida</h3>
-      <p class="capture-help">Se conservan las filas originales que cumplen los filtros, incluidos los duplicados.</p>
+
+<article class="panel cartera-result-panel">
+  <details class="cartera-accordion">
+    <summary>Vista previa de la tabla recibida</summary>
+    <div class="cartera-accordion-content">
+      <p class="capture-help">
+        Se conservan las filas originales que cumplen los filtros, incluidos los duplicados.
+      </p>
       <div class="cartera-table-wrap">
         <table class="cartera-table">
-          <thead><tr>
-            <th>INSTRUMENTO (A)</th><th>INICIO (B)</th><th>VENC. (C)</th>
-            <th>MOI COMPRA (D)</th><th>TÍTULOS (E)</th><th>PRECIO (F)</th>
-            <th>VALOR LIBROS (G)</th><th>TASA (H)</th><th>OPERACIÓN (I)</th>
-            <th>TASA PACTADA (J)</th><th>OBSERVACIONES (K)</th><th>PORTAFOLIO (L)</th><th>ID (M)</th>
-          </tr></thead>
+          <thead>
+            <tr>
+              <th>INSTRUMENTO (A)</th>
+              <th>INICIO (B)</th>
+              <th>VENC. (C)</th>
+              <th>MOI COMPRA (D)</th>
+              <th>TÍTULOS (E)</th>
+              <th>PRECIO (F)</th>
+              <th>VALOR LIBROS (G)</th>
+              <th>TASA (H)</th>
+              <th>OPERACIÓN (I)</th>
+              <th>TASA PACTADA (J)</th>
+              <th>OBSERVACIONES (K)</th>
+              <th>PORTAFOLIO (L)</th>
+              <th>ID (M)</th>
+            </tr>
+          </thead>
           <tbody id="cartera-matrix-body"></tbody>
         </table>
       </div>
-    </article>
+    </div>
+  </details>
+</article>
+
 
     <div class="cartera-lists-grid">
       <article class="panel cartera-result-panel">
@@ -477,21 +496,32 @@
       </article>
     </div>
 
-    <article class="panel cartera-result-panel">
-      <h3>Resumen agregado por instrumento</h3>
-      <p class="capture-help">Una fila por instrumento A. Los totales respetan los filtros K, L, H e I; si eliges un instrumento, el resumen se limita a él.</p>
+
+<article class="panel cartera-result-panel">
+  <details class="cartera-accordion">
+    <summary>Resumen agregado por instrumento</summary>
+    <div class="cartera-accordion-content">
+      <p class="capture-help">
+        Una fila por instrumento A. Los totales respetan los filtros K, L, H e I; si eliges un instrumento, el resumen se limita a él.
+      </p>
       <div class="cartera-table-wrap">
         <table class="cartera-table">
-          <thead><tr>
-            <th>Instrumento</th><th>Filas</th><th>Valor de mercado</th>
-            <th>MOI compra (D)</th><th>Valor en libros (G)</th>
-          </tr></thead>
+          <thead>
+            <tr>
+              <th>Instrumento</th>
+              <th>Filas</th>
+              <th>Valor de mercado</th>
+              <th>MOI compra (D)</th>
+              <th>Valor en libros (G)</th>
+            </tr>
+          </thead>
           <tbody id="cartera-summary-body"></tbody>
         </table>
       </div>
-    </article>
-  </div>
-</div>
+    </div>
+  </details>
+</article>
+
 
 
         
