@@ -5059,10 +5059,10 @@ function nombreArchivoSeguro(valor) {
 
 function descargarGrupoCSV(campo, etiqueta) {
   const nombresCampos = {
-    k: "universo",
-    l: "portafolio",
-    h: "tasa",
-    i: "operacion"
+    k: "Observaciones",
+    l: "Portafolio",
+    h: "Tasa",
+    i: "Operacion"
   };
 
   if (!nombresCampos[campo]) return;
