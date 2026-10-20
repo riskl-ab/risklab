@@ -4730,6 +4730,25 @@ window.addEventListener("risklab:authenticated", () => {
 }, { once: true });
 
 
+
+[
+  ["cartera-lists-k", "k"],
+  ["cartera-lists-l", "l"],
+  ["cartera-lists-h", "h"],
+  ["cartera-lists-i", "i"]
+].forEach(([id]) => {
+  $(id)?.addEventListener("click", event => {
+    const boton = event.target.closest(".cartera-download-group");
+    if (!boton || !$(id).contains(boton)) return;
+
+    descargarGrupoCSV(
+      boton.dataset.exportField,
+      boton.dataset.exportLabel
+    );
+  });
+});
+
+
 async function loadTasasIndice() {
 
   const response = await fetch(
@@ -5006,6 +5025,97 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let registros = [];
 
+
+    function filasParaListasYDescargas() {
+  const filtros = [
+    ["cartera-filter-k", "k"],
+    ["cartera-filter-l", "l"],
+    ["cartera-filter-h", "h"],
+    ["cartera-filter-i", "i"]
+  ];
+
+  return registros.filter(row => filtros.every(([id, campo]) => {
+    const valorSeleccionado = $(id)?.value || "";
+    return !valorSeleccionado ||
+      (row[campo] || "(Sin dato)") === valorSeleccionado;
+  }));
+}
+
+function escaparCSV(valor) {
+  const texto = String(valor ?? "");
+  return '"' + texto.replace(/"/g, '""') + '"';
+}
+
+function nombreArchivoSeguro(valor) {
+  const nombre = String(valor || "sin-dato")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9_-]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 70);
+
+  return nombre || "sin-dato";
+}
+
+function descargarGrupoCSV(campo, etiqueta) {
+  const nombresCampos = {
+    k: "Observaciones",
+    l: "Portafolio",
+    h: "Tasa",
+    i: "Operacion"
+  };
+
+  if (!nombresCampos[campo]) return;
+
+  /*
+   * Obtiene los registros con los filtros K/L/H/I activos,
+   * sin aplicar el filtro de Instrumento (A).
+   */
+  const filas = filasParaListasYDescargas();
+
+  const instrumentos = [...new Set(
+    filas
+      .filter(row => (row[campo] || "(Sin dato)") === etiqueta)
+      .map(row => row.a)
+      .filter(instrumento => instrumento && instrumento.trim())
+  )].sort(collator.compare);
+
+  if (!instrumentos.length) {
+    message.textContent =
+      `No hay instrumentos para descargar en el grupo "${etiqueta}".`;
+    return;
+  }
+
+  const contenido = [
+    ["Grupo", "Instrumento"],
+    ...instrumentos.map(instrumento => [etiqueta, instrumento])
+  ].map(fila => fila.map(escaparCSV).join(",")).join("\r\n");
+
+  // BOM UTF-8 para conservar acentos al abrir el CSV en Excel.
+  const blob = new Blob(["\uFEFF", contenido], {
+    type: "text/csv;charset=utf-8;"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const enlace = document.createElement("a");
+
+  enlace.href = url;
+  enlace.download =
+    `RiskLab_${nombresCampos[campo]}_${nombreArchivoSeguro(etiqueta)}.csv`;
+
+  document.body.appendChild(enlace);
+  enlace.click();
+  enlace.remove();
+
+  URL.revokeObjectURL(url);
+
+  message.textContent =
+    `CSV descargado: ${instrumentos.length} instrumento(s) único(s) del grupo "${etiqueta}".`;
+}
+
+
+    
+
     function escapar(value) {
       return String(value ?? "").replace(/[&<>"']/g, c => ({
         "&": "&amp;", "<": "&lt;", ">": "&gt;",
@@ -5102,16 +5212,35 @@ document.addEventListener("DOMContentLoaded", () => {
       }));
     }
 
-    function renderizarListas(id, grupos) {
-      $(id).innerHTML = grupos.map(([label, values]) => {
-        const lista = [...values].sort(collator.compare);
-        return `<section class="cartera-list-group">
-          <h4>${escapar(label)}</h4>
-          <p class="capture-help">${lista.length} instrumento(s) único(s)</p>
-          <ol>${lista.map(v => `<li>${escapar(v)}</li>`).join("")}</ol>
-        </section>`;
-      }).join("") || '<p class="capture-help">No hay resultados para estos filtros.</p>';
-    }
+function renderizarListas(id, grupos, campo) {
+  const contenedor = $(id);
+
+  contenedor.innerHTML = grupos.map(([label, values]) => {
+    const lista = [...values].sort(collator.compare);
+
+    return `
+      <section class="cartera-list-group">
+        <div class="cartera-list-heading">
+          <div>
+            <h4>${escapar(label)}</h4>
+            <p class="capture-help">
+              ${lista.length} instrumento(s) único(s)
+            </p>
+          </div>
+          <button
+            type="button"
+            class="btn-secondary cartera-download-group"
+            data-export-field="${campo}"
+            data-export-label="${escapar(label)}"
+            aria-label="Descargar instrumentos del grupo ${escapar(label)} en CSV">
+            Descargar CSV
+          </button>
+        </div>
+        <ol>${lista.map(v => `<li>${escapar(v)}</li>`).join("")}</ol>
+      </section>`;
+  }).join("") ||
+    '<p class="capture-help">No hay resultados para estos filtros.</p>';
+}
 
     function renderizar() {
       const filas = filasFiltradas();
@@ -5126,10 +5255,14 @@ document.addEventListener("DOMContentLoaded", () => {
         `<tr>${fields.map(f => `<td>${escapar(row[f])}</td>`).join("")}</tr>`
       ).join("");
 
-      renderizarListas("cartera-lists-k", agrupar("k", filas));
-      renderizarListas("cartera-lists-l", agrupar("l", filas));
-      renderizarListas("cartera-lists-h", agrupar("h", filas));
-      renderizarListas("cartera-lists-i", agrupar("i", filas));
+      
+      const filasListas = filasParaListasYDescargas();
+
+      renderizarListas("cartera-lists-k", agrupar("k", filasListas), "k");
+      renderizarListas("cartera-lists-l", agrupar("l", filasListas), "l");
+      renderizarListas("cartera-lists-h", agrupar("h", filasListas), "h");
+      renderizarListas("cartera-lists-i", agrupar("i", filasListas), "i");
+
 
       // Consolidación por instrumento exacto A.
       const sumas = new Map();
