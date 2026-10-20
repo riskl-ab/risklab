@@ -5075,7 +5075,7 @@ function descargarGrupoCSV(campo, etiqueta) {
 
   const instrumentos = [...new Set(
     filas
-      .filter(row => (row[campo] || "(Sin datos)") === etiqueta)
+      .filter(row => (row[campo] || "(Sin dato)") === etiqueta)
       .map(row => row.a)
       .filter(instrumento => instrumento && instrumento.trim())
   )].sort(collator.compare);
