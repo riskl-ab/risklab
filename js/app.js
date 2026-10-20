@@ -5113,7 +5113,7 @@ function descargarGrupoCSV(campo, etiqueta) {
     `CSV descargado: ${instrumentos.length} instrumento(s) único(s) del grupo "${etiqueta}".`;
 }
 
-
+window.descargarGrupoCSV = descargarGrupoCSV;
     
 
     function escapar(value) {
