@@ -2045,3 +2045,52 @@ body.login-locked .app-shell {
 }
 
 
+
+/* RiskLab · Módulo 07 · Descargas CSV por grupo */
+
+.cartera-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.cartera-list-heading h4 {
+  margin-bottom: 4px;
+  overflow-wrap: anywhere;
+}
+
+.cartera-list-heading .capture-help {
+  margin: 0;
+}
+
+.cartera-download-group {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.cartera-list-group {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border, #303d49);
+}
+
+.cartera-list-group:last-child {
+  border-bottom: 0;
+}
+
+.cartera-download-group:focus-visible {
+  outline: 2px solid var(--accent, #5b9cff);
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .cartera-list-heading {
+    align-items: flex-start;
+  }
+
+  .cartera-download-group {
+    width: 100%;
+  }
+}
