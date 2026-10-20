@@ -1996,3 +1996,52 @@ body.login-locked .app-shell {
   }
 }
 
+
+/* RiskLab · Módulo 07 · Apartados desplegables */
+.cartera-accordion {
+  margin-bottom: 16px;
+}
+
+.cartera-accordion > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  color: var(--text, #e6edf3);
+  border: 1px solid var(--border, #303d49);
+  border-radius: 9px;
+  background: var(--panel, #111820);
+}
+
+.cartera-accordion > summary::-webkit-details-marker {
+  display: none;
+}
+
+.cartera-accordion > summary::after {
+  content: "+";
+  font-size: 21px;
+  line-height: 1;
+  color: var(--text-muted, #aebdca);
+}
+
+.cartera-accordion[open] > summary::after {
+  content: "−";
+}
+
+.cartera-accordion > summary:hover {
+  border-color: var(--accent, #5b9cff);
+}
+
+.cartera-accordion-content {
+  padding-top: 14px;
+}
+
+.cartera-accordion-content .cartera-lists-grid {
+  margin-top: 0;
+}
+
+
