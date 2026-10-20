@@ -5059,10 +5059,10 @@ function nombreArchivoSeguro(valor) {
 
 function descargarGrupoCSV(campo, etiqueta) {
   const nombresCampos = {
-    k: "Observaciones",
-    l: "Portafolio",
-    h: "Tasa",
-    i: "Operacion"
+    k: "universo",
+    l: "portafolio",
+    h: "tasa",
+    i: "operacion"
   };
 
   if (!nombresCampos[campo]) return;
@@ -5075,7 +5075,7 @@ function descargarGrupoCSV(campo, etiqueta) {
 
   const instrumentos = [...new Set(
     filas
-      .filter(row => (row[campo] || "(Sin dato)") === etiqueta)
+      .filter(row => (row[campo] || "deuda") === etiqueta)
       .map(row => row.a)
       .filter(instrumento => instrumento && instrumento.trim())
   )].sort(collator.compare);
@@ -5101,7 +5101,7 @@ function descargarGrupoCSV(campo, etiqueta) {
 
   enlace.href = url;
   enlace.download =
-    `RiskLab_${nombresCampos[campo]}_${nombreArchivoSeguro(etiqueta)}.csv`;
+    `RL_${nombresCampos[campo]}_${nombreArchivoSeguro(etiqueta)}.csv`;
 
   document.body.appendChild(enlace);
   enlace.click();
