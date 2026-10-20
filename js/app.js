@@ -5256,12 +5256,74 @@ function renderizarListas(id, grupos, campo) {
       ).join("");
 
       
-      const filasListas = filasParaListasYDescargas();
+      
+const filasListas = filasParaListasYDescargas();
 
-      renderizarListas("cartera-lists-k", agrupar("k", filasListas), "k");
-      renderizarListas("cartera-lists-l", agrupar("l", filasListas), "l");
-      renderizarListas("cartera-lists-h", agrupar("h", filasListas), "h");
-      renderizarListas("cartera-lists-i", agrupar("i", filasListas), "i");
+// Construir los vectores con los instrumentos únicos.
+const vectoresInstrumentos = {
+  observaciones: agrupar("k", filasListas).map(([grupo, valores]) => ({
+    grupo,
+    instrumentos: [...valores].sort(collator.compare)
+  })),
+
+  portafolios: agrupar("l", filasListas).map(([grupo, valores]) => ({
+    grupo,
+    instrumentos: [...valores].sort(collator.compare)
+  })),
+
+  tasas: agrupar("h", filasListas).map(([grupo, valores]) => ({
+    grupo,
+    instrumentos: [...valores].sort(collator.compare)
+  })),
+
+  operaciones: agrupar("i", filasListas).map(([grupo, valores]) => ({
+    grupo,
+    instrumentos: [...valores].sort(collator.compare)
+  }))
+};
+
+// Exponer los vectores para consulta por otros módulos de RiskLab.
+window.RiskLabCartera = window.RiskLabCartera || {};
+
+window.RiskLabCartera.vectoresInstrumentos = vectoresInstrumentos;
+
+window.RiskLabCartera.consultarVector = function(nombre) {
+  return this.vectoresInstrumentos?.[nombre] || [];
+};
+
+// Las listas visibles siguen usando los mismos vectores.
+renderizarListas(
+  "cartera-lists-k",
+  vectoresInstrumentos.observaciones.map(
+    item => [item.grupo, item.instrumentos]
+  ),
+  "k"
+);
+
+renderizarListas(
+  "cartera-lists-l",
+  vectoresInstrumentos.portafolios.map(
+    item => [item.grupo, item.instrumentos]
+  ),
+  "l"
+);
+
+renderizarListas(
+  "cartera-lists-h",
+  vectoresInstrumentos.tasas.map(
+    item => [item.grupo, item.instrumentos]
+  ),
+  "h"
+);
+
+renderizarListas(
+  "cartera-lists-i",
+  vectoresInstrumentos.operaciones.map(
+    item => [item.grupo, item.instrumentos]
+  ),
+  "i"
+);
+
 
 
       // Consolidación por instrumento exacto A.
