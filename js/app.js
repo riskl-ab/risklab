@@ -5228,12 +5228,12 @@ function renderizarListas(id, grupos, campo) {
             </p>
           </div>
           <button
-            type="button"
-            class="btn-secondary cartera-download-group"
-            data-export-field="${campo}"
-            data-export-label="${escapar(label)}"
-            aria-label="Descargar instrumentos del grupo ${escapar(label)} en CSV">
-            Vector
+          type="button"
+          class="btn-secondary cartera-download-group cartera-download-danger"
+          data-export-field="${campo}"
+          data-export-label="${escapar(label)}"
+          aria-label="Descargar instrumentos del grupo ${escapar(label)} en CSV">
+          Vector
           </button>
         </div>
         <ol>${lista.map(v => `<li>${escapar(v)}</li>`).join("")}</ol>
