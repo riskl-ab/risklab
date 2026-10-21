@@ -5233,7 +5233,7 @@ function renderizarListas(id, grupos, campo) {
             data-export-field="${campo}"
             data-export-label="${escapar(label)}"
             aria-label="Descargar instrumentos del grupo ${escapar(label)} en CSV">
-            Descargar CSV
+            Vector
           </button>
         </div>
         <ol>${lista.map(v => `<li>${escapar(v)}</li>`).join("")}</ol>
