@@ -2094,3 +2094,34 @@ body.login-locked .app-shell {
     width: 100%;
   }
 }
+
+/* RiskLab · Botón de descarga CSV */
+.cartera-download-group.cartera-download-danger {
+  background: #8b1e2d;
+  color: #ffffff;
+  font-weight: 700;
+  border: 1px solid #8b1e2d;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.cartera-download-group.cartera-download-danger:hover {
+  background: #6f1522;
+  border-color: #6f1522;
+}
+
+.cartera-download-group.cartera-download-danger:active {
+  transform: translateY(1px);
+}
+
+.cartera-download-group.cartera-download-danger:focus-visible {
+  outline: 2px solid #c96b78;
+  outline-offset: 3px;
+}
