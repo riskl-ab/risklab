@@ -2125,3 +2125,38 @@ body.login-locked .app-shell {
   outline: 2px solid #c96b78;
   outline-offset: 3px;
 }
+
+
+
+
+
+/* RiskLab · Botón para restablecer filtros */
+#cartera-reset-filters.cartera-reset-dark {
+  background: #343a40;
+  color: #ffffff;
+  font-weight: 700;
+  border: 1px solid #343a40;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+#cartera-reset-filters.cartera-reset-dark:hover {
+  background: #23272b;
+  border-color: #23272b;
+}
+
+#cartera-reset-filters.cartera-reset-dark:active {
+  transform: translateY(1px);
+}
+
+#cartera-reset-filters.cartera-reset-dark:focus-visible {
+  outline: 2px solid #858b91;
+  outline-offset: 3px;
+}
