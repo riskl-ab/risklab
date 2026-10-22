@@ -5057,6 +5057,7 @@ function nombreArchivoSeguro(valor) {
   return nombre || "sin-dato";
 }
 
+
 function descargarGrupoCSV(campo, etiqueta) {
   const nombresCampos = {
     k: "Observaciones",
@@ -5067,18 +5068,19 @@ function descargarGrupoCSV(campo, etiqueta) {
 
   if (!nombresCampos[campo]) return;
 
-  /*
-   * Obtiene los registros con los filtros K/L/H/I activos,
-   * sin aplicar el filtro de Instrumento (A).
-   */
+  // Conserva los filtros K/L/H/I activos.
+  // No aplica el filtro individual de instrumento A.
   const filas = filasParaListasYDescargas();
 
+  // Obtener instrumentos únicos del grupo seleccionado.
   const instrumentos = [...new Set(
     filas
       .filter(row => (row[campo] || "(Sin dato)") === etiqueta)
       .map(row => row.a)
       .filter(instrumento => instrumento && instrumento.trim())
-  )].sort(collator.compare);
+  )]
+    .map(instrumento => instrumento.replace(/_/g, " "))
+    .sort(collator.compare);
 
   if (!instrumentos.length) {
     message.textContent =
@@ -5086,12 +5088,30 @@ function descargarGrupoCSV(campo, etiqueta) {
     return;
   }
 
-  const contenido = [
-    ["Grupo", "Instrumento"],
-    ...instrumentos.map(instrumento => [etiqueta, instrumento])
-  ].map(fila => fila.map(escaparCSV).join(",")).join("\r\n");
+  /*
+   * Estructura de exportación:
+   *
+   * Fila 1: vacía.
+   * Fila 2: A2 = Fecha; B2 = Instrumento.
+   * Fila 3: A3 vacía; instrumentos desde B3 hacia la derecha.
+   * Fila 4: A4 vacía; celdas B4 en adelante reservadas.
+   *
+   * La hoja PRECIO SUCIO se creará en el XLSM de destino.
+   * El CSV no contiene nombres de hojas.
+   */
 
-  // BOM UTF-8 para conservar acentos al abrir el CSV en Excel.
+  const filasCSV = [
+    [""],
+    ["Fecha", "Instrumento"],
+    ["", ...instrumentos],
+    ["", ...instrumentos.map(() => "")]
+  ];
+
+  const contenido = filasCSV
+    .map(fila => fila.map(escaparCSV).join(","))
+    .join("\r\n");
+
+  // BOM UTF-8 para conservar acentos en Excel.
   const blob = new Blob(["\uFEFF", contenido], {
     type: "text/csv;charset=utf-8;"
   });
@@ -5100,8 +5120,7 @@ function descargarGrupoCSV(campo, etiqueta) {
   const enlace = document.createElement("a");
 
   enlace.href = url;
-  enlace.download =
-    `RL_${nombresCampos[campo]}_${nombreArchivoSeguro(etiqueta)}.csv`;
+  enlace.download = "PRECIO SUCIO.csv";
 
   document.body.appendChild(enlace);
   enlace.click();
@@ -5110,7 +5129,7 @@ function descargarGrupoCSV(campo, etiqueta) {
   URL.revokeObjectURL(url);
 
   message.textContent =
-    `CSV descargado: ${instrumentos.length} instrumento(s) único(s) del grupo "${etiqueta}".`;
+    `CSV PRECIO SUCIO descargado: ${instrumentos.length} instrumento(s) único(s) del grupo "${etiqueta}".`;
 }
 
 window.descargarGrupoCSV = descargarGrupoCSV;
