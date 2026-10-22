@@ -5058,6 +5058,37 @@ function nombreArchivoSeguro(valor) {
 }
 
 
+
+function codigoGrupoCSV(campo, etiqueta) {
+  const texto = String(etiqueta ?? "").trim();
+
+  const normalizado = texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+
+  // Excepción 1: celdas vacías o "(Sin dato)" en la columna K.
+  // Representan DEUDA.
+  if (campo === "k" && (!normalizado || normalizado === "sindato")) {
+    return "deu";
+  }
+
+  // Excepción 2: la etiqueta histórica MANDATO SAM
+  // corresponde actualmente al administrador BNP.
+  if (normalizado === "mandatosam") {
+    return "bnp";
+  }
+
+  // Regla general: primeras tres letras de la etiqueta.
+  return normalizado.slice(0, 3) || "sin";
+}
+
+
+    
+
+    
+
 function descargarGrupoCSV(campo, etiqueta) {
   const nombresCampos = {
     k: "Observaciones",
@@ -5120,7 +5151,17 @@ function descargarGrupoCSV(campo, etiqueta) {
   const enlace = document.createElement("a");
 
   enlace.href = url;
-  enlace.download = "PRECIO SUCIO.csv";
+  const prefijos = {
+  k: "obs",
+  l: "por",
+  h: "tas",
+  i: "ope"
+};
+
+const codigo = codigoGrupoCSV(campo, etiqueta);
+
+enlace.download =
+  `vector-${prefijos[campo]}-${codigo}_PS.csv`;
 
   document.body.appendChild(enlace);
   enlace.click();
