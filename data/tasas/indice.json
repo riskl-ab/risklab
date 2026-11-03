@@ -1,7 +1,12 @@
 {
-  "version": "1.0.0",
-  "actual": "2026-09",
+  "version": "1.0.1",
+  "actual": "2026-10",
   "cortes": [
+    {
+      "periodo": "2026-10",
+      "nominal": "nominales/2026/2026-10_N.csv",
+      "real": "reales/2026/2026-10_R.csv"
+    },
     {
       "periodo": "2026-09",
       "nominal": "nominales/2026/2026-09_N.csv",
