@@ -74,7 +74,7 @@
         
         <div class="nav-group-title" data-permission="laboratorio">Laboratorio</div>
         <button class="nav-item" data-view="riesgo" data-permission="laboratorio"><span>05</span> Curvas de tasas</button>
-        <button class="nav-item" data-view="riesgo" data-permission="laboratorio"><span>06</span> Cosechas de crédito</button>
+        <button class="nav-item" data-view="cosechas" data-permission="laboratorio"><span>06</span> Cosechas de crédito</button>
 
         <div class="nav-group-title" data-permission="captura">Inversiones</div>
         <button class="nav-item" data-view="cartera" data-permission="captura"><span>07</span> Composición cartera</button>
@@ -1119,6 +1119,125 @@
 </div>
         
 <!-- ===== aqui quité un maldito </div> ========================================== -->
+
+<!-- =====================================================
+     06 · COSECHAS DE CRÉDITO
+     ===================================================== -->
+
+<div id="view-cosechas" class="view" hidden>
+
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">LABORATORIO · 06</div>
+      <h2>Cosechas de crédito</h2>
+      <p>
+        Consulta de cartera global, tipos de crédito,
+        vigencias, periodos históricos y alertas.
+      </p>
+    </div>
+    <div class="source-badge">RiskLab · Vintage Analysis</div>
+  </div>
+
+  <section class="panel vintages-panel">
+
+    <div class="vintages-toolbar">
+
+      <div class="vintages-group">
+        <span class="vintages-group-title">00 · Global</span>
+        <div class="vintages-buttons">
+          <button class="vintage-button active"
+                  data-vintage="00-vin-glo.html">
+            Cartera global
+          </button>
+        </div>
+      </div>
+
+      <div class="vintages-group">
+        <span class="vintages-group-title">01 · Tipo de crédito</span>
+        <div class="vintages-buttons">
+          <button class="vintage-button" data-vintage="01-vin-cco.html">
+            Créditos complementarios
+          </button>
+          <button class="vintage-button" data-vintage="01-vin-cjr.html">
+            Créditos junior
+          </button>
+          <button class="vintage-button" data-vintage="01-vin-cvi.html">
+            Créditos viudez
+          </button>
+          <button class="vintage-button" data-vintage="01-vin-pgh.html">
+            Préstamos con GH
+          </button>
+          <button class="vintage-button" data-vintage="01-vin-ppe.html">
+            Préstamos personales
+          </button>
+        </div>
+      </div>
+
+      <div class="vintages-group">
+        <span class="vintages-group-title">02 · Vigencia</span>
+        <div class="vintages-buttons">
+          <button class="vintage-button" data-vintage="02-vin-cco_vig.html">
+            Complementarios · Vigentes
+          </button>
+          <button class="vintage-button" data-vintage="02-vin-cjr_vig.html">
+            Junior · Vigentes
+          </button>
+          <button class="vintage-button" data-vintage="02-vin-cvi_vig.html">
+            Viudez · Vigentes
+          </button>
+          <button class="vintage-button" data-vintage="02-vin-pgh_vig.html">
+            GH · Vigentes
+          </button>
+          <button class="vintage-button" data-vintage="02-vin-ppe_vig.html">
+            Personales · Vigentes
+          </button>
+        </div>
+      </div>
+
+      <div class="vintages-group">
+        <span class="vintages-group-title">03 · Periodos de cosecha</span>
+        <div class="vintages-buttons">
+          <button class="vintage-button" data-vintage="03-vin-18_19.html">
+            Cosechas 2018–2019
+          </button>
+          <button class="vintage-button" data-vintage="03-vin-20_26.html">
+            Cosechas 2020–2026
+          </button>
+        </div>
+      </div>
+
+      <div class="vintages-group">
+        <span class="vintages-group-title">04 · Seguimiento</span>
+        <div class="vintages-buttons">
+          <button class="vintage-button" data-vintage="04-alertas.html">
+            Alertas por tipo de crédito
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="vintages-viewer-header">
+      <span id="vintage-current-title">Cartera global</span>
+      <span class="vintages-viewer-caption">Consulta seleccionada</span>
+    </div>
+
+    <div class="vintages-frame-wrap">
+      <iframe
+        id="vintage-frame"
+        title="Consulta de cosechas de crédito"
+        src="./data/vintages/00-vin-glo.html"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin">
+      </iframe>
+    </div>
+
+  </section>
+
+</div>
+
+
+
         
 <div id="view-mandatarios" class="view" hidden>
 
