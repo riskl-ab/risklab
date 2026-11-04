@@ -4531,6 +4531,50 @@ function renderPortfolios() {
 }
 
 
+
+/* =========================================================
+   06 · NAVEGACIÓN DE COSECHAS DE CRÉDITO
+   ========================================================= */
+
+function initVintagesModule() {
+  const frame = $("vintage-frame");
+  const currentTitle = $("vintage-current-title");
+  const buttons = document.querySelectorAll(".vintage-button");
+
+  if (!frame || !buttons.length) return;
+
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      const archivo = button.dataset.vintage;
+
+      if (!archivo) return;
+
+      // Actualizar botón activo.
+      buttons.forEach(item => {
+        item.classList.remove("active");
+      });
+
+      button.classList.add("active");
+
+      // Actualizar título de la consulta.
+      if (currentTitle) {
+        currentTitle.textContent = button.textContent.trim();
+      }
+
+      // Cargar el HTML correspondiente.
+      frame.src = `./data/vintages/${archivo}`;
+
+      console.log(
+        "RISKLAB M06: consulta seleccionada:",
+        archivo
+      );
+    });
+  });
+}
+
+
+
+
 function initNavigation() {
 
   
@@ -4697,6 +4741,7 @@ function initNavigation() {
 
 async function init() {
   initNavigation();
+  initVintagesModule();
   initHistoricalModule();
   initMandatariosCardToggle();
   initMandatarioHistoryToggle();
